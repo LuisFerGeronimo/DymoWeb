@@ -449,8 +449,8 @@ footer a:hover {
 */
 
 footer #footer-links {
-
-	min-height: 120px;
+	font-size: 0.86em;
+	min-height: 100px;
 	text-align: center;
 	padding-top: 10px;
 	width: 100%;
