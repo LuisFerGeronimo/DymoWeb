@@ -8,7 +8,7 @@
 
 	<section id="section-presentacion">
 
-		<span class="titulo-principal">Las mejores etiquetadoras del mercado</span> <br><br>
+		<span class="titulo-principal">Las mejores etiquetadoras del mercado.</span> <br><br>
 
 		<p class="titulo-comentario">Nunca fue más fácil etiquetar tus productos</p>
 
