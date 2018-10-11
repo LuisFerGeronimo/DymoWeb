@@ -1,6 +1,4 @@
-<?php $paginaActual = "Inicio"; ?>
-
-<?php include('includes/topHtml.php'); ?>
+dfv{df{lgsdfm{lsdmf{glmdflgkmsdlfkgmsdlkñf
 
 <body>
 	<?php include('includes/header.php'); ?>
