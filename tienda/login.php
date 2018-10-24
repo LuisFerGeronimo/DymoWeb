@@ -61,13 +61,15 @@
                                 </div>
                             
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                    <label class="form-check-label" for="defaultCheck1">
+                                    <input class="form-check-input" type="checkbox" value="" id="recuerdame">
+                                    <label class="form-check-label" for="recuerdame">
                                         Recuérdame
                                     </label>
                                 </div>
 
-                                <button type="submit" class="btn btn-success my-3 w-100">Acceder</button>
+                                <button class="btn btn-success my-3 w-100" id="btn-acceder">Acceder</button>
+
+                                <p id="mensaje-error" class="d-none">Mensaje</p>
 
 
                                 <a href="#" class="card-link">¿Olvidó su contraseña?</a>
@@ -99,6 +101,52 @@
         <script src="assets/js/popper.min.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>
 
+        <!-- Validaciones de input -->
+        <script type="text/javascript">
+            /* SCRIPT DE VALIDACIONES DE KEVIN */
+
+        </script>
+
+        <!-- Envío de datos al servidor con AJAX -->
+        <script type="text/javascript">
+            alert("Correo: , Contra: ");
+
+            $(function(){ 
+               
+                $("#btn-acceder").on('click', function(){ 
+                    
+                    var correo  = $("#email").val();
+                    var contrasena  = $("#password").val();
+
+                    alert('Correo: ' + correo +', Contra: ' + contrasena);
+                    
+                    $.ajax({ 
+
+                        method: "POST",
+                        url: "login-request.php",
+
+                        data: {"correo": correo, "contrasena": contrasena}
+
+                    }).done(function( data ) {
+                        var result = $.parseJSON(data);
+            
+                        var string = '';
+
+                        if(sizeof($result) == 1){
+                            $("#mensaje-error").css('color', 'red').html($result['nombre'].' as '.$result['apellidoP']);
+
+
+                        } else {
+                            $("#mensaje-error").css('color', 'red').html('Failed.');
+
+                        }
+           
+                    });
+         
+                }); 
+            });
+
+        </script>
 
     </body>
 </html>
