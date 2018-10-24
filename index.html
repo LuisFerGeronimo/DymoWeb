@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="es-mx">
+<head>
+   <!-- Required meta tags -->
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+   <!-- Bootstrap CSS -->
+   <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+
+   <!-- Personal/Custom CSS -->
+   <link rel="stylesheet" href="assets/css/style.css">
+
+   
+
+   <!-- Scrollbar Custom CSS -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+
+   <!-- Font Awesome JS -->
+   <script defer src="assets/js/solid.js"></script>
+   <script defer src="assets/js/fontawesome.js"></script>
+
+   <title>Dymo S.A. de C.V.</title>
+</head>
+<body>
+
+   
+
+   <!-- --------- -->
+   <!--  SIDEBAR  -->
+   <!-- --------- -->
+   <nav id="sidebar">
+      <div id="dismiss">
+         <i class="fas fa-arrow-right"></i>
+      </div>
+
+
+      <div class="sidebar-header">
+         <h3>Menú</h3>
+      </div>
+
+      <div class="clear"></div>
+
+      <ul class="list-unstyled components">
+         
+         <li class="active">
+            <a href="#">Inicio</a>
+         </li>
+
+         <li>
+            <a href="#productos" id="productos-sidebar-link">Productos</a>
+         </li>
+         <li>
+            <a href="tienda/login.php">Tienda</a>
+         </li>
+         <li>
+            <a href="#">Contacto</a>
+         </li>
+         <li>
+            <a href="#">Acerca de</a>
+         </li>
+         <li>
+            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Acceder</a>
+            <ul class="collapse list-unstyled" id="pageSubmenu">
+               <li>
+                  <a href="tienda/login.php">Cliente</a>
+               </li>
+               <li>
+                  <a href="tienda/login.php">Distribuidor</a>
+               </li>
+               <li>
+                  <a href="#">Administrador</a>
+               </li>
+            </ul>
+         </li>
+         
+      </ul>
+
+      <ul class="list-unstyled CTAs">
+         <li>
+            <a href="tienda/registro.php" class="download roboto-bold">Registrarse</a>
+         </li>
+      <!--
+         <li>
+            <a href="https://bootstrapious.com/p/bootstrap-sidebar" class="article">Back to article</a>
+         </li>
+      -->
+      </ul>
+   </nav>
+
+   <div class="overlay"></div>
+
+
+
+
+
+   <!-- ---------------------------------------------------------- -->
+   <!-- Contendedor del HEADER{NAV} & Jumbotron{ETIQUETADORA-GRIS} -->
+   <!-- ---------------------------------------------------------- -->
+   <header style="background-image: url(assets/img/header-bg.jpg);background-size: cover;">
+
+      <!-- HEADER del NAVBAR -->
+      <div class="bg-transparent " style="">
+
+         <!-- Navbar página de inicio principal -->
+         <nav class="navbar navbar-dark bg-transparent navbar-expand-lg w-75 m-auto">
+
+            <!-- Logotipo de DYMO -->
+            <a class="navbar-brand" href="#">
+               <img src="assets/img/dymo-transparente.png" width="80" height="55" alt="DYMO">
+
+            </a>
+
+
+            <!-- Navbar TOGGLER -->
+            <button class="navbar-toggler" id="sidebarCollapse" type="button" data-toggle="collapse" data-target="#toggler-nav" aria-controls="toggler-nav" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+            </button>
+
+
+            <!-- Navbar MENU -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+               <ul class="navbar-nav ml-auto">
+                  <li class="nav-item active">
+                     <a class="nav-link text-uppercase" href="#">Inicio <span class="sr-only">(current)</span></a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link text-uppercase" href="#productos">Productos</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link text-uppercase" href="tienda/login.php">Tienda</a>
+                  </li> 
+                  <li class="nav-item">
+                     <a class="nav-link text-uppercase" href="#">Contacto</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link text-uppercase" href="#">Acerca de</a>
+                  </li>
+                  <li class="nav-item dropdown">
+                     <a class="nav-link dropdown-toggle text-uppercase" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Acceder
+                     </a>
+                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="tienda/login.php">Cliente</a>
+                        <a class="dropdown-item" href="tienda/login.php">Distribuidor</a>
+                        <a class="dropdown-item" href="#">Administrador</a>
+                     </div>
+                  </li>
+               </ul>
+            </div>
+
+         </nav>
+      </div>
+
+   
+
+
+      <!-- --------------------------  -->
+      <!--    MEJROES ETIQUETADORAS    -->
+      <!-- --------------------------  -->
+      <div class="jumbotron jumbotron-fluid bg-transparent mb-0" style="">
+         <div class="container">
+            <div class="row align-items-center">
+               <div class="col-sm-6 col-lg-6">
+                  <h1 class="display-5 text-white">Las mejores etiquetadoras del mercado</h1>
+                  <p class="lead mb-4 text-light">Nunca fue más fácil etiquetar tus productos</p>
+                  <a class="btn btn-success py-2 px-4" href="#tienda/tienda.php">Ir a la tienda</a>
+               </div>
+               <div class="col-sm-6 col-lg-6 mt-5">
+                  <img src="images/gallery/5.png" class="img-fluid float-right hidden-sm-down" width="380px" alt="Etiquetadora-gris">
+               </div>
+            </div>
+            </div>
+         </div>
+      </div>
+
+
+
+   </header>
+   <!-- Final del HEADER -->
+
+   <!-- --------------------------  -->
+   <!-- ¿AÚN NO ESTÁS CON NOSOTROS? -->
+   <!-- --------------------------  -->
+   <div class="jumbotron jumbotron-fluid bg-white mb-0">
+      <div class="container">
+         <div class="row">
+            <div class="col-sm-5 d-none d-lg-block">
+               <img class=" float-left" src="assets/img/bussinesswoman.jpg" style="width: 100%;">
+            </div>
+
+            <div class="col-lg-6 offset-lg-1 col-md-12 align-self-center">
+               <h6 class="text-muted text-uppercase">Regístrate</h6>
+               <h3>¿Aún no estás con nosotros?</h3>
+               <p class="mb-4">Te permitimos crear una cuenta para poder llevar a cabo tus pedidos en nuestra <a href="#" class="text-primary">tienda online</a>.</p>
+               <div class="row">
+                  <div class="col-sm-6 mb-3">
+                     <h5>Regístrate</h5>
+                     <p>Sólo te llevará 2 minutos. No, menos... 5 minutos.</p><br>
+                     <a class="btn btn-success d-sm-none"href="tienda/registro.php">Regístrate</a>
+                  </div>
+                  <div class="col-sm-6">
+                     <h5>Inicia sesión</h5>
+                     <p>¿Ya eres parte de la tienda?<br>Ingresa ahora mismo a ver nuestros productos más recientes.</p>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-sm-6 mb-3 d-none d-sm-block">
+                     <a class="btn btn-success"href="tienda/registro.php">Regístrate</a>
+                  </div>
+                  <div class="col-sm-6">
+                     <a class="btn btn-primary"href="tienda/login.php">Inicia sesión</a>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+      </div>
+   </div>
+   
+
+
+   <!-- --------------------------  -->
+   <!--          PRODUCTOS          -->
+   <!-- --------------------------  -->
+   <div class="jumbotron jumbotron-fluid bg-white mb-0" id="productos">
+      <div class="container text-center">
+         <div class="row mb-5">
+            <div class="col-1 col-md-3"></div>
+            <div class="col-10 col-md-6">
+               <h3 class="text-uppercase text-muted roboto-regular ">¿Qué ofrecemos?</h3>
+               <h4>Te ofrecemos el servicio que otras empresas se niegan a darte.</h4>
+            </div>
+            <div class="col-1 col-md-3"></div>
+         </div>
+
+         <div class="row">
+            <div class="col-12 col-md-6 mt-5">
+               <div class="card border-0">
+                  <h4 class="card-title text-uppercase">Productos</h4>
+                  <img src="assets/img/startup-10.svg" alt="">
+                  <h6 class="card-subtitle mb-2 text-muted mt-2 mb-4">Te ofrecemos una gran cantidad de productos.</h6>
+                  <ul class="list-group list-group-flush">
+                     <li class="list-group-item"><strong>Etiquetadoras</strong></li>
+                     <li class="list-group-item"><strong>Ribbon</strong></li>
+                     <li class="list-group-item">Fabricación de <strong>etiquetas</strong></li>
+                  </ul>
+
+
+                  <a class="btn btn-lg btn-primary btn-block" href="tienda/login.php">
+                     Ir a la tienda
+                  </a>
+                  
+               </div>
+            </div>
+            
+            <div class="col-12 col-md-6 mt-5">
+               <div class="card border-0">
+                  <h4 class="card-title text-uppercase">Servicio</h4>
+                  <img src="assets/img/startup-9.svg" alt="">
+                  <h6 class="card-subtitle mb-2 text-muted mt-2 mb-4">Reparamos tus máquinas. Nosotros vamos a usted.</h6>
+                  <ul class="list-group list-group-flush">
+                     <li class="list-group-item">Damos <strong>mantenimiento</strong></li>
+                     <li class="list-group-item">Nosotros vamos a su empresa</li>
+                     <li class="list-group-item">Contáctanos por nuestro <strong>teléfono</strong> o <strong>chat</strong></li>
+                  </ul>
+
+
+                  <button class="btn btn-lg btn-primary btn-block">
+                     Ponerse en contacto
+                  </button>
+                  
+
+               </div>
+            </div>
+         </div>
+
+      </div>
+   </div>
+
+
+   <!-- --------------------------  -->
+   <!--   FOOTER | PIE DE PÁGINA    -->
+   <!-- --------------------------  -->
+   <footer class="bg-inverse pt-5" style="background-color: #262F36;">
+      <div class="container">
+         <div class="row">
+            <div class="col-md-4 mb-5">
+               <ul class="list-unstyled list-spaced">
+                  <li class="mb-2 text-white"><h6 class="text-uppercase">Acerca de</h6></li>
+                  <li class="text-muted">
+                     En Distribuidora y Mayorista Omega, con más de 30 años de experiencia, nos dedicamos a brindarles a nuestros clientes un servicio cordial. Valoramos su negocio. Nuestra misión es ofrecer productos y servicios confiables con un enfoque orientado al cliente.
+                  </li>
+               </ul>
+            </div>
+            <div class="col-md-3 offset-md-1 mb-5">
+               <ul class="list-unstyled list-spaced">
+                  <li class="mb-2 text-white"><h6 class="text-uppercase">Contacto</h6></li>
+                  <li class="text-muted">(55) 5650-2369</li>
+                  <li class="text-muted">(55) 5654-1001</li>
+                  <li class="text-muted">(55) 5657-6210</li>
+                  <li class="text-muted">(55) 5650-2873</li>
+               </ul>
+            </div>
+            <div class="col-md-2 mb-5">
+               <ul class="list-unstyled list-spaced">
+                  <li class="mb-2 text-white"><h6 class="text-uppercase">Redes</h6></li>
+                  <li class="text-muted">Facebook</li>
+                  <li class="text-muted">Instagram</li>
+                  <li class="text-muted">Youtube</li>
+                  <li class="text-muted">Twitter</li>
+               </ul>
+            </div>
+            <div class="col-md-2 mb-5">
+               <ul class="list-unstyled list-spaced">
+                  <li class="mb-2 text-white"><h6 class="text-uppercase">Legal</h6></li>
+                  <li class="text-muted">Términos</li>
+                  <li class="text-muted">Legal</li>
+                  <li class="text-muted">Privacidad</li>
+                  <li class="text-muted">Licencia</li>
+               </ul>
+            </div>
+         </div>
+      </div>
+   </footer>
+
+
+
+
+   <!-- Optional JavaScript -->
+   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+   <script src="assets/js/jquery-3.3.1.min.js"></script>
+   <script src="assets/js/popper.min.js"></script>
+   <script src="assets/js/bootstrap.min.js"></script>
+
+   <!-- jQuery Custom Scroller CDN -->
+   <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+
+
+   <!-- Script para el sidebar -->
+   <script type="text/javascript">
+         $(document).ready(function () {
+
+            /* Estilo del scrollbar del sidebar */
+            $("#sidebar").mCustomScrollbar({
+                theme: "minimal"
+            });
+
+            /* Eventos para remover el sidebar y efecto de obscuridad que sale al abrir el sidebar. */
+            /*  - #dismiss: es el boton de la flecha que está en el sidebar para quitarlo */
+            /*  - .overlay: Es el div que hace el efecto de obscuridad al abrir el sidebar */
+            /*  - #productos-sidebar-link: Es el link que apunta al div de los productos (Link dentro del sidebar). */
+            $('#dismiss, .overlay, #productos-sidebar-link').on('click', function () {
+               $('#sidebar').removeClass('active');
+               $('.overlay').removeClass('active');
+            });
+
+            /* Esta es una función para abrir el sidebar pero no se ocupa porque en este caso
+               se abre dependiendo del tamaño de la pantalla */
+            $('#sidebarCollapse').on('click', function () {
+               $('#sidebar').addClass('active');
+               $('.overlay').addClass('active');
+               $('.collapse.in').toggleClass('in');
+               $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+            });
+        });
+   </script>
+
+   <!-- Script para la animación de scroll lento para los links hacia divs (Como el link de productos) -->
+   <script type="text/javascript">
+         // Select all links with hashes
+         $('a[href*="#"]')
+            // Remove links that don't actually link to anything
+            .not('[href="#"]')
+            .not('[href="#0"]')
+            .click(function(event) {
+               // On-page links
+               if (
+                  location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') 
+                  && 
+                  location.hostname == this.hostname
+               ) {
+                  // Figure out element to scroll to
+                  var target = $(this.hash);
+                  target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                  // Does a scroll target exist?
+                  if (target.length) {
+                     // Only prevent default if animation is actually gonna happen
+                     event.preventDefault();
+                     $('html, body').animate({
+                        scrollTop: target.offset().top
+                     }, 1000, function() {
+                        // Callback after animation
+                        // Must change focus!
+                        var $target = $(target);
+                        $target.focus();
+                        if ($target.is(":focus")) { // Checking if the target was focused
+                           return false;
+                        } else {
+                           $target.attr('tabindex','-1'); // Adding tabindex for elements not focusable
+                           $target.focus(); // Set focus again
+                        };
+                     });
+                  }
+               }
+            });
+    </script>
+
+</body>
+</html>
