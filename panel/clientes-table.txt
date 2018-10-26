@@ -1,0 +1,36 @@
+{
+  "data": [
+    [
+      "Jesús Emmanuel",
+      "Zetina",
+      "Chevez",
+      "zcjo151173@upemor.edu.mx",
+      "contraseña",
+      "001"
+    ],
+    [
+      "Luis Fernando",
+      "Gerónimo",
+      "Carranza",
+      "gclo151861@upemor.edu.mx",
+      "upemor",
+      "001"
+    ],
+    [
+      "Josué Eduardo",
+      "Rodríguez",
+      "Perez",
+      "rpjo156543@upemor.edu.mx",
+      "rpjo",
+      "002"
+    ],
+    [
+      "Iván Uriel",
+      "Gonzalez",
+      "Rivera",
+      "uriel@upemor.edu.mx",
+      "uriel",
+      "002"
+    ]
+  ]
+}

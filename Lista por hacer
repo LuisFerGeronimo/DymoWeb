@@ -1,0 +1,5 @@
+Lista de cosas por hacer:
+
+
+ • Validar que la contraseña no sea mayor a varchar(60)
+ 	(Lo mismo para cada una de los input del sitio web)

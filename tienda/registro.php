@@ -2,14 +2,14 @@
 <html lang="es-mx">
     <head>
         <!-- Required meta tags -->
-        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html" charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
 
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/solid.css" integrity="sha384-osqezT+30O6N/vsMqwW8Ch6wKlMofqueuia2H7fePy42uC05rm1G+BUPSd2iBSJL" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/fontawesome.css" integrity="sha384-BzCy2fixOYd0HObpx3GMefNqdbA7Qjcc91RgYeDjrHTIEXqiF00jKvgQG0+zY/7I" crossorigin="anonymous">
+        <link rel="stylesheet" href="../assets/css/solid.css">
+        <link rel="stylesheet" href="../assets/css/fontawesome.css">
 
         <style>
             .input-group-text{
@@ -37,7 +37,6 @@
                         <div class="card-body px-3">
 
                             
-
                             <div class="card-header mb-3">
                                 <div class="progress">
                                     <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 33.33%;" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">1/3</div>
@@ -46,7 +45,7 @@
                             
                             <h3 class="card-title text-center text-nowrap">Registro</h3>
                             
-                            <form class="px-0 px-sm-3 pb-0 pb-sm-1 pt-2">
+                            <form class="needs-validation px-0 px-sm-3 pb-0 pb-sm-1 pt-2" novalidate>
 
                                 <div class="form-group">
                                     <label for="nombres">Nombres</label>
@@ -54,7 +53,10 @@
                                         <div class="input-group-prepend">
                                             <div class="input-group-text"><i class="fas fa-user"></i></div>
                                         </div>
-                                        <input type="text" class="form-control" id="nombres" placeholder="Juan Carlos">
+                                        <input type="text" class="form-control" id="nombres" placeholder="Juan Carlos" required>
+                                        <div class="invalid-feedback">
+                                            Ingresa tu nombre.
+                                        </div>
                                     </div>
                                 </div>
 
@@ -66,7 +68,10 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fas fa-user"></i></div>
                                             </div>
-                                            <input type="text" class="form-control" id="apellidoP" placeholder="Perez">
+                                            <input type="text" class="form-control" id="apellidoP" placeholder="Perez" required>
+                                            <div class="invalid-feedback">
+                                                Ingresa tu apellido paterno.
+                                            </div>
                                         </div>
                                     </div>
 
@@ -76,7 +81,10 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fas fa-user"></i></div>
                                             </div>
-                                            <input type="text" class="form-control" id="apellidoM" placeholder="Rodríguez">
+                                            <input type="text" class="form-control" id="apellidoM" placeholder="Rodríguez" required>
+                                            <div class="invalid-feedback">
+                                                Ingresa tu apellido materno.
+                                            </div>
                                         </div>
                                     </div>
 
@@ -88,7 +96,10 @@
                                         <div class="input-group-prepend">
                                             <div class="input-group-text"><i class="fas fa-at"></i></div>
                                         </div>
-                                        <input type="email" class="form-control" id="correo" placeholder="nombre@ejemplo.com">
+                                        <input type="email" class="form-control" id="correo" placeholder="nombre@ejemplo.com" required>
+                                        <div class="invalid-feedback">
+                                            Ingresa tu correo.
+                                        </div>
                                     </div>
                                 </div>
 
@@ -98,7 +109,10 @@
                                         <div class="input-group-prepend">
                                             <div class="input-group-text"><i class="fas fa-phone"></i></div>
                                         </div>
-                                        <input type="email" class="form-control" id="telefono" placeholder="777 1234 567">
+                                        <input type="text" class="form-control" id="telefono" placeholder="777 1234 567" maxlength="18" autocomplete="off" required>
+                                        <div class="invalid-feedback">
+                                            Ingresa tu número de teléfono.
+                                        </div>
                                     </div>
                                 </div>
 <!--
@@ -129,19 +143,28 @@
 
 
 
-
-
-
-
-
-
-
-
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="assets/js/jquery-3.3.1.min.js"></script>
-        <script src="assets/js/popper.min.js"></script>
-        <script src="assets/js/bootstrap.min.js"></script>
+        <script src="../assets/js/jquery-3.3.1.min.js"></script>
+        <script src="../assets/js/popper.min.js"></script>
+        <script src="../assets/js/bootstrap.min.js"></script>
+
+
+        <!-- Custom scripts -->
+        <script src="../assets/js/needs-validation-bootstrap.js"></script>
+        <script src="../assets/js/validation-functions.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                validarNombres("#nombres");
+                validarNombres("#apellidoP");
+                validarNombres("#apellidoM");
+                validarTelefono("#telefono");
+            });
+        </script>
+
+
+
 
 
     </body>
