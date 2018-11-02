@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../assets/css/bootstrap.css">
 
         <link rel="stylesheet" href="../assets/css/solid.css">
         <link rel="stylesheet" href="../assets/css/fontawesome.css">
@@ -27,7 +27,7 @@
 
         <title>Dymo - Tienda</title>
     </head>
-    <body style="background-image: url(../assets/img/registro.jpg); background-size: cover;">
+    <body style="background-image: url(../assets/img/ui/registro.jpg); background-size: cover;">
 
 
         <div class="container px-0 py-4">
@@ -115,7 +115,7 @@
         <script src="../assets/js/bootstrap.min.js"></script>
 
         <!-- Custom scripts -->
-        <script src="../assets/js/needs-validation-bootstrap.js"></script>
+        <!-- <script src="../assets/js/needs-validation-bootstrap.js"></script> -->
 
 
         <!-- Envío de datos al servidor con AJAX -->
@@ -129,12 +129,11 @@
                     var contrasena_input  = $("#password").val();
 
 
-                    //alert('Correo: ' + correo_input +', | Contra: ' + contrasena_input);
+                    alert('Correo: ' + correo_input +', | Contra: ' + contrasena_input);
                     
                     $.ajax({
                         type: "POST",
                         url: "login-request.php",
-                        cache: false,
                         data: 
                             {
                                 correo: correo_input,
@@ -146,7 +145,7 @@
                             var match = data['match'];
                             var user = data['user'];
 
-                            //alert(data['match']);
+                            alert(data['match']);
 
                             if(status) {
                                 if(match === "true"){

@@ -6,7 +6,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
    <!-- Bootstrap CSS -->
-   <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+   <link rel="stylesheet" href="assets/css/bootstrap.css">
 
    <!-- Personal/Custom CSS -->
    <link rel="stylesheet" href="assets/css/style.css">
@@ -17,8 +17,12 @@
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 
    <!-- Font Awesome JS -->
-   <script defer src="assets/js/solid.js"></script>
-   <script defer src="assets/js/fontawesome.js"></script>
+  <link rel="stylesheet" href="assets/css/solid.css">
+  <link rel="stylesheet" href="assets/css/fontawesome.css">
+        
+   <!-- Font Awesome JS -->
+   <!-- <script defer src="assets/js/solid.js"></script> 
+   <script defer src="assets/js/fontawesome.js"></script> -->
 
    <title>Dymo S.A. de C.V.</title>
 </head>
@@ -97,10 +101,10 @@
    <!-- ---------------------------------------------------------- -->
    <!-- Contendedor del HEADER{NAV} & Jumbotron{ETIQUETADORA-GRIS} -->
    <!-- ---------------------------------------------------------- -->
-   <header style="background-image: url(assets/img/header-bg.jpg);background-size: cover;">
+   <header style="background-image: url(assets/img/ui/header-bg.jpg);background-size: cover;">
 
       <!-- HEADER del NAVBAR -->
-      <div class="bg-transparent " style="">
+      <div class="bg-transparent">
 
          <!-- Navbar página de inicio principal -->
          <nav class="navbar navbar-dark bg-transparent navbar-expand-lg w-75 m-auto">
@@ -167,7 +171,7 @@
                   <a class="btn btn-success py-2 px-4" href="tienda/">Ir a la tienda</a>
                </div>
                <div class="col-sm-6 col-lg-6 mt-5">
-                  <img src="images/gallery/5.png" class="img-fluid float-right hidden-sm-down" width="380px" alt="Etiquetadora-gris">
+                  <img src="assets/img/products/5.png" class="img-fluid float-right hidden-sm-down" width="380px" alt="Etiquetadora-gris">
                </div>
             </div>
             </div>
@@ -186,7 +190,7 @@
       <div class="container">
          <div class="row">
             <div class="col-sm-5 d-none d-lg-block">
-               <img class=" float-left" src="assets/img/bussinesswoman.jpg" style="width: 100%;">
+               <img class=" float-left" src="assets/img/ui/bussinesswoman.jpg" style="width: 100%;">
             </div>
 
             <div class="col-lg-6 offset-lg-1 col-md-12 align-self-center">
@@ -238,7 +242,7 @@
             <div class="col-12 col-md-6 mt-5">
                <div class="card border-0">
                   <h4 class="card-title text-uppercase">Productos</h4>
-                  <img src="assets/img/startup-10.svg" alt="">
+                  <img src="assets/img/ui/startup-10.svg" alt="">
                   <h6 class="card-subtitle mb-2 text-muted mt-2 mb-4">Te ofrecemos una gran cantidad de productos.</h6>
                   <ul class="list-group list-group-flush">
                      <li class="list-group-item"><strong>Etiquetadoras</strong></li>
@@ -257,7 +261,7 @@
             <div class="col-12 col-md-6 mt-5">
                <div class="card border-0">
                   <h4 class="card-title text-uppercase">Servicio</h4>
-                  <img src="assets/img/startup-9.svg" alt="">
+                  <img src="assets/img/ui/startup-9.svg" alt="">
                   <h6 class="card-subtitle mb-2 text-muted mt-2 mb-4">Reparamos tus máquinas. Nosotros vamos a usted.</h6>
                   <ul class="list-group list-group-flush">
                      <li class="list-group-item">Damos <strong>mantenimiento</strong></li>
@@ -329,9 +333,9 @@
 
    <!-- Optional JavaScript -->
    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-   <script src="assets/js/jquery-3.3.1.min.js"></script>
-   <script src="assets/js/popper.min.js"></script>
-   <script src="assets/js/bootstrap.min.js"></script>
+   <script src="assets/js/jquery-3.3.1js"></script>
+   <script src="assets/js/popper.js"></script>
+   <script src="assets/js/bootstrap.js"></script>
 
    <!-- jQuery Custom Scroller CDN -->
    <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
@@ -367,44 +371,7 @@
    </script>
 
    <!-- Script para la animación de scroll lento para los links hacia divs (Como el link de productos) -->
-   <script type="text/javascript">
-         // Select all links with hashes
-         $('a[href*="#"]')
-            // Remove links that don't actually link to anything
-            .not('[href="#"]')
-            .not('[href="#0"]')
-            .click(function(event) {
-               // On-page links
-               if (
-                  location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') 
-                  && 
-                  location.hostname == this.hostname
-               ) {
-                  // Figure out element to scroll to
-                  var target = $(this.hash);
-                  target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-                  // Does a scroll target exist?
-                  if (target.length) {
-                     // Only prevent default if animation is actually gonna happen
-                     event.preventDefault();
-                     $('html, body').animate({
-                        scrollTop: target.offset().top
-                     }, 1000, function() {
-                        // Callback after animation
-                        // Must change focus!
-                        var $target = $(target);
-                        $target.focus();
-                        if ($target.is(":focus")) { // Checking if the target was focused
-                           return false;
-                        } else {
-                           $target.attr('tabindex','-1'); // Adding tabindex for elements not focusable
-                           $target.focus(); // Set focus again
-                        };
-                     });
-                  }
-               }
-            });
-    </script>
+   <script src="assets/js/scroll-animation.js"></script>
 
 </body>
 </html>

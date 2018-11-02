@@ -1,5 +1,41 @@
+/*
+  #  |   TABLA              | SCP
+----------------------------------
+  1  |  Administrador       | √√√
+  2  |  Vendedor            | √√√
+  3  |  Cliente             | √√√
+  4  |  Empresa             | √√√
+  5  |  Dirección           | √√√
+  7  |  Comentario          | √√√
+  9  |  Producto            | √√√
+  10 |  Etiquetadora        | ---
+  19 |  Ribbon              | ---
+  14 |  Impresora           | ---
+  26 |  Medida              | √√√
+  27 |  Unidades            | √√√
+  25 |  Contacto            | √√√
+-----|----------------------|----
+  6  |  Pedido              | √√√
+  8  |  Pedido_Producto     | √√√
+  20 |  EvaluaciónServicio  | √√√
+  21 |  Servicio_Pregunta   | √√√
+  22 |  Pregunta            | √√√
+  23 |  Web_Pregunta        | √√√
+  24 |  EvaluaciónWeb       | √√√
+  11 |  Etiqueta            | ---
+  12 |  Tinta               | ---
+  13 |  Sujetador           | ---
+  15 |  Rodillo             | ---
+  16 |  Aplicador           | ---
+  17 |  Aguja               | ---
+  18 |  AtaCable            | ---
+*/
 
-CREATE DATABASE dymo;
+
+CREATE DATABASE IF NOT EXISTS dymo;
+
+USE `dymo`;
+
 
 /*
 --
@@ -8,13 +44,12 @@ CREATE DATABASE dymo;
 */
 
 CREATE TABLE `Administrador` (
-  `id` 				 int 		                               NOT NULL,
-  `nombre` 		 varchar(45) COLLATE latin1_spanish_ci NOT NULL,
-  `apellidoP`  varchar(30) COLLATE latin1_spanish_ci NOT NULL,
-  `apellidoM`  varchar(30) COLLATE latin1_spanish_ci NOT NULL,
-  `usuario` 	 varchar(15) COLLATE latin1_spanish_ci NOT NULL,
-  `contrasena` varchar(60) COLLATE latin1_spanish_ci NOT NULL,
-  `permisos` 	 int 		                               NOT NULL
+  `id` 				  INT 		                             ,
+  `nombre` 		  VARCHAR(45) COLLATE latin1_spanish_ci NOT NULL,
+  `apellidoP`   VARCHAR(30) COLLATE latin1_spanish_ci NOT NULL,
+  `apellidoM`   VARCHAR(30) COLLATE latin1_spanish_ci,
+  `usuario` 	  VARCHAR(15) COLLATE latin1_spanish_ci NOT NULL,
+  `contrasena`  VARCHAR(64) COLLATE latin1_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
 /*
@@ -22,11 +57,11 @@ CREATE TABLE `Administrador` (
 -- Volcado de datos para la tabla `Administrador`
 --
 */
-
+/*
 INSERT INTO `Administrador` (`id`, `nombre`, `apellidoP`, `apellidoM`, `usuario`, `contrasena`, `permisos`) VALUES
-(01, 'Jesús Emmanuel', 'Zetina', 'Chevez', 'ZCJO151861A', 'contraseña', 00),
-(02, 'Juan Carlos', 'Gerónimo', 'Padilla', 'GPJO151861A', 'admin', 00);
-
+(01, 'Jesús Emmanuel', 'Zetina', 'Chevez', 'ZCJO151861A', 'contraseña', 0),
+(02, 'Juan Carlos', 'Gerónimo', 'Padilla', 'GPJO151861A', 'admin', 0);
+*/
 
 /*
 ----------------------------------------------------------
@@ -36,64 +71,135 @@ INSERT INTO `Administrador` (`id`, `nombre`, `apellidoP`, `apellidoM`, `usuario`
 
 /*
 --
--- Estructura de tabla para la tabla `Vendedor`
+-- Estructura de tabla para la tabla `Administrador_Permiso`
 --
 */
 
-CREATE TABLE `Vendedor` (
-  `id` 				    int 		                              NOT NULL,
-  `nombre` 			  varchar(45) COLLATE latin1_spanish_ci NOT NULL,
-  `apellidoP` 		varchar(30) COLLATE latin1_spanish_ci NOT NULL,
-  `apellidoM` 		varchar(30) COLLATE latin1_spanish_ci NOT NULL,
-  `usuario` 		  varchar(15) COLLATE latin1_spanish_ci NOT NULL,
-  `contrasena` 		varchar(60) COLLATE latin1_spanish_ci NOT NULL,
-  `permisos` 		  int 		                              NOT NULL
+CREATE TABLE `Administrador_Permiso` (
+  `administradorID`   INT NOT NULL,
+  `permisoID`         INT NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
+
+
 /*
---
--- Volcado de datos para la tabla `Alumno`
---
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
 */
 
-INSERT INTO `Vendedor` (`id`, `nombre`, `apellidoP`, `apellidoM`, `usuario`, `contrasena`, `permisos`) VALUES
-(01, 'Jesús Emmanuel', 'Zetina', 'Chevez', 'ZCJO151861V', 'contraseña', 01),
-(02, 'Luis Fernando', 'Gerónimo', 'Carranza', 'GCLO151861V', 'contraseña', 02);
-
-
-
 /*
-----------------------------------------------------------
-----------------------------------------------------------
-----------------------------------------------------------
-
-
-
-
 --
 -- Estructura de tabla para la tabla `Cliente`
 --
 */
 
 CREATE TABLE `Cliente` (
-  `id` 				  int 		                              NOT NULL,
-  `nombre` 			varchar(45) COLLATE latin1_spanish_ci NOT NULL,
-  `apellidoP` 	varchar(30) COLLATE latin1_spanish_ci NOT NULL,
-  `apellidoM` 	varchar(30) COLLATE latin1_spanish_ci NOT NULL,
-  `correo`			varchar(60) COLLATE latin1_spanish_ci NOT NULL,
-  `contrasena` 	varchar(60) COLLATE latin1_spanish_ci NOT NULL,
-  `empresaID` 	int 		                              NOT NULL
+  `id`          INT                                  ,
+  `nombre`      VARCHAR(45) COLLATE latin1_spanish_ci NOT NULL,
+  `apellidoP`   VARCHAR(30) COLLATE latin1_spanish_ci NOT NULL,
+  `apellidoM`   VARCHAR(30) COLLATE latin1_spanish_ci NOT NULL,
+  `telefono`    VARCHAR(24) COLLATE latin1_spanish_ci NOT NULL,
+  `correo`      VARCHAR(64) COLLATE latin1_spanish_ci NOT NULL,
+  `contrasena`  VARCHAR(64) COLLATE latin1_spanish_ci NOT NULL,
+  `empresaID`   INT                                   NOT NULL 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
 
 /*
 --
 -- Volcado de datos para la tabla `Cliente`
 --
 */
+/*
+INSERT INTO `Cliente` (`id`, `nombre`, `apellidoP`, `apellidoM`, `telefono`, `correo`, `contrasena`, `empresaID`) VALUES
+(01, 'Jesús Emmanuel', 'Zetina', 'Chevez', '7771234567', 'zcjo151173@upemor.edu.mx', 'contraseña', 01),
+(02, 'Luis Fernando', 'Gerónimo', 'Carranza', '7777654321', 'gclo151861@upemor.edu.mx', 'contraseña', 02);
+*/
 
-INSERT INTO `Cliente` (`id`, `nombre`, `apellidoP`, `apellidoM`, `correo`, `contrasena`, `empresaID`) VALUES
-(01, 'Jesús Emmanuel', 'Zetina', 'Chevez', 'zcjo151173@upemor.edu.mx', 'contraseña', 01),
-(02, 'Luis Fernando', 'Gerónimo', 'Carranza', 'gclo151861@upemor.edu.mx', 'contraseña', 02);
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+/*
+--
+-- Estructura de tabla para la tabla `Comentario`
+--
+*/
+
+CREATE TABLE `Comentario` (
+  `id`          INT                                             ,
+  `comentario`  VARCHAR(600)  COLLATE latin1_spanish_ci NOT NULL,
+  `fecha`       DATE                                    NOT NULL,
+  `autor`       VARCHAR(105)  COLLATE latin1_spanish_ci NOT NULL,
+  `pedidoID`    INT                                     NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+/*
+--
+-- Volcado de datos para la tabla `Comentario`
+--
+*/
+
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `Contacto`
+--
+*/
+
+CREATE TABLE `Contacto` (
+  `id`          INT                                    ,
+  `nombre`      VARCHAR(45)   COLLATE latin1_spanish_ci NOT NULL,
+  `empresa`     VARCHAR(100)  COLLATE latin1_spanish_ci NOT NULL,
+  `correo`      VARCHAR(64)   COLLATE latin1_spanish_ci NOT NULL,
+  `telefono`    VARCHAR(24)   COLLATE latin1_spanish_ci NOT NULL,
+  `comentario`  VARCHAR(600)  COLLATE latin1_spanish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+
+
+--
+-- Estructura de tabla para la tabla `Direccion`
+--
+*/
+
+CREATE TABLE `Direccion` (
+  `id`          INT                                    ,
+  `numeroExt`   INT                                     NOT NULL,
+  `numeroInt`   INT                                     NOT NULL,
+  `calle`       VARCHAR(32)   COLLATE latin1_spanish_ci NOT NULL,
+  `colonia`     VARCHAR(32)   COLLATE latin1_spanish_ci NOT NULL,
+  `cp`          INT                                     NOT NULL,
+  `municipio`   VARCHAR(32)   COLLATE latin1_spanish_ci NOT NULL,
+  `estado`      VARCHAR(32)   COLLATE latin1_spanish_ci NOT NULL,
+  `empresaID`   INT                                     NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+/*
+--
+-- Volcado de datos para la tabla `Direccion`
+--
+*/
+
+/*
+INSERT INTO `Direccion` (`id`, `numeroExt`, `numeroInt`, `calle`, `colonia`, `cp`, `municipio`, `estado`, `empresaID`) VALUES
+(),
+();
+*/
 
 
 
@@ -109,9 +215,10 @@ INSERT INTO `Cliente` (`id`, `nombre`, `apellidoP`, `apellidoM`, `correo`, `cont
 */
 
 CREATE TABLE `Empresa` (
-  `id` 				  int 		                              NOT NULL,
-  `nombre` 			varchar(60) COLLATE latin1_spanish_ci NOT NULL,
-  `telefono` 		varchar(30) COLLATE latin1_spanish_ci NOT NULL
+  `id`          INT                                             ,
+  `nombre`      VARCHAR(100)  COLLATE latin1_spanish_ci NOT NULL,
+  `telefono`    VARCHAR(24)   COLLATE latin1_spanish_ci NOT NULL,
+  `zonaID`      INT                                     NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
 /*
@@ -119,10 +226,431 @@ CREATE TABLE `Empresa` (
 -- Volcado de datos para la tabla `Empresa`
 --
 */
-
+/*
 INSERT INTO `Empresa` (`id`, `nombre`, `telefono`) VALUES
 (01, 'Dymo_1', '7771234567'),
 (02, 'Dymo_2', '7777654321');
+*/
+
+
+
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `Etiquetadora`
+--
+*/
+
+CREATE TABLE `Etiquetadora`(
+  `codigo`      VARCHAR(24) COLLATE latin1_spanish_ci,
+  `digitos`     INT        ,
+  `modelo`      VARCHAR(24) COLLATE latin1_spanish_ci,
+  `medida`      INT        ,
+  `tipo`        VARCHAR(24) COLLATE latin1_spanish_ci
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+
+
+
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `EvaluacionServicio`
+--
+*/
+
+CREATE TABLE `EvaluacionServicio`(
+  `id`        INT          ,
+  `fecha`     DATE NOT NULL,
+  `pedidoID`  INT  NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `EvaluacionWeb`
+--
+*/
+
+CREATE TABLE `EvaluacionWeb`(
+  `id`        INT          ,
+  `fecha`     DATE NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+
+
+
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `Impresora`
+--
+*/
+
+CREATE TABLE `Impresora`(
+  `codigo`      VARCHAR(24) COLLATE latin1_spanish_ci,
+  `tipo`        VARCHAR(32) COLLATE latin1_spanish_ci,
+  `modelo`      VARCHAR(24) COLLATE latin1_spanish_ci,
+  `dpi`         INT
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `Medida`
+--
+*/
+
+CREATE TABLE `Medida`(
+  `id`            INT           ,
+  `ancho`         FLOAT NOT NULL,
+  `largo`         FLOAT NOT NULL,
+  `unidadesID`    INT   NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `Pedido`
+--
+*/
+
+CREATE TABLE `Pedido` (
+  `id`            INT           ,
+  `fechaPedido`   DATE  NOT NULL,
+  `fechaEntrega`  DATE          ,
+  `estado`        INT   NOT NULL,
+  `costo`         FLOAT NOT NULL,  /* Float */
+  `clienteID`     INT   NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `Pedido_Producto`
+--
+*/
+
+CREATE TABLE `Pedido_Producto` (
+  `pedidoID`        INT,
+  `productoCodigo`  VARCHAR(24)   COLLATE latin1_spanish_ci         ,
+  `cantidad`        INT                                     NOT NULL,
+  `detalles`        VARCHAR(600)  COLLATE latin1_spanish_ci         ,
+  `costo`           FLOAT                                   NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `Permiso`
+--
+*/
+
+CREATE TABLE `Permiso` (
+  `id`          INT                                           ,
+  `permiso`     VARCHAR(32) COLLATE latin1_spanish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `Pregunta`
+--
+*/
+
+CREATE TABLE `Pregunta`(
+  `id`        INT                                           ,
+  `pregunta`  VARCHAR(64) COLLATE latin1_spanish_ci NOT NULL,
+  `tipo`      VARCHAR(24) COLLATE latin1_spanish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `Producto`
+--
+*/
+
+CREATE TABLE `Producto` (
+  `codigo`          VARCHAR(24)   COLLATE latin1_spanish_ci           ,
+  `nombre`          VARCHAR(32)   COLLATE latin1_spanish_ci   NOT NULL,
+  `marca`           VARCHAR(24)   COLLATE latin1_spanish_ci           ,
+  `descripcion`     VARCHAR(256)  COLLATE latin1_spanish_ci           ,
+  `costo`           FLOAT                 ,
+  `unidadDePedido`  VARCHAR(12)   COLLATE latin1_spanish_ci           ,
+  `proveedorID`       INT
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `Proveedor`
+--
+*/
+
+CREATE TABLE `Proveedor` (
+  `id`      INT                   ,
+  `nombre`  VARCHAR(100) COLLATE latin1_spanish_ci  NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `Ribbon`
+--
+*/
+
+CREATE TABLE `Ribbon`(
+  `codigo`      VARCHAR(24) COLLATE latin1_spanish_ci,
+  `material`    VARCHAR(24) COLLATE latin1_spanish_ci,
+  `medida`      INT,
+  `outIn`       INT,
+  `maquina`     VARCHAR(32) COLLATE latin1_spanish_ci,
+  `letras`      VARCHAR(32) COLLATE latin1_spanish_ci
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `Servicio_Pregunta`
+--
+*/
+
+CREATE TABLE `Servicio_Pregunta`(
+  `servicioID`  INT NOT NULL,
+  `preguntaID`  INT NOT NULL,
+  `respuesta`   INT NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `Unidades`
+--
+*/
+
+CREATE TABLE `Unidades`(
+  `id`              INT                 ,
+  `unidadAncho`     VARCHAR(4) COLLATE latin1_spanish_ci  NOT NULL,
+  `unidadLargo`     VARCHAR(4) COLLATE latin1_spanish_ci  NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `Vendedor_Permiso`
+--
+*/
+
+CREATE TABLE `Vendedor_Permiso` (
+  `vendedorID`    INT NOT NULL,
+  `permisoID`     INT NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `Vendedor`
+--
+*/
+
+CREATE TABLE `Vendedor` (
+  `id`          INT                                  ,
+  `nombre`      VARCHAR(45) COLLATE latin1_spanish_ci NOT NULL,
+  `apellidoP`   VARCHAR(30) COLLATE latin1_spanish_ci NOT NULL,
+  `apellidoM`   VARCHAR(30) COLLATE latin1_spanish_ci,
+  `usuario`     VARCHAR(15) COLLATE latin1_spanish_ci NOT NULL,
+  `contrasena`  VARCHAR(64) COLLATE latin1_spanish_ci NOT NULL,
+  `zonaID`      INT
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+/*
+--
+-- Volcado de datos para la tabla `Alumno`
+--
+*/
+/*
+INSERT INTO `Vendedor` (`id`, `nombre`, `apellidoP`, `apellidoM`, `usuario`, `contrasena`, `permisos`) VALUES
+(01, 'Jesús Emmanuel', 'Zetina', 'Chevez', 'ZCJO151861V', 'contraseña', 0),
+(02, 'Luis Fernando', 'Gerónimo', 'Carranza', 'GCLO151861V', 'contraseña', 0);
+*/
+
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `Web_Pregunta`
+--
+*/
+
+CREATE TABLE `Web_Pregunta`(
+  `webID`       INT NOT NULL,
+  `preguntaID`  INT NOT NULL,
+  `respuesta`   INT NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `Zona`
+--
+*/
+
+CREATE TABLE `Zona` (
+  `id`    INT                                           ,
+  `zona`  VARCHAR(32) COLLATE latin1_spanish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -152,26 +680,46 @@ ALTER TABLE `Administrador`
 
 /*
 --
--- Indices de la tabla `Vendedor`
---
-*/
-
-ALTER TABLE `Vendedor`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `usuario` (`usuario`);
-
-
-
-/*
---
 -- Indices de la tabla `Cliente`
 --
 */
 
 ALTER TABLE `Cliente`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `correo` (`correo`),
-  ADD KEY `empresaID` (`empresaID`);
+  ADD UNIQUE KEY `correo` (`correo`);
+
+
+
+/*
+--
+-- Indices de la tabla `Contacto`
+--
+*/
+
+ALTER TABLE `Contacto`
+  ADD PRIMARY KEY (`id`);
+
+
+
+/*
+--
+-- Indices de la tabla `Comentario`
+--
+*/
+
+ALTER TABLE `Comentario`
+  ADD PRIMARY KEY (`id`);
+
+
+
+/*
+--
+-- Indices de la tabla `Direccion`
+--
+*/
+
+ALTER TABLE `Direccion`
+  ADD PRIMARY KEY (`id`);
 
 
 
@@ -185,28 +733,176 @@ ALTER TABLE `Empresa`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `nombre` (`nombre`);
 
+
+
+/*
+--
+-- Indices de la tabla `EvaluacionServicio`
+--
+*/
+
+ALTER TABLE `EvaluacionServicio`
+  ADD PRIMARY KEY (`id`);
+
+
+
+/*
+--
+-- Indices de la tabla `EvaluacionWeb`
+--
+*/
+
+ALTER TABLE `EvaluacionWeb`
+  ADD PRIMARY KEY (`id`);
+
+
+
+/*
+--
+-- Indices de la tabla `Medida`
+--
+*/
+
+ALTER TABLE `Medida`
+  ADD PRIMARY KEY (`id`);
+
+
+
+/*
+--
+-- Indices de la tabla `Pedido`
+--
+*/
+
+ALTER TABLE `Pedido`
+  ADD PRIMARY KEY (`id`);
+
+
+
+/*
+--
+-- Indices de la tabla `Pedido_Producto`
+--
+*/
+
+ALTER TABLE `Pedido_Producto`
+  ADD PRIMARY KEY (`pedidoID`, `productoCodigo`);
+
+
+
+/*
+--
+-- Indices de la tabla `Permiso`
+--
+*/
+
+ALTER TABLE `Permiso`
+  ADD PRIMARY KEY (`id`);
+
+
+
+/*
+--
+-- Indices de la tabla `Pregunta`
+--
+*/
+
+ALTER TABLE `Pregunta`
+  ADD PRIMARY KEY (`id`);
+
+
+
+/*
+--
+-- Indices de la tabla `Producto`
+--
+*/
+
+ALTER TABLE `Producto`
+  ADD PRIMARY KEY (`codigo`);
+
+
+
+/*
+--
+-- Indices de la tabla `Proveedor`
+--
+*/
+
+ALTER TABLE `Proveedor`
+  ADD PRIMARY KEY (`id`);
+
+
+
+/*
+--
+-- Indices de la tabla `Unidades`
+--
+*/
+
+ALTER TABLE `Unidades`
+  ADD PRIMARY KEY (`id`);
+
+
+
+/*
+--
+-- Indices de la tabla `Vendedor`
+--
+*/
+
+ALTER TABLE `Vendedor`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `usuario` (`usuario`);
+
+
+
+/*
+--
+-- Indices de la tabla `Zona`
+--
+*/
+
+ALTER TABLE `Zona`
+  ADD PRIMARY KEY (`id`);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
 */
 
+
+
 /*
 --
 -- AUTO_INCREMENT de la tabla `Administrador`
 --
 */
+
 ALTER TABLE `Administrador`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` INT NOT NULL AUTO_INCREMENT;
 
-
-/*
---
--- AUTO_INCREMENT de la tabla `Vendedor`
---
-*/
-ALTER TABLE `Vendedor`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 
 /*
@@ -214,8 +910,43 @@ ALTER TABLE `Vendedor`
 -- AUTO_INCREMENT de la tabla `Cliente`
 --
 */
+
 ALTER TABLE `Cliente`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` INT NOT NULL AUTO_INCREMENT;
+
+
+
+/*
+--
+-- AUTO_INCREMENT de la tabla `Comentario`
+--
+*/
+
+ALTER TABLE `Comentario`
+  MODIFY `id` INT NOT NULL AUTO_INCREMENT;
+
+
+
+/*
+--
+-- AUTO_INCREMENT de la tabla `Contacto`
+--
+*/
+
+ALTER TABLE `Contacto`
+  MODIFY `id` INT NOT NULL AUTO_INCREMENT;
+
+
+
+/*
+--
+-- AUTO_INCREMENT de la tabla `Direccion`
+--
+*/
+
+ALTER TABLE `Direccion`
+  MODIFY `id` INT NOT NULL AUTO_INCREMENT;
+
 
 
 /*
@@ -223,8 +954,141 @@ ALTER TABLE `Cliente`
 -- AUTO_INCREMENT de la tabla `Empresa`
 --
 */
+
 ALTER TABLE `Empresa`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` INT NOT NULL AUTO_INCREMENT;
+
+
+
+/*
+--
+-- AUTO_INCREMENT de la tabla `EvaluacionServicio`
+--
+*/
+
+ALTER TABLE `EvaluacionServicio`
+  MODIFY `id` INT NOT NULL AUTO_INCREMENT;
+
+
+
+/*
+--
+-- AUTO_INCREMENT de la tabla `EvaluacionWeb`
+--
+*/
+
+ALTER TABLE `EvaluacionWeb`
+  MODIFY `id` INT NOT NULL AUTO_INCREMENT;
+
+
+
+/*
+--
+-- AUTO_INCREMENT de la tabla `Medida`
+--
+*/
+
+ALTER TABLE `Medida`
+  MODIFY `id` INT NOT NULL AUTO_INCREMENT;
+
+
+
+/*
+--
+-- AUTO_INCREMENT de la tabla `Pedido`
+--
+*/
+
+ALTER TABLE `Pedido`
+  MODIFY `id` INT NOT NULL AUTO_INCREMENT;
+
+
+
+/*
+--
+-- AUTO_INCREMENT de la tabla `Permiso`
+--
+*/
+
+ALTER TABLE `Permiso`
+  MODIFY `id` INT NOT NULL AUTO_INCREMENT;
+
+
+
+/*
+--
+-- AUTO_INCREMENT de la tabla `Pregunta`
+--
+*/
+
+ALTER TABLE `Pregunta`
+  MODIFY `id` INT NOT NULL AUTO_INCREMENT;
+
+
+
+/*
+--
+-- AUTO_INCREMENT de la tabla `Proveedor`
+--
+*/
+
+ALTER TABLE `Proveedor`
+  MODIFY `id` INT NOT NULL AUTO_INCREMENT;;
+
+
+
+/*
+--
+-- AUTO_INCREMENT de la tabla `Unidades`
+--
+*/
+
+ALTER TABLE `Unidades`
+  MODIFY `id` INT NOT NULL AUTO_INCREMENT;
+
+
+
+/*
+--
+-- AUTO_INCREMENT de la tabla `Vendedor`
+--
+*/
+
+ALTER TABLE `Vendedor`
+  MODIFY `id` INT NOT NULL AUTO_INCREMENT;
+
+
+
+/*
+--
+-- AUTO_INCREMENT de la tabla `Zona`
+--
+*/
+
+ALTER TABLE `Zona`
+  MODIFY `id` INT NOT NULL AUTO_INCREMENT;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -235,10 +1099,149 @@ ALTER TABLE `Empresa`
 --
 */
 
+
+
+/*
+--
+-- Filtros para la tabla `Administrador_Permiso`
+-- 
+*/
+ALTER TABLE `Administrador_Permiso`
+  ADD CONSTRAINT `Administrador_Permiso_administradorID_fk1` FOREIGN KEY (`administradorID`) REFERENCES `Administrador` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Administrador_Permiso_permisoID_fk2` FOREIGN KEY (`permisoID`) REFERENCES `Permiso` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
 /*
 --
 -- Filtros para la tabla `Cliente`
 -- 
 */
 ALTER TABLE `Cliente`
-  ADD CONSTRAINT `Cliente_ibfk_1` FOREIGN KEY (`empresaID`) REFERENCES `Empresa` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `Cliente_empresaID_fk1` FOREIGN KEY (`empresaID`) REFERENCES `Empresa` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+/*
+--
+-- Filtros para la tabla `Comentario`
+-- 
+*/
+ALTER TABLE `Comentario`
+  ADD CONSTRAINT `Comentario_pedidoID_fk1` FOREIGN KEY (`pedidoID`) REFERENCES `Pedido` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+/*
+--
+-- Filtros para la tabla `Direccion`
+-- 
+*/
+ALTER TABLE `Direccion`
+  ADD CONSTRAINT `Direccion_empresaID_fk1` FOREIGN KEY (`empresaID`) REFERENCES `Empresa` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+/*
+--
+-- Filtros para la tabla `Empresa`
+-- 
+*/
+ALTER TABLE `Empresa`
+  ADD CONSTRAINT `Empresa_zonaID_fk1` FOREIGN KEY (`zonaID`) REFERENCES `Zona` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+/*
+--
+-- Filtros para la tabla `EvaluacionServicio`
+-- 
+*/
+ALTER TABLE `EvaluacionServicio`
+  ADD CONSTRAINT `EvaluacionServicio_pedidoID_fk1` FOREIGN KEY (`pedidoID`) REFERENCES `Pedido` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+/*
+--
+-- Filtros para la tabla `Medida`
+-- 
+*/
+ALTER TABLE `Medida`
+  ADD CONSTRAINT `Medida_unidadesID_fk1` FOREIGN KEY (`unidadesID`) REFERENCES `Unidades` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+/*
+--
+-- Filtros para la tabla `Pedido`
+-- 
+*/
+ALTER TABLE `Pedido`
+  ADD CONSTRAINT `Pedido_clienteID_fk1` FOREIGN KEY (`clienteID`) REFERENCES `Cliente` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+/*
+--
+-- Filtros para la tabla `Pedido_Producto`
+-- 
+*/
+ALTER TABLE `Pedido_Producto`
+  ADD CONSTRAINT `Pedido_Producto_pedidoID_fk1` FOREIGN KEY (`pedidoID`) REFERENCES `Pedido` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Pedido_Producto_codigo_fk2` FOREIGN KEY (`productoCodigo`) REFERENCES `Producto` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+/*
+--
+-- Filtros para la tabla `Producto`
+-- 
+*/
+ALTER TABLE `Producto`
+  ADD CONSTRAINT `Producto_proveedorID_fk1` FOREIGN KEY (`proveedorID`) REFERENCES `Proveedor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+/*
+--
+-- Filtros para la tabla `Servicio_Pregunta`
+-- 
+*/
+ALTER TABLE `Servicio_Pregunta`
+  ADD CONSTRAINT `Servicio_Pregunta_servicioID_fk1` FOREIGN KEY (`servicioID`) REFERENCES `EvaluacionServicio` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Servicio_Pregunta_preguntaID_fk2` FOREIGN KEY (`preguntaID`) REFERENCES `Pregunta` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+/*
+--
+-- Filtros para la tabla `Vendedor`
+-- 
+*/
+ALTER TABLE `Vendedor`
+  ADD CONSTRAINT `Vendedor_zonaID_fk1` FOREIGN KEY (`zonaID`) REFERENCES `Zona` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+/*
+--
+-- Filtros para la tabla `Vendedor_Permiso`
+-- 
+*/
+ALTER TABLE `Vendedor_Permiso`
+  ADD CONSTRAINT `Vendedor_Permiso_vendedorID_fk1` FOREIGN KEY (`vendedorID`) REFERENCES `Vendedor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Vendedor_Permiso_permisoID_fk2` FOREIGN KEY (`permisoID`) REFERENCES `Permiso` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+/*
+--
+-- Filtros para la tabla `Web_Pregunta`
+-- 
+*/
+ALTER TABLE `Web_Pregunta`
+  ADD CONSTRAINT `Web_Pregunta_webID_fk1` FOREIGN KEY (`webID`) REFERENCES `EvaluacionWeb` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Web_Pregunta_preguntaID_fk2` FOREIGN KEY (`preguntaID`) REFERENCES `Pregunta` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
