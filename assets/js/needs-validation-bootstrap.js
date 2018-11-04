@@ -16,3 +16,17 @@
         });
     }, false);
 })();
+
+
+// Email validation.
+/*
+$( "#correo-cuenta" ).change(function() {
+ var email = $(this);
+ if (email.is(':invalid')) {
+    email.removeClass('is-valid').addClass('is-invalid');
+    email.siblings(".invalid-feedback").text(email.prop("validationMessage"))
+ } else {
+    email.removeClass('is-invalid').addClass('is-valid');
+ }
+});
+*/
