@@ -1,39 +1,48 @@
 /*
-  #  |   TABLA              | SCP
-----------------------------------
-  1  |  Administrador       | √√√
-  2  |  Vendedor            | √√√
-  3  |  Cliente             | √√√
-  4  |  Empresa             | √√√
-  5  |  Dirección           | √√√
-  7  |  Comentario          | √√√
-  9  |  Producto            | √√√
-  10 |  Etiquetadora        | ---
-  19 |  Ribbon              | ---
-  14 |  Impresora           | ---
-  26 |  Medida              | √√√
-  27 |  Unidades            | √√√
-  25 |  Contacto            | √√√
------|----------------------|----
-  6  |  Pedido              | √√√
-  8  |  Pedido_Producto     | √√√
-  20 |  EvaluaciónServicio  | √√√
-  21 |  Servicio_Pregunta   | √√√
-  22 |  Pregunta            | √√√
-  23 |  Web_Pregunta        | √√√
-  24 |  EvaluaciónWeb       | √√√
-  11 |  Etiqueta            | ---
-  12 |  Tinta               | ---
-  13 |  Sujetador           | ---
-  15 |  Rodillo             | ---
-  16 |  Aplicador           | ---
-  17 |  Aguja               | ---
-  18 |  AtaCable            | ---
+ S=Sintaxis
+ C=Constraints
+ P=PhpMyAdmin
+
+  #  |  TABLA                   | SCP
+---------------------------------------
+  1  |  Administrador           | √√√
+  2  |  Administrador_Permiso   | √√√
+  3  |  Permiso                 | √√√
+  4  |  Vendedor_Permiso        | √√√
+  5  |  Vendedor                | √√√
+  6  |  Zona                    | √√√
+  7  |  Cliente                 | √√√
+  8  |  Empresa                 | √√√
+  9  |  Dirección               | √√√
+  10 |  Comentario              | √√√
+  11 |  Medida                  | √√√
+  12 |  Unidades                | √√√
+  13 |  Contacto                | √√√
+  14 |  Pedido                  | √√√
+  15 |  Pedido_Producto         | √√√
+  16 |  EvaluaciónServicio      | √√√
+  17 |  Servicio_Pregunta       | √√√
+  18 |  Pregunta                | √√√
+  19 |  Web_Pregunta            | √√√
+  20 |  EvaluaciónWeb           | √√√
+-----|--------------------------|------
+  21 |  Producto                | √√√
+  22 |  Aguja                   | √√√
+  23 |  Aplicador               | √√√
+  24 |  AtaCable                | √√√
+  25 |  Etiqueta                | √√√
+  26 |  Etiquetadora            | √√√
+  27 |  Impresora               | √√√
+  28 |  Ribbon                  | √√√
+  29 |  Rodillo                 | √√√
+  30 |  Sujetador               | √√√
+  31 |  Tinta                   | √√√
+  32 |  Proveedor               | √√√
+---------------------------------------
 */
 
-
+DROP DATABASE IF EXISTS `dymo`;
 CREATE DATABASE IF NOT EXISTS dymo;
-
 USE `dymo`;
 
 
@@ -63,6 +72,8 @@ INSERT INTO `Administrador` (`id`, `nombre`, `apellidoP`, `apellidoM`, `usuario`
 (02, 'Juan Carlos', 'Gerónimo', 'Padilla', 'GPJO151861A', 'admin', 0);
 */
 
+
+
 /*
 ----------------------------------------------------------
 ----------------------------------------------------------
@@ -78,6 +89,68 @@ INSERT INTO `Administrador` (`id`, `nombre`, `apellidoP`, `apellidoM`, `usuario`
 CREATE TABLE `Administrador_Permiso` (
   `administradorID`   INT NOT NULL,
   `permisoID`         INT NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `AtaCable`
+--
+*/
+
+CREATE TABLE `AtaCable` (
+  `codigo`   VARCHAR(24) COLLATE latin1_spanish_ci,
+  `medida`   INT,
+  `color`    VARCHAR(24) COLLATE latin1_spanish_ci,
+  `modelo`   VARCHAR(12) COLLATE latin1_spanish_ci
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `Aguja`
+--
+*/
+
+CREATE TABLE `Aguja` (
+  `codigo`    VARCHAR(24) COLLATE latin1_spanish_ci,
+  `tipo`      VARCHAR(24) COLLATE latin1_spanish_ci,
+  `material`  VARCHAR(24) COLLATE latin1_spanish_ci,
+  `generico`  BIT(1)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `Aplicador`
+--
+*/
+
+CREATE TABLE `Aplicador` (
+  `codigo`    VARCHAR(24) COLLATE latin1_spanish_ci,
+  `modelo`    VARCHAR(12) COLLATE latin1_spanish_ci,
+  `tipo`      VARCHAR(24) COLLATE latin1_spanish_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
 
@@ -106,6 +179,7 @@ CREATE TABLE `Cliente` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
 
+
 /*
 --
 -- Volcado de datos para la tabla `Cliente`
@@ -116,6 +190,8 @@ INSERT INTO `Cliente` (`id`, `nombre`, `apellidoP`, `apellidoM`, `telefono`, `co
 (01, 'Jesús Emmanuel', 'Zetina', 'Chevez', '7771234567', 'zcjo151173@upemor.edu.mx', 'contraseña', 01),
 (02, 'Luis Fernando', 'Gerónimo', 'Carranza', '7777654321', 'gclo151861@upemor.edu.mx', 'contraseña', 02);
 */
+
+
 
 /*
 ----------------------------------------------------------
@@ -141,6 +217,7 @@ CREATE TABLE `Comentario` (
 -- Volcado de datos para la tabla `Comentario`
 --
 */
+
 
 
 /*
@@ -234,6 +311,27 @@ INSERT INTO `Empresa` (`id`, `nombre`, `telefono`) VALUES
 
 
 
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `Etiquetadora`
+--
+*/
+
+CREATE TABLE `Etiqueta`(
+  `codigo`        VARCHAR(24) COLLATE latin1_spanish_ci,
+  `color`         VARCHAR(32) COLLATE latin1_spanish_ci,
+  `tipo`          VARCHAR(32) COLLATE latin1_spanish_ci,
+  `marcaSensora`  BIT(1)                               ,
+  `medida`        INT        
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
 
 /*
 ----------------------------------------------------------
@@ -250,13 +348,10 @@ INSERT INTO `Empresa` (`id`, `nombre`, `telefono`) VALUES
 CREATE TABLE `Etiquetadora`(
   `codigo`      VARCHAR(24) COLLATE latin1_spanish_ci,
   `digitos`     INT        ,
-  `modelo`      VARCHAR(24) COLLATE latin1_spanish_ci,
-  `medida`      INT        ,
-  `tipo`        VARCHAR(24) COLLATE latin1_spanish_ci
+  `modelo`      VARCHAR(12) COLLATE latin1_spanish_ci,
+  `variante`    VARCHAR(24) COLLATE latin1_spanish_ci,
+  `medida`      INT        
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
-
-
-
 
 
 
@@ -280,7 +375,6 @@ CREATE TABLE `EvaluacionServicio`(
 
 
 
-
 /*
 ----------------------------------------------------------
 ----------------------------------------------------------
@@ -297,9 +391,6 @@ CREATE TABLE `EvaluacionWeb`(
   `id`        INT          ,
   `fecha`     DATE NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
-
-
-
 
 
 
@@ -321,7 +412,6 @@ CREATE TABLE `Impresora`(
   `modelo`      VARCHAR(24) COLLATE latin1_spanish_ci,
   `dpi`         INT
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
-
 
 
 
@@ -367,6 +457,8 @@ CREATE TABLE `Pedido` (
   `clienteID`     INT   NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
+
+
 /*
 ----------------------------------------------------------
 ----------------------------------------------------------
@@ -405,7 +497,6 @@ CREATE TABLE `Permiso` (
   `id`          INT                                           ,
   `permiso`     VARCHAR(32) COLLATE latin1_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
-
 
 
 
@@ -453,7 +544,6 @@ CREATE TABLE `Producto` (
 
 
 
-
 /*
 ----------------------------------------------------------
 ----------------------------------------------------------
@@ -473,7 +563,6 @@ CREATE TABLE `Proveedor` (
 
 
 
-
 /*
 ----------------------------------------------------------
 ----------------------------------------------------------
@@ -488,13 +577,32 @@ CREATE TABLE `Proveedor` (
 
 CREATE TABLE `Ribbon`(
   `codigo`      VARCHAR(24) COLLATE latin1_spanish_ci,
-  `material`    VARCHAR(24) COLLATE latin1_spanish_ci,
-  `medida`      INT,
-  `outIn`       INT,
-  `maquina`     VARCHAR(32) COLLATE latin1_spanish_ci,
-  `letras`      VARCHAR(32) COLLATE latin1_spanish_ci
+  `material`    VARCHAR(24) COLLATE latin1_spanish_ci NOT NULL,
+  `medida`      INT NOT NULL,
+  `in`          INT NOT NULL,
+  `maquina`     VARCHAR(32) COLLATE latin1_spanish_ci NOT NULL,
+  `letras`      VARCHAR(32) COLLATE latin1_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
+
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `Rodillo`
+--
+*/
+
+CREATE TABLE `Rodillo`(
+  `codigo`      VARCHAR(24) COLLATE latin1_spanish_ci,
+  `color`       VARCHAR(24) COLLATE latin1_spanish_ci,
+  `modelo`      VARCHAR(12) COLLATE latin1_spanish_ci
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
 
 
@@ -518,6 +626,44 @@ CREATE TABLE `Servicio_Pregunta`(
 
 
 
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `Sujetador`
+--
+*/
+
+CREATE TABLE `Sujetador`(
+  `codigo`  VARCHAR(24) COLLATE latin1_spanish_ci,
+  `tipo`    VARCHAR(32) COLLATE latin1_spanish_ci,
+  `genero`  BIT(1)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+
+/*
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+
+/*
+--
+-- Estructura de tabla para la tabla `Tinta`
+--
+*/
+
+CREATE TABLE `Tinta`(
+  `codigo`  VARCHAR(24) COLLATE latin1_spanish_ci,
+  `color`   VARCHAR(36) COLLATE latin1_spanish_ci
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
 
 /*
 ----------------------------------------------------------
@@ -539,7 +685,6 @@ CREATE TABLE `Unidades`(
 
 
 
-
 /*
 ----------------------------------------------------------
 ----------------------------------------------------------
@@ -556,7 +701,6 @@ CREATE TABLE `Vendedor_Permiso` (
   `vendedorID`    INT NOT NULL,
   `permisoID`     INT NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
-
 
 
 
@@ -594,6 +738,7 @@ INSERT INTO `Vendedor` (`id`, `nombre`, `apellidoP`, `apellidoM`, `usuario`, `co
 */
 
 
+
 /*
 ----------------------------------------------------------
 ----------------------------------------------------------
@@ -614,7 +759,6 @@ CREATE TABLE `Web_Pregunta`(
 
 
 
-
 /*
 ----------------------------------------------------------
 ----------------------------------------------------------
@@ -631,7 +775,6 @@ CREATE TABLE `Zona` (
   `id`    INT                                           ,
   `zona`  VARCHAR(32) COLLATE latin1_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
-
 
 
 
@@ -680,6 +823,39 @@ ALTER TABLE `Administrador`
 
 /*
 --
+-- Indices de la tabla `Aguja`
+--
+*/
+
+ALTER TABLE `Aguja`
+  ADD PRIMARY KEY (`codigo`);
+
+
+
+/*
+--
+-- Indices de la tabla `Aplicador`
+--
+*/
+
+ALTER TABLE `Aplicador`
+  ADD PRIMARY KEY (`codigo`);
+
+
+
+/*
+--
+-- Indices de la tabla `AtaCable`
+--
+*/
+
+ALTER TABLE `AtaCable`
+  ADD PRIMARY KEY (`codigo`);
+
+
+
+/*
+--
 -- Indices de la tabla `Cliente`
 --
 */
@@ -698,7 +874,6 @@ ALTER TABLE `Cliente`
 
 ALTER TABLE `Contacto`
   ADD PRIMARY KEY (`id`);
-
 
 
 /*
@@ -737,6 +912,28 @@ ALTER TABLE `Empresa`
 
 /*
 --
+-- Indices de la tabla `Etiqueta`
+--
+*/
+
+ALTER TABLE `Etiqueta`
+  ADD PRIMARY KEY (`codigo`);
+
+
+
+/*
+--
+-- Indices de la tabla `Etiquetadora`
+--
+*/
+
+ALTER TABLE `Etiquetadora`
+  ADD PRIMARY KEY (`codigo`);
+
+
+
+/*
+--
 -- Indices de la tabla `EvaluacionServicio`
 --
 */
@@ -754,6 +951,17 @@ ALTER TABLE `EvaluacionServicio`
 
 ALTER TABLE `EvaluacionWeb`
   ADD PRIMARY KEY (`id`);
+
+
+
+/*
+--
+-- Indices de la tabla `Impresora`
+--
+*/
+
+ALTER TABLE `Impresora`
+  ADD PRIMARY KEY (`codigo`);
 
 
 
@@ -831,6 +1039,51 @@ ALTER TABLE `Producto`
 
 ALTER TABLE `Proveedor`
   ADD PRIMARY KEY (`id`);
+
+
+
+/*
+--
+-- Indices de la tabla `Ribbon`
+--
+*/
+
+ALTER TABLE `Ribbon`
+  ADD PRIMARY KEY (`codigo`);
+
+
+
+/*
+--
+-- Indices de la tabla `Rodillo`
+--
+*/
+
+ALTER TABLE `Rodillo`
+  ADD PRIMARY KEY (`codigo`);
+
+
+
+/*
+--
+-- Indices de la tabla `Sujetador`
+--
+*/
+
+ALTER TABLE `Sujetador`
+  ADD PRIMARY KEY (`codigo`);
+
+
+
+/*
+--
+-- Indices de la tabla `Tinta`
+--
+*/
+
+ALTER TABLE `Tinta`
+  ADD PRIMARY KEY (`codigo`);
+
 
 
 
@@ -1114,6 +1367,37 @@ ALTER TABLE `Administrador_Permiso`
 
 /*
 --
+-- Filtros para la tabla `Aguja`
+-- 
+*/
+ALTER TABLE `Aguja`
+  ADD CONSTRAINT `Aguja_codigo_fk1` FOREIGN KEY (`codigo`) REFERENCES `Producto` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+/*
+--
+-- Filtros para la tabla `AtaCable`
+-- 
+*/
+ALTER TABLE `AtaCable`
+  ADD CONSTRAINT `AtaCable_codigo_fk1` FOREIGN KEY (`codigo`) REFERENCES `Producto` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `AtaCable_medida_fk2` FOREIGN KEY (`medida`) REFERENCES `Medida` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+/*
+--
+-- Filtros para la tabla `Aplicador`
+-- 
+*/
+ALTER TABLE `Aplicador`
+  ADD CONSTRAINT `Aplicador_codigo_fk1` FOREIGN KEY (`codigo`) REFERENCES `Producto` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+/*
+--
 -- Filtros para la tabla `Cliente`
 -- 
 */
@@ -1154,11 +1438,43 @@ ALTER TABLE `Empresa`
 
 /*
 --
+-- Filtros para la tabla `Etiqueta`
+-- 
+*/
+ALTER TABLE `Etiqueta`
+  ADD CONSTRAINT `Etiqueta_codigo_fk1` FOREIGN KEY (`codigo`) REFERENCES `Producto` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Etiqueta_medida_fk2` FOREIGN KEY (`medida`) REFERENCES `Medida` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+/*
+--
+-- Filtros para la tabla `Etiquetadora`
+-- 
+*/
+ALTER TABLE `Etiquetadora`
+  ADD CONSTRAINT `Etiquetadora_codigo_fk1` FOREIGN KEY (`codigo`) REFERENCES `Producto` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Etiquetadora_medida_fk2` FOREIGN KEY (`medida`) REFERENCES `Medida` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+/*
+--
 -- Filtros para la tabla `EvaluacionServicio`
 -- 
 */
 ALTER TABLE `EvaluacionServicio`
   ADD CONSTRAINT `EvaluacionServicio_pedidoID_fk1` FOREIGN KEY (`pedidoID`) REFERENCES `Pedido` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+/*
+--
+-- Filtros para la tabla `Impresora`
+-- 
+*/
+ALTER TABLE `Impresora`
+  ADD CONSTRAINT `Impresora_codigo_fk1` FOREIGN KEY (`codigo`) REFERENCES `Producto` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 
@@ -1205,12 +1521,53 @@ ALTER TABLE `Producto`
 
 /*
 --
+-- Filtros para la tabla `Ribbon`
+-- 
+*/
+ALTER TABLE `Ribbon`
+  ADD CONSTRAINT `Ribbon_codigo_fk1` FOREIGN KEY (`codigo`) REFERENCES `Producto` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Ribbon_medida_fk2` FOREIGN KEY (`medida`) REFERENCES `Medida` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+/*
+--
+-- Filtros para la tabla `Rodillo`
+-- 
+*/
+ALTER TABLE `Rodillo`
+  ADD CONSTRAINT `Rodillo_codigo_fk1` FOREIGN KEY (`codigo`) REFERENCES `Producto` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+/*
+--
 -- Filtros para la tabla `Servicio_Pregunta`
 -- 
 */
 ALTER TABLE `Servicio_Pregunta`
   ADD CONSTRAINT `Servicio_Pregunta_servicioID_fk1` FOREIGN KEY (`servicioID`) REFERENCES `EvaluacionServicio` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `Servicio_Pregunta_preguntaID_fk2` FOREIGN KEY (`preguntaID`) REFERENCES `Pregunta` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+/*
+--
+-- Filtros para la tabla `Sujetador`
+-- 
+*/
+ALTER TABLE `Sujetador`
+  ADD CONSTRAINT `Sujetador_codigo_fk1` FOREIGN KEY (`codigo`) REFERENCES `Producto` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+/*
+--
+-- Filtros para la tabla `Tinta`
+-- 
+*/
+ALTER TABLE `Tinta`
+  ADD CONSTRAINT `Tinta_codigo_fk1` FOREIGN KEY (`codigo`) REFERENCES `Producto` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 
