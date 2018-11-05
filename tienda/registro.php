@@ -85,12 +85,13 @@
                             
                             <h3 class="card-title text-center text-nowrap" id="card-title">Cuenta Personal</h3>
                             
+
+
+
+
+
                             <!-- FORMULARIO -->
                             <form class="needs-validation px-0 px-sm-3 pb-0 pb-sm-1 pt-2" id="form-registro" novalidate>
-
-
-
-
 
 
 
@@ -104,7 +105,7 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fas fa-user"></i></div>
                                             </div>
-                                            <input type="text" class="form-control" id="nombres" placeholder="Juan Carlos" maxlength="<?php echo $maxNombre; ?>" required>
+                                            <input type="text" class="form-control" id="nombres" name="nombres" placeholder="Juan Carlos" maxlength="<?php echo $maxNombre; ?>" required>
                                             <div class="invalid-feedback">
                                                 Ingrese su nombre.
                                             </div>
@@ -119,7 +120,7 @@
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text"><i class="fas fa-user"></i></div>
                                                 </div>
-                                                <input type="text" class="form-control" id="apellidoP" placeholder="Perez" maxlength="<?php echo $maxApellido; ?>" required>
+                                                <input type="text" class="form-control" id="apellidoP" name="apellidoP" placeholder="Perez" maxlength="<?php echo $maxApellido; ?>" required>
                                                 <div class="invalid-feedback">
                                                     Ingrese su apellido paterno.
                                                 </div>
@@ -132,7 +133,7 @@
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text"><i class="fas fa-user"></i></div>
                                                 </div>
-                                                <input type="text" class="form-control" id="apellidoM" placeholder="Rodríguez" maxlength="<?php echo $maxApellido; ?>" required>
+                                                <input type="text" class="form-control" id="apellidoM" name="apellidoM" placeholder="Rodríguez" maxlength="<?php echo $maxApellido; ?>" required>
                                                 <div class="invalid-feedback">
                                                     Ingrese su apellido materno.
                                                 </div>
@@ -147,7 +148,7 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fas fa-at"></i></div>
                                             </div>
-                                            <input type="email" class="form-control" id="correo-cuenta" placeholder="nombre@ejemplo.com" maxlength="<?php echo $maxCorreo; ?>" required>
+                                            <input type="email" class="form-control" id="correo-cuenta" name="correo-cuenta" placeholder="nombre@ejemplo.com" maxlength="<?php echo $maxCorreo; ?>" required>
                                             <div class="invalid-feedback">
                                                 Ingrese un correo válido
                                             </div>
@@ -160,7 +161,7 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fas fa-phone"></i></div>
                                             </div>
-                                            <input type="text" class="form-control" id="telefono-cuenta" placeholder="777 1234 567" maxlength="<?php echo $maxTelefono; ?>" autocomplete="off" required>
+                                            <input type="text" class="form-control" id="telefono-cuenta" name="telefono-cuenta" placeholder="777 1234 567" maxlength="<?php echo $maxTelefono; ?>" autocomplete="off" required>
                                             <div class="invalid-feedback">
                                                 Ingrese su número de teléfono.
                                             </div>
@@ -182,7 +183,7 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fas fa-user"></i></div>
                                             </div>
-                                            <input type="text" class="form-control" id="empresa" placeholder="Distribuidora y Mayorista Omega S.A de C.V." maxlength="<?php echo $maxEmpresa; ?>" required>
+                                            <input type="text" class="form-control" id="empresa" name="empresa" placeholder="Distribuidora y Mayorista Omega S.A de C.V." maxlength="<?php echo $maxEmpresa; ?>" required>
                                             <div class="invalid-feedback">
                                                 Ingrese su empresa.
                                             </div>
@@ -195,7 +196,7 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fas fa-phone"></i></div>
                                             </div>
-                                            <input type="text" class="form-control" id="telefono-empresa" placeholder="777 1234 567" maxlength="<?php echo $maxTelefono; ?>" autocomplete="off" required>
+                                            <input type="text" class="form-control" id="telefono-empresa" name="telefono-empresa" placeholder="777 1234 567" maxlength="<?php echo $maxTelefono; ?>" autocomplete="off" required>
                                             <div class="invalid-feedback">
                                                 Ingresa el número de teléfono de tu empresa.
                                             </div>
@@ -209,7 +210,7 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fas fa-at"></i></div>
                                             </div>
-                                            <input type="email" class="form-control" id="correo-empresa" placeholder="nombre@ejemplo.com" maxlength="<?php echo $maxCorreo; ?>" required>
+                                            <input type="email" class="form-control" id="correo-empresa" name="correo-empresa" placeholder="nombre@ejemplo.com" maxlength="<?php echo $maxCorreo; ?>" required>
                                             <div class="invalid-feedback">
                                                 Ingrese un correo válido
                                             </div>
@@ -246,7 +247,7 @@
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text"><i class="fas fa-map-marker-alt"></i></div>
                                                 </div>
-                                                <input type="text" class="form-control" id="estado" placeholder="Estado" maxlength="<?php echo $maxEstado; ?>" required>
+                                                <input type="text" class="form-control" id="estado" name="estado" placeholder="Estado" maxlength="<?php echo $maxEstado; ?>" required>
                                                 <div class="invalid-feedback">
                                                     Ingrese el Estado de su empresa.
                                                 </div>
@@ -259,7 +260,7 @@
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text"><i class="fas fa-map-marker-alt"></i></div>
                                                 </div>
-                                                <input type="text" class="form-control" id="municipio" placeholder="Municipio" maxlength="<?php echo $maxMunicipio; ?>" required>
+                                                <input type="text" class="form-control" id="municipio" name="municipio" placeholder="Municipio" maxlength="<?php echo $maxMunicipio; ?>" required>
                                                 <div class="invalid-feedback">
                                                     Ingrese el municipio de su empresa.
                                                 </div>
@@ -273,7 +274,7 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fas fa-user"></i></div>
                                             </div>
-                                            <input type="text" class="form-control" id="codigo-postal" placeholder="Código Postal" maxlength="<?php echo $maxCodigoPostal; ?>" required>
+                                            <input type="text" class="form-control" id="codigo-postal" name="codigo-postal" placeholder="Código Postal" maxlength="<?php echo $maxCodigoPostal; ?>" required>
                                             <div class="invalid-feedback">
                                                 Ingrese el códigio postal.
                                             </div>
@@ -288,7 +289,7 @@
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text"><i class="fas fa-user"></i></div>
                                                 </div>
-                                                <input type="text" class="form-control" id="colonia" placeholder="Colonia" maxlength="<?php echo $maxColonia; ?>" required>
+                                                <input type="text" class="form-control" id="colonia" name="colonia" placeholder="Colonia" maxlength="<?php echo $maxColonia; ?>" required>
                                                 <div class="invalid-feedback">
                                                     Ingrese la colonia de su empresa.
                                                 </div>
@@ -301,7 +302,7 @@
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text"><i class="fas fa-user"></i></div>
                                                 </div>
-                                                <input type="text" class="form-control" id="calle" placeholder="Calle" maxlength="<?php echo $maxCalle; ?>" required>
+                                                <input type="text" class="form-control" id="calle" name="calle" placeholder="Calle" maxlength="<?php echo $maxCalle; ?>" required>
                                                 <div class="invalid-feedback">
                                                     Ingrese la calle de su empresa.
                                                 </div>
@@ -317,7 +318,7 @@
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text"><i class="fas fa-user"></i></div>
                                                 </div>
-                                                <input type="text" class="form-control" id="numero-ext" placeholder="Número exterior" maxlength="<?php echo $maxNumerosExtInt; ?>" required>
+                                                <input type="text" class="form-control" id="numero-ext" name="numero-ext" placeholder="Número exterior" maxlength="<?php echo $maxNumerosExtInt; ?>" required>
                                                 <div class="invalid-feedback">
                                                     Ingrese el número exterior.
                                                 </div>
@@ -331,7 +332,7 @@
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text"><i class="fas fa-user"></i></div>
                                                 </div>
-                                                <input type="text" class="form-control" id="numero-int" placeholder="Número interior" maxlength="<?php echo $maxNumerosExtInt; ?>" required>
+                                                <input type="text" class="form-control" id="numero-int" name="numero-int" placeholder="Número interior" maxlength="<?php echo $maxNumerosExtInt; ?>" required>
                                                 <div class="invalid-feedback">
                                                     Ingrese el número interior.
                                                 </div>
@@ -369,7 +370,7 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fas fa-key"></i></div>
                                             </div>
-                                            <input type="password" class="form-control" id="contrasena" aria-describedby="emailHelp" placeholder="Contraseña" maxlength="<?php echo $maxContrasena; ?>" required>
+                                            <input type="password" class="form-control" id="contrasena" name="contrasena" aria-describedby="emailHelp" placeholder="Contraseña" maxlength="<?php echo $maxContrasena; ?>" required>
   
                                             <div class="invalid-feedback">
                                                 Ingrese una contraseña segura
@@ -384,7 +385,7 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fas fa-key"></i></div>
                                             </div>
-                                            <input type="password" class="form-control" id="contrasena-repetida" placeholder="Contraseña" maxlength="<?php echo $maxContrasena; ?>" required>
+                                            <input type="password" class="form-control" id="contrasena-repetida" name="contrasena-repetida" placeholder="Contraseña" maxlength="<?php echo $maxContrasena; ?>" required>
 
                                             <div class="invalid-feedback">
                                                 Sus contraseñas no coinciden.
@@ -404,6 +405,9 @@
                                         </div>
                                     </div>
                                 </div>
+
+
+                                <p id="results"></p>
 
                                 
                             </form>
@@ -470,6 +474,38 @@
             // VALIDACIONES DE COINCIDENCIA
             $(document).ready(function() {
 
+                $(window).keydown(function(event){
+                    if(event.keyCode == 13) {
+                        if($('#paso-1').is(":visible")){
+                            //alert("paso1 visible");
+                            $("#btn-cuenta-sig").trigger("click");
+                            event.preventDefault();
+                            return false;
+
+                        } else if($('#paso-2').is(":visible")){
+                            //alert("paso2 visible");
+                            $("#btn-empresa-sig").trigger("click");
+                            event.preventDefault();
+                            return false;
+                                
+                        } else if($('#paso-3').is(":visible")){
+                            //alert("paso3 visible");
+                            $("#btn-direccion-sig").trigger("click");
+                            event.preventDefault();                                    
+                            return false;
+                        } else {
+                            //alert("paso4 visible");
+                        }
+                    }
+                });
+
+
+/*
+               $('#form-registro').on('submit', function(e) {
+                    e.preventDefault();
+                    return submitOrNotSubmitForm();
+                });
+*/
                 var form = $("#form-registro");
 
 
@@ -483,9 +519,12 @@
                 validarTeclasTelefono("#telefono-cuenta");
 
 
-                inputNombres.on('keyup', function(){
-                    
-                    if(validarInputVacio($(this),  form, "el nombre")){
+                inputNombres.on('keyup', function(e){
+                    e.preventDefault();
+
+                    if(e.which === 13) {
+
+                    } else if(validarInputVacio($(this),  form, "el nombre")){
 
                         // Funcion para validar el tamaño del input ingresado por el usuario.
                         // Params:          (input,    form, articuloInput, nombreInput, min, max)
@@ -495,9 +534,12 @@
                     }
                 });
 
-                $("#apellidoP, #apellidoM").on('keyup', function(){
+                $("#apellidoP, #apellidoM").on('keyup', function(e){
+                    e.preventDefault();
 
-                    if(validarInputVacio($(this),  form, "el apellido")){
+                    if(e.which === 13) {
+                        $("btn-cuenta-sig").trigger("click");
+                    } else if(validarInputVacio($(this),  form, "el apellido")){
 
                         // Funcion para validar el tamaño del input ingresado por el usuario.
                         // Params:          (input,    form, articuloInput, nombreInput, min, max)
@@ -507,9 +549,12 @@
                     }
                 });
 
-                inputCorreoCuenta.on('keyup', function(){
-                    
-                    if(validarInputVacio($(this),  form, "el correo")){
+                inputCorreoCuenta.on('keyup', function(e){
+                    e.preventDefault();
+
+                    if(e.which === 13) {
+
+                    } else if(validarInputVacio($(this),  form, "el correo")){
 
                         // Funcion para validar el tamaño del input ingresado por el usuario.
                         // Params:          (input,    form, articuloInput, nombreInput, min, max)
@@ -517,9 +562,12 @@
                     }
                 });
 
-                inputTelefonoCuenta.on('keyup', function(){
-                    
-                    if(validarInputVacio($(this),  form, "el teléfono")){
+                inputTelefonoCuenta.on('keyup', function(e){
+                    e.preventDefault();
+
+                    if(e.which === 13) {
+                        $("btn-cuenta-sig").trigger("click");
+                    } else if(validarInputVacio($(this),  form, "el teléfono")){
 
                         // Funcion para validar el tamaño del input ingresado por el usuario.
                         // Params:          (input,    form, articuloInput, nombreInput, min, max)
@@ -540,9 +588,12 @@
                 validarTeclasTelefono("#telefono-empresa");
 
 
-                inputEmpresa.on('keyup', function(){
-                    
-                    if(validarInputVacio($(this),  form, "la empresa")){
+                inputEmpresa.on('keyup', function(e){
+                    e.preventDefault();
+
+                    if(e.which === 13) {
+
+                    } else if(validarInputVacio($(this),  form, "la empresa")){
 
                         // Funcion para validar el tamaño del input ingresado por el usuario.
                         // Params:          (input,    form, articuloInput, nombreInput, min, max)
@@ -553,9 +604,12 @@
                 });
 
 
-                inputTelefonoEmpresa.on('keyup', function(){
-                    
-                    if(validarInputVacio($(this),  form, "el teléfono")){
+                inputTelefonoEmpresa.on('keyup', function(e){
+                    e.preventDefault();
+
+                    if(e.which === 13) {
+
+                    } else if(validarInputVacio($(this),  form, "el teléfono")){
 
                         // Funcion para validar el tamaño del input ingresado por el usuario.
                         // Params:          (input,    form, articuloInput, nombreInput, min, max)
@@ -567,9 +621,12 @@
                     }
                 });
 
-                inputCorreoEmpresa.on('keyup', function(){
-                    
-                    if(validarInputVacio($(this),  form, "el correo")){
+                inputCorreoEmpresa.on('keyup', function(e){
+                    e.preventDefault();
+
+                    if(e.which === 13) {
+
+                    } else if(validarInputVacio($(this),  form, "el correo")){
 
                         // Funcion para validar el tamaño del input ingresado por el usuario.
                         // Params:          (input,    form, articuloInput, nombreInput, min, max)
@@ -593,9 +650,12 @@
                 validarTeclasNumerosSinPuntos("#numero-int");
 
 
-                inputEstado.on('keyup', function(){
-                    
-                    if(validarInputVacio($(this),  form, "el estado")){
+                inputEstado.on('keyup', function(e){
+                    e.preventDefault();
+
+                    if(e.which === 13) {
+
+                    } else if(validarInputVacio($(this),  form, "el estado")){
 
                         // Funcion para validar el tamaño del input ingresado por el usuario.
                         // Params:          (input,    form, articuloInput, nombreInput, min, max)
@@ -607,9 +667,12 @@
                 });
 
 
-                inputMunicipio.on('keyup', function(){
-                    
-                    if(validarInputVacio($(this),  form, "el municipio")){
+                inputMunicipio.on('keyup', function(e){
+                    e.preventDefault();
+
+                    if(e.which === 13) {
+
+                    } else if(validarInputVacio($(this),  form, "el municipio")){
 
                         // Funcion para validar el tamaño del input ingresado por el usuario.
                         // Params:          (input,    form, articuloInput, nombreInput, min, max)
@@ -620,9 +683,12 @@
                 });
 
 
-                inputCodigoPostal.on('keyup', function(){
-                    
-                    if(validarInputVacio($(this),  form, "el código postal")){
+                inputCodigoPostal.on('keyup', function(e){
+                    e.preventDefault();
+
+                    if(e.which === 13) {
+
+                    } else if(validarInputVacio($(this),  form, "el código postal")){
 
                         // Funcion para validar el tamaño del input ingresado por el usuario.
                         // Params:          (input,    form, articuloInput, nombreInput, min, max)
@@ -633,9 +699,12 @@
                 });
 
 
-                inputColonia.on('keyup', function(){
-                    
-                    if(validarInputVacio($(this),  form, "la colonia")){
+                inputColonia.on('keyup', function(e){
+                    e.preventDefault();
+
+                    if(e.which === 13) {
+
+                    } else if(validarInputVacio($(this),  form, "la colonia")){
 
                         // Funcion para validar el tamaño del input ingresado por el usuario.
                         // Params:          (input,    form, articuloInput, nombreInput, min, max)
@@ -646,9 +715,12 @@
                 });
 
 
-                inputCalle.on('keyup', function(){
-                    
-                    if(validarInputVacio($(this),  form, "la calle")){
+                inputCalle.on('keyup', function(e){
+                    e.preventDefault();
+
+                    if(e.which === 13) {
+
+                    } else if(validarInputVacio($(this),  form, "la calle")){
 
                         // Funcion para validar el tamaño del input ingresado por el usuario.
                         // Params:          (input,    form, articuloInput, nombreInput, min, max)
@@ -659,9 +731,12 @@
                 });
 
 
-                inputNumeroExt.on('keyup', function(){
-                    
-                    if(validarInputVacio($(this),  form, "el número exterior")){
+                inputNumeroExt.on('keyup', function(e){
+                    e.preventDefault();
+
+                    if(e.which === 13) {
+
+                    } else if(validarInputVacio($(this),  form, "el número exterior")){
 
                         // Funcion para validar el tamaño del input ingresado por el usuario.
                         // Params:          (input,    form, articuloInput, nombreInput, min, max)
@@ -672,9 +747,12 @@
                 });
 
 
-                inputNumeroInt.on('keyup', function(){
-                    
-                    if(validarInputVacio($(this),  form, "el número interior")){
+                inputNumeroInt.on('keyup', function(e){
+                    e.preventDefault();
+
+                    if(e.which === 13) {
+
+                    } else if(validarInputVacio($(this),  form, "el número interior")){
 
                         // Funcion para validar el tamaño del input ingresado por el usuario.
                         // Params:          (input,    form, articuloInput, nombreInput, min, max)
@@ -697,14 +775,17 @@
                 // VALIDACIÓN DE CONTRASEÑAS IGUALES //
 
                 //          #contraseña              //
-                $("#contrasena").on('keyup',function(){
-                    
-                    if(validarInputVacio($(this),  form, "la contraseña")){
+                $("#contrasena").on('keyup',function(e){
+                    e.preventDefault();
+
+                    if(e.which === 13) {
+
+                    } else if(validarInputVacio($(this),  form, "la contraseña")){
 
                         // Función para validar el tamaño del input ingresado por el usuario.
                         // Params:          (input,    form, articuloInput, nombreInput, min, max)
                         if(validarInputLength($(this),    form,     "La contraseña",  8, <?php echo $maxContrasena;   ?>)){
-                            if(validarInputContrasena($(this), $(this).val(), form) == 1){
+                            if(validarInputContrasena($(this), $(this).val(), form)){
                                 // Función para validar que dos input coincidan.
                                 // Params:       (   input1,         input2, form)
                                 validarCoincidencia($(this), $("#contrasena-repetida"), form);
@@ -904,7 +985,47 @@
                 });
 
                 // Paso 4 - Botón "Registrarse/Siguiente";
-                $('#btn-contrasena-sig').click(function(){
+                $('#btn-contrasena-sig').click(function(e){
+
+                    var formularioInvalido = false;
+                    
+                    e.preventDefault();
+
+
+                    if( !validarInputVacio(      inputContrasena,  form, "la contraseña" ) ||
+                        !validarInputLength(inputContrasena, form, "La contraseña", 8, <?php echo $maxContrasena;?>) ||
+                        !validarInputContrasena(inputContrasena, inputContrasena.val(), form) || 
+                        !validarCoincidencia(inputContrasena, inputContrasenaRepetida, form)){
+                        formularioInvalido = true;
+                    }
+
+                    if( !validarCoincidencia(inputContrasena, inputContrasenaRepetida, form ) ){
+                        formularioInvalido = true;
+                    }
+
+                    if(formularioInvalido === true){
+                        return false;
+                    } else {
+                        var datastring = form.serialize();
+
+                        //console.log($("#form-registro").serialize() );
+                        $("#results").text(datastring);
+
+                        $.ajax({
+                            type: "POST",
+                            url: "registroRequest.php",
+                            data: datastring,
+                            success: function(data) {
+                                //var obj = jQuery.parseJSON(data); if the dataType is not specified as json uncomment this
+                                // do what ever you want with the server response
+                                $("#results").html("Resultado: "+data);
+                                alert("Resultado: "+data);
+                            },
+                            error: function() {
+                                alert('error handling here');
+                            }
+                        });
+                    }
 
                 });
             });

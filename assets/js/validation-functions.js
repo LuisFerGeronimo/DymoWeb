@@ -501,3 +501,19 @@ function validarCoincidencia(input1, input2, form){
 // ======================================================== //
 // ======================================================== //
 // ======================================================== //
+
+
+
+
+
+
+
+function submitOrNotSubmitForm(){
+    if($('#paso-4').is(":hidden")){
+        alert("Paso 4 hidden.")
+        return false;
+    } else {
+        return true;
+    }
+
+}
