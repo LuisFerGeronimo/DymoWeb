@@ -49,23 +49,10 @@ a:focus {
     SIDEBAR STYLE
 ----------------------------------------------------- */
 
-.wrapper {
-    display: flex;
-    width: 100%;
-    align-items: stretch;
-}
-
 #sidebar {
-    min-width: 220px;
-    max-width: 220px;
-    height: 100vh;
     background: #7386D5;
     color: #fff;
     transition: all 0.3s;
-}
-
-#sidebar.active {
-    margin-left: -250px;
 }
 
 #sidebar .sidebar-header {

@@ -6,107 +6,288 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/bootstrap.css">
 
-    <!-- Datab tables -->
-    <link rel="stylesheet" type="text/css" href="../assets/css/datatables.min.css"/>
+    <!-- Datab tables 
+    <link rel="stylesheet" type="text/css" href="../assets/css/datatables.min.css"/>-->
     
     <!-- Control Panel CSS -->
-    <link rel="stylesheet" href="../assets/css/control-panel-style.css">
+    <!-- <link rel="stylesheet" href="../assets/css/control-panel-style.css"> -->
 
 
     <!-- Font Awesome JS -->
-    <script defer src="../assets/js/solid.js"></script>
-    <script defer src="../assets/js/fontawesome.js"></script>
+    <link rel="stylesheet" href="../assets/css/solid.css">
+    <link rel="stylesheet" href="../assets/css/fontawesome.css">
+
+    <style>
+        
+        a {
+            color: #fff;
+            list-style: none;
+            text-decoration: none;
+        }
+
+        .active {
+            background-color: #2d353d !important;
+            border: 0;
+        }
+
+        .nav-link{
+            border-top: 1px solid #272b30;
+        }
+
+        .nav-link:hover{
+            background-color: #3a3f44 !important;
+            color: white;
+        }
+
+        .list-group{
+            border:0;
+            border-radius: 0;
+
+        }
+
+        .list-group-item{
+            background-color: #3E4449;
+            padding-left: 30px;
+            border:0;
+            border-radius: 0;
+        }
+
+        .list-group-item:first-child{
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+        .list-group-item:last-child {
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .list-group-item-action{
+            color: white;
+        }
+
+        .list-group-item-action:hover{
+            background-color: #2d353d;
+            color: white;
+        }
+
+        .sidebar-header-items > li > a{
+            padding: 5px 0;
+            
+        }
+
+        #sidebar .nav-item > a{
+            background-color: #343A40;
+            
+        }
+
+
+
+    </style>
 
     <title>Hello, world!</title>
 </head>
     <body>
+        <div class="row mr-0" style="height: 100vh;">
+            <div class="col-7 col-sm-4 col-md-3 col-lg-2 bg-dark pr-0" >
+                <!-- Sidebar Control Panel -->
+                <ul class="nav flex-column p-0" id="sidebar">
 
-        <div class="wrapper">
-
-            <!-- Sidebar Control Panel -->
-            <nav class="bg-dark" id="sidebar">
-                <!-- Título del sidebar -->
-                <div id="sidebar-header">
-                    <h4>Panel de control</h4>
-                </div>
-
-<!--                <p>Juan Rodríguez P.<br>Administrador</p> -->
-                <h5 class="text-muted">Juan C., Rodríguez P.</h5>
-                <h6 class="text-muted">Administrador</h6>
-
-                <!-- Menú del sidebar -->
-                <ul class="list-unstyled components mb-0">
-
-                    <!-- Dashboard -->
-                    <li class="active">
-                        <a onclick="getDashboard('dashboard')" href="#" id="dashboard"><i class="fas fa-tachometer-alt mr-2"></i>Dashboard</a>
+                    <h3 class="text-center text-white mt-3">Panel</h3>
+                    
+                    <!-- DASHBOARD -->
+                    <li class="nav-item mt-5">
+                        <a class="nav-link" href="#"><i class="fas fa-tachometer-alt mr-2"></i>Dashboard</a>
                     </li>
 
-                    <!-- Pedidos -->
-                    <li>
-                        <a  class="dropdown-toggle" href="#pedidosSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-dollar-sign mr-3 mx-1"></i>Pedidos</a>
-                        <ul class="collapse list-unstyled" id="pedidosSubmenu">
-                            <li>
-                                <a onclick="getPedidosGraficas('pedidos-graficas')" id="pedidos-graficas" href="#"><i class="fas fa-chart-pie mr-2"></i>Gráficas</a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fas fa-list-ul mr-2"></i>Lista</a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fas fa-file-pdf mr-2"></i>Generar reporte</a>
-                            </li>
-                        </ul>
-                    </li>
 
-                    <!-- Clientes -->
-                    <li>
-                        <a  class="dropdown-toggle" href="#clientesSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-user mr-3"></i>Clientes</a>
-                        <ul class="collapse list-unstyled" id="clientesSubmenu">
-                            <li>
-                                <a onclick="getClientesGraficas('clientes-graficas')" id="clientes-graficas" href="#"><i class="fas fa-chart-pie mr-2"></i>Gráficas</a>
-                            </li>
-                            <li>
-                                <a onclick="getClientesTabla('clientes-tabla')" id="clientes-tabla" href="#"><i class="fas fa-list-ul mr-2"></i>Lista</a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fas fa-file-pdf mr-2"></i>Generar reporte</a>
-                            </li>
-                        </ul>
-                    </li>
+                    <!-- PEDIDOS -->
+                    <li class="nav-item">
 
-                    <!-- Vendedores -->
-                    <li>
-                        <a class="dropdown-toggle" href="#vendedoresSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-hand-holding-heart mr-2"></i>Vendedores</a>
-                        <ul class="collapse list-unstyled" id="vendedoresSubmenu">
-                            <li>
-                                <a onclick="getVendedoresGraficas('vendedores-graficas')" id="vendedores-graficas" href="#"><i class="fas fa-chart-pie mr-2"></i>Gráficas</a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fas fa-list-ul mr-2"></i>Lista</a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fas fa-file-pdf mr-2"></i>Generar reporte</a>
-                            </li>
-                        </ul>
-                    </li>
+                        <!-- PEDIDOS HEADER -->
+                        <a class="nav-link pr-2" data-toggle="collapse" href="#pedidos-opciones" role="button" aria-expanded="false" aria-controls="pedidos-opciones">
 
-                    <!-- Administradores -->
-                    <li>
-                        <a href="#"><i class="fas fa-key mr-2"></i>Administradores</a>
-                    </li>
+                            <i class="fas fa-dollar-sign mr-2 mx-1"></i>
+                            Pedidos
+                            <i class="fas fa-caret-down float-right mt-1"></i>
+
+                        </a>
+
+                        <!-- PEDIDOS COLLAPSE -->
+                        <div class="collapse" id="pedidos-opciones">
+
+                            <!-- PEDIDOS <UL> MENU -->
+                            <div class="list-group" id="pedidosSubmenu">
+
+                                <!-- Gráficas -->    
+                                <a class="list-group-item list-group-item-action active" id="pedidos-graficas" href="#">
+                                    <i class="fas fa-chart-pie mr-2"></i>
+                                    Gráficas
+                                </a>
+
+                                <!-- Lista -->    
+                                <a class="list-group-item list-group-item-action" href="#">
+                                    <i class="fas fa-list-ul mr-2"></i>
+                                    Lista
+                                </a>
+
+                                <!-- Generar reporte -->    
+                                <a class="list-group-item list-group-item-action" href="#">
+                                    <i class="fas fa-file-pdf mr-2"></i>
+                                    Generar reporte
+                                </a>
+
+                            </div> <!-- FIN PEDIDOS <UL> MENU -->
+                        </div> <!-- FIN PEDIDOS COLLAPSE -->
+
+                    </li> <!-- FIN PEDIDOS -->
+
+
+                    <!-- CLIENTES -->
+                    <li class="nav-item">
+
+                        <!-- CLIENTES HEADER -->
+                        <a class="nav-link pr-2" data-toggle="collapse" href="#clientes-opciones" role="button" aria-expanded="false" aria-controls="clientes-opciones">
+
+                            <i class="fas fa-user mr-2"></i>
+                            Clientes
+                            <i class="fas fa-caret-down float-right mt-1"></i>
+
+                        </a>
+
+
+
+                        <!-- CLIENTES COLLAPSE -->
+                        <div class="collapse" id="clientes-opciones">
+
+                            <!-- CLIENTES <UL> MENU -->
+                            <div class="list-group" id="clientesSubmenu">
+
+                                <!-- Gráficas -->    
+                                <a class="list-group-item list-group-item-action active" id="clientes-graficas" href="#">
+                                    <i class="fas fa-chart-pie mr-2"></i>
+                                    Gráficas
+                                </a>
+
+                                <!-- Lista -->    
+                                <a class="list-group-item list-group-item-action" href="#">
+                                    <i class="fas fa-list-ul mr-2"></i>
+                                    Lista
+                                </a>
+
+                                <!-- Generar reporte -->    
+                                <a class="list-group-item list-group-item-action" href="#">
+                                    <i class="fas fa-file-pdf mr-2"></i>
+                                    Generar reporte
+                                </a>
+
+                            </div> <!-- FIN CLIENTES <UL> MENU -->
+
+                        </div> <!-- FIN CLIENTES COLLAPSE -->
+
+                    </li> <!-- FIN CLIENTES -->
+
+
+                    <!-- VENDEDORES -->
+                    <li class="nav-item">
+
+                        <!-- VENDEDORES HEADER -->
+                        <a class="nav-link pr-2" data-toggle="collapse" href="#vendedores-opciones" role="button" aria-expanded="false" aria-controls="vendedores-opciones">
+
+                            <i class="fas fa-hand-holding-heart mr-2"></i>
+                            Vendedores
+                            <i class="fas fa-caret-down float-right mt-1"></i>
+
+                        </a>
+
+                        <!-- VENDEDORES COLLAPSE -->
+                        <div class="collapse" id="vendedores-opciones">
+
+                            <!-- VENDEDORES <UL> MENU -->
+                            <div class="list-group" id="vendedoresSubmenu">
+
+                                <!-- Gráficas -->    
+                                <a class="list-group-item list-group-item-action active" id="vendedores-graficas" href="#">
+                                    <i class="fas fa-chart-pie mr-2"></i>
+                                    Gráficas
+                                </a>
+
+                                <!-- Lista -->    
+                                <a class="list-group-item list-group-item-action" href="#">
+                                    <i class="fas fa-list-ul mr-2"></i>
+                                    Lista
+                                </a>
+
+                                <!-- Generar reporte -->    
+                                <a class="list-group-item list-group-item-action" href="#">
+                                    <i class="fas fa-file-pdf mr-2"></i>
+                                    Generar reporte
+                                </a>
+
+                            </div> <!-- FIN VENDEDORES <UL> MENU -->
+
+                        </div> <!-- FIN VENDEDORES COLLAPSE -->
+
+                    </li> <!-- FIN VENDEDORES -->
+
+
+
+                    <!-- ADMNINISTRADORES -->
+                    <li class="nav-item">
+
+                        <!-- ADMNINISTRADORES HEADER -->
+                        <a class="nav-link pr-2" data-toggle="collapse" href="#administradores-opciones" role="button" aria-expanded="false" aria-controls="administradores-opciones">
+
+                            <i class="fas fa-key mr-2 "></i>
+                            Administradores
+                            <i class="fas fa-caret-down float-right mt-1"></i>
+
+
+
+
+                        </a>
+
+                        <!-- ADMNINISTRADORES COLLAPSE -->
+                        <div class="collapse" id="administradores-opciones">
+
+                            <!-- ADMNINISTRADORES <UL> MENU -->
+                            <div class="list-group" id="administradoresSubmenu">
+
+                                <!-- Gráficas -->    
+                                <a class="list-group-item list-group-item-action active" id="administradores-graficas" href="#">
+                                    <i class="fas fa-chart-pie mr-2"></i>
+                                    Gráficas
+                                </a>
+
+                                <!-- Lista -->    
+                                <a class="list-group-item list-group-item-action" href="#">
+                                    <i class="fas fa-list-ul mr-2"></i>
+                                    Lista
+                                </a>
+
+                                <!-- Generar reporte -->    
+                                <a class="list-group-item list-group-item-action" href="#">
+                                    <i class="fas fa-file-pdf mr-2"></i>
+                                    Generar reporte
+                                </a>
+
+                            </div> <!-- FIN ADMNINISTRADORES <UL> MENU -->
+
+                        </div> <!-- FIN ADMNINISTRADORES COLLAPSE -->
+
+                    </li> <!-- FIN ADMNINISTRADORES -->
+
                 </ul>
-                        
-
-            </nav>
-
-
-            <!-- Contenido -->
-            <div id="content" class="p-0 m-0" style="background-color: grey;">
-                
             </div>
 
+            <div class="col-5 col-sm-8 col-md-9 col-lg-10 p-0">
+                <!-- Contenido -->
+                <div id="content" class="p-0 m-0" style="background-color: grey;">
+                    
+                </div>
+            </div>
         </div>
 
 
@@ -114,12 +295,28 @@
 
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="../assets/js/jquery-3.3.1.min.js"></script>
-        <script src="../assets/js/popper.min.js"></script>
-        <script src="../assets/js/bootstrap.min.js"></script>
+        <script src="../assets/js/jquery-3.3.1.js"></script>
+        <script src="../assets/js/popper.js"></script>
+        <script src="../assets/js/bootstrap.js"></script>
  
-        <script src="../assets/js/datatables.min.js"></script>
-        <script src="../assets/js/jquery.dataTables.min.js"></script>
+        <!--<script src="../assets/js/datatables.min.js"></script>
+        <script src="../assets/js/jquery.dataTables.min.js"></script>-->
+
+        <script>
+            $(document).ready(function(){
+
+
+                $('.nav-link').on('click', function(){
+                    if ($(this).find('.fa-caret-up')[0]){
+                        $(this).find('.fa-caret-up').addClass('fa-caret-down').removeClass('fa-caret-up');
+                    } else {
+                        $(this).find('.fa-caret-down').addClass('fa-caret-up').removeClass('fa-caret-down');
+                    }
+                })
+
+            });
+        </script>
+
         <script>
 
             function getDashboard(id)

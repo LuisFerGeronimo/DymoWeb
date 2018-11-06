@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="es-mx">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../assets/css/bootstrap.css">
+
+    <!-- Datab tables -->
+    <link rel="stylesheet" type="text/css" href="../assets/css/datatables.min.css"/>
+    
+    <!-- Control Panel CSS -->
+    <link rel="stylesheet" href="../assets/css/control-panel-style.css">
+
+
+    <!-- Font Awesome JS -->
+    <link rel="stylesheet" href="../assets/css/solid.css">
+    <link rel="stylesheet" href="../assets/css/fontawesome.css">
+
+    <title>Hello, world!</title>
+</head>
+    <body>
+
+        <div class="wrapper">
+
+            <!-- Sidebar Control Panel -->
+            <nav class="bg-dark" id="sidebar">
+                <!-- Título del sidebar -->
+                <div id="sidebar-header">
+                    <h4>Panel de control</h4>
+                </div>
+
+<!--                <p>Juan Rodríguez P.<br>Administrador</p> -->
+                <h5 class="text-muted">Juan C., Rodríguez P.</h5>
+                <h6 class="text-muted">Administrador</h6>
+
+                <!-- Menú del sidebar -->
+                <ul class="list-unstyled components mb-0">
+
+                    <!-- Dashboard -->
+                    <li class="active">
+                        <a onclick="getDashboard('dashboard')" href="#" id="dashboard"><i class="fas fa-tachometer-alt mr-2"></i>Dashboard</a>
+                    </li>
+
+                    <!-- Pedidos -->
+                    <li>
+                        <a  class="dropdown-toggle" href="#pedidosSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-dollar-sign mr-3 mx-1"></i>Pedidos</a>
+                        <ul class="collapse list-unstyled" id="pedidosSubmenu">
+                            <li>
+                                <a onclick="getPedidosGraficas('pedidos-graficas')" id="pedidos-graficas" href="#"><i class="fas fa-chart-pie mr-2"></i>Gráficas</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fas fa-list-ul mr-2"></i>Lista</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fas fa-file-pdf mr-2"></i>Generar reporte</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Clientes -->
+                    <li>
+                        <a  class="dropdown-toggle" href="#clientesSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-user mr-3"></i>Clientes</a>
+                        <ul class="collapse list-unstyled" id="clientesSubmenu">
+                            <li>
+                                <a onclick="getClientesGraficas('clientes-graficas')" id="clientes-graficas" href="#"><i class="fas fa-chart-pie mr-2"></i>Gráficas</a>
+                            </li>
+                            <li>
+                                <a onclick="getClientesTabla('clientes-tabla')" id="clientes-tabla" href="#"><i class="fas fa-list-ul mr-2"></i>Lista</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fas fa-file-pdf mr-2"></i>Generar reporte</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Vendedores -->
+                    <li>
+                        <a class="dropdown-toggle" href="#vendedoresSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-hand-holding-heart mr-2"></i>Vendedores</a>
+                        <ul class="collapse list-unstyled" id="vendedoresSubmenu">
+                            <li>
+                                <a onclick="getVendedoresGraficas('vendedores-graficas')" id="vendedores-graficas" href="#"><i class="fas fa-chart-pie mr-2"></i>Gráficas</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fas fa-list-ul mr-2"></i>Lista</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fas fa-file-pdf mr-2"></i>Generar reporte</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Administradores -->
+                    <li>
+                        <a href="#"><i class="fas fa-key mr-2"></i>Administradores</a>
+                    </li>
+                </ul>
+                        
+
+            </nav>
+
+
+            <!-- Contenido -->
+            <div id="content" class="p-0 m-0" style="background-color: grey;">
+                
+            </div>
+
+        </div>
+
+
+
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="../assets/js/jquery-3.3.1.js"></script>
+        <script src="../assets/js/popper.js"></script>
+        <script src="../assets/js/bootstrap.js"></script>
+ 
+        <script src="../assets/js/datatables.js"></script>
+        <script src="../assets/js/jquery.dataTables.js"></script>
+        <script>
+
+            function getDashboard(id)
+            {
+               $.ajax({
+
+                 type: "GET",
+                 url: 'dashboard.html',
+                 data: "id=" + id, // appears as $_GET['id'] @ your backend side
+                 success: function(data) {
+                       // data is ur summary
+                      $('#content').html(data);
+                 }
+
+               });
+
+            }
+
+            function getPedidosGraficas(id)
+            {
+               $.ajax({
+
+                 type: "GET",
+                 url: 'pedidos-graficas.html',
+                 data: "id=" + id, // appears as $_GET['id'] @ your backend side
+                 success: function(data) {
+                       // data is ur summary
+                      $('#content').html(data);
+                 }
+
+               });
+
+            }
+
+            function getClientesGraficas(id)
+            {
+               $.ajax({
+
+                 type: "GET",
+                 url: 'clientes-graficas.html',
+                 data: "id=" + id, // appears as $_GET['id'] @ your backend side
+                 success: function(data) {
+                       // data is ur summary
+                      $('#content').html(data);
+                 }
+
+               });
+
+            }
+
+            function getClientesTabla(id)
+            {
+                $(document).ready(function() {
+                    $.ajax({
+
+                         type: "GET",
+                         url: 'clientes-tabla.html',
+                         data: "id=" + id, // appears as $_GET['id'] @ your backend side
+                         success: function(data) {
+                               // data is ur summary
+                              $('#content').html(data);
+                         }
+
+                    });
+                    
+                    $('#example').DataTable( {
+                        "ajax": 'clientes-table.txt'
+                    });
+
+                   
+
+                });
+
+            }
+
+
+            function getVendedoresGraficas(id)
+            {
+               $.ajax({
+
+                 type: "GET",
+                 url: 'vendedores-graficas.html',
+                 data: "id=" + id, // appears as $_GET['id'] @ your backend side
+                 success: function(data) {
+                       // data is ur summary
+                      $('#content').html(data);
+                 }
+
+               });
+
+            }
+
+        </script>
+
+
+    </body>
+</html>
