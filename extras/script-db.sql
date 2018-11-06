@@ -185,11 +185,11 @@ CREATE TABLE `Cliente` (
 -- Volcado de datos para la tabla `Cliente`
 --
 */
-/*
+
 INSERT INTO `Cliente` (`id`, `nombre`, `apellidoP`, `apellidoM`, `telefono`, `correo`, `contrasena`, `empresaID`) VALUES
-(01, 'Jesús Emmanuel', 'Zetina', 'Chevez', '7771234567', 'zcjo151173@upemor.edu.mx', 'contraseña', 01),
-(02, 'Luis Fernando', 'Gerónimo', 'Carranza', '7777654321', 'gclo151861@upemor.edu.mx', 'contraseña', 02);
-*/
+(01, 'Luis Fernando', 'Gerónimo', 'Carranza', '7777654321', 'gclo@u', 'contra', 01),
+(02, 'Jesús Emmanuel', 'Zetina', 'Chevez', '7771234567', 'zcjo151173@upemor.edu.mx', 'contraseña', 02);
+
 
 
 
@@ -295,7 +295,8 @@ CREATE TABLE `Empresa` (
   `id`          INT                                             ,
   `nombre`      VARCHAR(100)  COLLATE latin1_spanish_ci NOT NULL,
   `telefono`    VARCHAR(24)   COLLATE latin1_spanish_ci NOT NULL,
-  `zonaID`      INT                                     NOT NULL
+  `correo`      VARCHAR(64)   COLLATE latin1_spanish_ci NOT NULL,
+  `zonaID`      INT                                     
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
 /*
@@ -303,11 +304,11 @@ CREATE TABLE `Empresa` (
 -- Volcado de datos para la tabla `Empresa`
 --
 */
-/*
-INSERT INTO `Empresa` (`id`, `nombre`, `telefono`) VALUES
-(01, 'Dymo_1', '7771234567'),
-(02, 'Dymo_2', '7777654321');
-*/
+
+INSERT INTO `Empresa` (`id`, `nombre`, `telefono`, `correo`, `zonaID`) VALUES
+(1, 'DymoCliente_1', '7771234567', 'dymoCliente1@dymosa.com', 1),
+(2, 'DymoCliente_2', '7777654321', 'dymoCliente2@dymosa.com', 1);
+
 
 
 
@@ -775,6 +776,15 @@ CREATE TABLE `Zona` (
   `id`    INT                                           ,
   `zona`  VARCHAR(32) COLLATE latin1_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+/*
+--
+-- Volcado de datos para la tabla `Zona`
+--
+*/
+
+INSERT INTO `Zona` (`id`, `zona`) VALUES
+(1, 'Centro');
 
 
 

@@ -43,7 +43,7 @@
                             <!-- Título del componente _card_ -->
                             <h3 class="card-title text-center text-nowrap">Acceder</h3>
                             <!-- Formulario del log in -->
-                            <form class="needs-validation px-0 px-sm-3 pb-0 pb-sm-3 pt-4 px-lg-4" novalidate>
+                            <form class="needs-validation px-0 px-sm-3 pb-0 pb-sm-3 pt-4 px-lg-4" onsubmit="return false;" novalidate>
                                 <!-- Grupo del label e input para el e-mail -->
                                 <div class="form-group">
                                     <label for="email">E-mail/Usuario</label>
@@ -90,6 +90,9 @@
                                         Recuérdame
                                     </label>
                                 </div>
+                                <div class="text-danger" id="mensaje-error">
+                                    
+                                </div>
                                 <!-- Boton de "Acceder" -->
                                 <button type="submit" class="btn btn-success my-3 w-100" id="btn-acceder">Acceder</button>
                                 <!-- Mensaje de error -->
@@ -122,7 +125,7 @@
         <script type="text/javascript">
 
             $(document).ready(function(){
-               
+                
                 $("#btn-acceder").on('click', function(){ 
                     
                     var correo_input  = $("#email").val();
@@ -134,43 +137,35 @@
                     $.ajax({
                         type: "POST",
                         url: "login-request.php",
+                        cache:false,
                         data: 
                             {
                                 correo: correo_input,
                                 contrasena: contrasena_input
                             },
 
-                        success: function(data, status){
+                        success: function(result, status){
 
-                            var match = data['match'];
-                            var user = data['user'];
+                            var match = result['match'];
+//                            var user = result['user'];
 
-                            alert(data['match']);
+
+                            alert(result['match']);
 
                             if(status) {
                                 if(match === "true"){
 
-                                    alert("Data: " + data +
+                                    alert("Data: " + result +
                                         "\nStatus: " + status + 
-                                        "\nid: " + data['id'] + 
-                                        "\nNombre " + data['nombre']
+                                        "\nid: " + result[0]['id'] + 
+                                        "\nNombre " + result[0]['nombre']
                                     );
 
-                                    switch(user){
-                                        case "cliente":
-                                            window.location.href = "index.php";
-                                            break;
+                                    window.location.href = "index.php";
 
-                                        case "vendedor":
-                                            window.location.href = "../panel/";
-                                            break;
-
-                                        case "admin":
-                                            window.location.href = "../panel/";
-                                            break;
-                                    }
                                 } else {
-                                    alert("Datos incorrectos.");
+                                    //alert("Datos incorrectos.");
+                                    $("#mensaje-error").html("Datos incorrectos.");
                                 }
 
                             }else{

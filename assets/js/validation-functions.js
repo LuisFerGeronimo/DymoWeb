@@ -488,9 +488,11 @@ function validarCoincidencia(input1, input2, form){
 
     if( input1.val().localeCompare(input2.val()) === 0){
         input2.removeClass('is-invalid').addClass('is-valid');
+        return true;
     } else {
         input2.removeClass('is-valid').addClass('is-invalid');
         form.removeClass('was-validated');
+        return false;
     }
 
 }

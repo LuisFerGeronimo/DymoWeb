@@ -98,9 +98,10 @@
 
                                 <!-- PASO 1 - CUENTA -->
                                 <div id="paso-1">
+                                    <p class="text-danger" id="resultCuenta"></p>
 
                                     <div class="form-group">
-                                        <label for="nombres">Nombres</label>
+                                        <label for="nombres">Nombres <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fas fa-user"></i></div>
@@ -115,7 +116,7 @@
                                     <div class="form-row">
 
                                         <div class="form-group col-md-6">
-                                            <label for="apellidoP">Apellido Paterno</label>
+                                            <label for="apellidoP">Apellido Paterno <span class="text-danger">*</span></label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text"><i class="fas fa-user"></i></div>
@@ -133,7 +134,7 @@
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text"><i class="fas fa-user"></i></div>
                                                 </div>
-                                                <input type="text" class="form-control" id="apellidoM" name="apellidoM" placeholder="Rodríguez" maxlength="<?php echo $maxApellido; ?>" required>
+                                                <input type="text" class="form-control" id="apellidoM" name="apellidoM" placeholder="Rodríguez" maxlength="<?php echo $maxApellido; ?>">
                                                 <div class="invalid-feedback">
                                                     Ingrese su apellido materno.
                                                 </div>
@@ -143,7 +144,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="correo-cuenta">E-mail</label>
+                                        <label for="correo-cuenta">E-mail <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fas fa-at"></i></div>
@@ -156,7 +157,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="telefono-cuenta">Teléfono</label>
+                                        <label for="telefono-cuenta">Teléfono <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fas fa-phone"></i></div>
@@ -177,8 +178,9 @@
 
                                 <!-- PASO 2 - EMPRESA -->
                                 <div id="paso-2">
+                                    <p class="text-danger" id="resultEmpresa"></p>
                                     <div class="form-group">
-                                        <label for="empresa">Empresa</label>
+                                        <label for="empresa">Empresa <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fas fa-user"></i></div>
@@ -191,7 +193,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="telefono-empresa">Teléfono</label>
+                                        <label for="telefono-empresa">Teléfono <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fas fa-phone"></i></div>
@@ -205,7 +207,7 @@
 
 
                                     <div class="form-group">
-                                        <label for="correo-empresa">E-mail</label>
+                                        <label for="correo-empresa">E-mail <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fas fa-at"></i></div>
@@ -237,12 +239,15 @@
 
                                 <!-- PASO 3 - DIRECCION -->
                                 <div id="paso-3">
+                                    
                                     <h4 class="text-secondary">Su empresa</h4>
+
+                                    <p class="text-danger" id="resultDireccion"></p>
 
                                     <div class="form-row">
 
                                         <div class="form-group col-md-6">
-                                            <label for="estado">Estado</label>
+                                            <label for="estado">Estado <span class="text-danger">*</span></label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text"><i class="fas fa-map-marker-alt"></i></div>
@@ -255,7 +260,7 @@
                                         </div>
 
                                         <div class="form-group col-md-6">
-                                        <label for="municipio">Municipio</label>
+                                        <label for="municipio">Municipio <span class="text-danger">*</span></label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text"><i class="fas fa-map-marker-alt"></i></div>
@@ -269,7 +274,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="codigo-postal">Código Postal</label>
+                                        <label for="codigo-postal">Código Postal <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fas fa-user"></i></div>
@@ -284,7 +289,7 @@
                                     <div class="form-row">
 
                                         <div class="form-group col-md-6">
-                                            <label for="colonia">Colonia</label>
+                                            <label for="colonia">Colonia <span class="text-danger">*</span></label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text"><i class="fas fa-user"></i></div>
@@ -297,7 +302,7 @@
                                         </div>
 
                                         <div class="form-group col-md-6">
-                                            <label for="calle">Calle</label>
+                                            <label for="calle">Calle <span class="text-danger">*</span></label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text"><i class="fas fa-user"></i></div>
@@ -313,7 +318,7 @@
                                     <div class="form-row">
 
                                         <div class="form-group col-md-6">
-                                            <label for="numero-ext">Número exterior</label>
+                                            <label for="numero-ext">Número exterior <span class="text-danger">*</span></label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text"><i class="fas fa-user"></i></div>
@@ -363,9 +368,10 @@
 
                                 <!-- PASO 4 - Contraseña -->
                                 <div id="paso-4">
+                                    <p class="text-danger" id="resultContrasena"></p>
 
                                     <div class="form-group">
-                                        <label for="contrasena">Contraseña</label>
+                                        <label for="contrasena">Contraseña <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fas fa-key"></i></div>
@@ -380,7 +386,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="contrasena-repetida">Repita su contraseña</label>
+                                        <label for="contrasena-repetida">Repita su contraseña <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fas fa-key"></i></div>
@@ -404,10 +410,10 @@
                                             <button type="submit" class="btn btn-info my-3 w-100" id="btn-contrasena-sig">Registrarse</button>
                                         </div>
                                     </div>
+
                                 </div>
 
 
-                                <p id="results"></p>
 
                                 
                             </form>
@@ -538,14 +544,14 @@
                     e.preventDefault();
 
                     if(e.which === 13) {
-                        $("btn-cuenta-sig").trigger("click");
-                    } else if(validarInputVacio($(this),  form, "el apellido")){
 
-                        // Funcion para validar el tamaño del input ingresado por el usuario.
-                        // Params:          (input,    form, articuloInput, nombreInput, min, max)
-                        if(validarInputLength($(this),    form,     "El apellido",  0, <?php echo $maxApellido;   ?>)){
-                            validarInputLettersOnly($(this), form, "El apellido");
-                        }
+
+                            // Funcion para validar el tamaño del input ingresado por el usuario.
+                            // Params:          (input,    form, articuloInput, nombreInput, min, max)
+                    } else if(validarInputLength($(this),    form,     "El apellido",  0, <?php echo $maxApellido;   ?>)){
+
+                        validarInputLettersOnly($(this), form, "El apellido");
+                        
                     }
                 });
 
@@ -566,7 +572,6 @@
                     e.preventDefault();
 
                     if(e.which === 13) {
-                        $("btn-cuenta-sig").trigger("click");
                     } else if(validarInputVacio($(this),  form, "el teléfono")){
 
                         // Funcion para validar el tamaño del input ingresado por el usuario.
@@ -752,13 +757,11 @@
 
                     if(e.which === 13) {
 
-                    } else if(validarInputVacio($(this),  form, "el número interior")){
 
                         // Funcion para validar el tamaño del input ingresado por el usuario.
                         // Params:          (input,    form, articuloInput, nombreInput, min, max)
-                        if(validarInputLength($(this),    form,     "El número interior",  0, <?php echo $maxNumerosExtInt;   ?>)){
-                            validarInputNumbersOnly($(this), form, "El número interior");
-                        }
+                    } else if(validarInputLength($(this),    form,     "El número interior",  0, <?php echo $maxNumerosExtInt;   ?>)){
+                        validarInputNumbersOnly($(this), form, "El número interior");
                     }
                 });
 
@@ -833,8 +836,7 @@
                         formularioInvalido = true;
                     }
 
-                    if( !validarInputVacio(inputApellidoM,      form, "el apellido" ) ||
-                        !validarInputLettersOnly(inputApellidoM,      form, "El apellido") ||
+                    if( !validarInputLettersOnly(inputApellidoM,      form, "El apellido") ||
                         !validarInputLength(inputApellidoM, form, "El apellido",0, <?php echo $maxApellido; ?>) ){
                         formularioInvalido = true;
 
@@ -903,7 +905,7 @@
                         $('#paso-2').hide();
                         $('#progress-bar').css("width", "75%");
                         $('#progress-bar-text').html("PASO 3");
-                        $('#card-title').html("Direccion");
+                        $('#card-title').html("Dirección");
                     }
                 });
 
@@ -958,8 +960,7 @@
                         formularioInvalido = true;
                     }
 
-                    if( !validarInputVacio(      inputNumeroInt,  form, "el número interior" ) ||
-                        !validarInputNumbersOnly(inputNumeroInt,  form, "El número interior" ) ||
+                    if( !validarInputNumbersOnly(inputNumeroInt,  form, "El número interior" ) ||
                         !validarInputLength(inputNumeroInt, form, "El número interior", 0, <?php echo $maxNumerosExtInt;?>) ){
                         formularioInvalido = true;
                     }
@@ -987,6 +988,8 @@
                 // Paso 4 - Botón "Registrarse/Siguiente";
                 $('#btn-contrasena-sig').click(function(e){
 
+                    alert("Registrarse Activado");
+
                     var formularioInvalido = false;
                     
                     e.preventDefault();
@@ -997,32 +1000,76 @@
                         !validarInputContrasena(inputContrasena, inputContrasena.val(), form) || 
                         !validarCoincidencia(inputContrasena, inputContrasenaRepetida, form)){
                         formularioInvalido = true;
+                        alert("1");
                     }
 
                     if( !validarCoincidencia(inputContrasena, inputContrasenaRepetida, form ) ){
                         formularioInvalido = true;
+                        alert("2");
                     }
+
+
+                    alert("FormulariInvalido: " + formularioInvalido);
 
                     if(formularioInvalido === true){
                         return false;
                     } else {
+                        alert("else");
                         var datastring = form.serialize();
 
-                        //console.log($("#form-registro").serialize() );
-                        $("#results").text(datastring);
+                        console.log($("#form-registro").serialize() );
 
                         $.ajax({
                             type: "POST",
                             url: "registroRequest.php",
+                            cache: false,
                             data: datastring,
                             success: function(data) {
                                 //var obj = jQuery.parseJSON(data); if the dataType is not specified as json uncomment this
                                 // do what ever you want with the server response
-                                $("#results").html("Resultado: "+data);
-                                alert("Resultado: "+data);
+
+                                var resultado = data["result"];
+
+                                alert("Result: " + resultado);
+
+                                if(!resultado){
+                                    var reason = data["reason"];
+
+                                    alert("Reason: " + reason);
+
+                                    switch(reason){
+                                        case 0:
+                                            $("#resultContrasena").html("Favor de llenar todos los campos.");
+                                            break;
+                                        case 1:
+                                            $("#resultEmpresa").html("El nombre de empresa que introdujo ya existe.");
+                                            $('#paso-2').show();
+                                            $('#paso-4').hide();
+                                            $('#progress-bar').css("width", "50%");
+                                            $('#progress-bar-text').html("PASO 2");
+                                            $('#card-title').html("Empresa");
+                                            break;
+                                        case 2:
+                                            $("#resultCuenta").html("Ya existe una cuenta con el correo.");
+                                            $('#paso-1').show();
+                                            $('#paso-4').hide();
+                                            $('#progress-bar').css("width", "25%");
+                                            $('#progress-bar-text').html("PASO 1");
+                                            $('#card-title').html("Cuenta Personal");
+                                            break;
+                                    }
+                                }
+
                             },
-                            error: function() {
-                                alert('error handling here');
+                            error: function (xhr, status, error) { 
+                                console.log("Xhr: " + xhr);
+                                console.log("Xhr.responseText: " + xhr.responseText);
+                                console.log("Status: " + status);
+                                console.log("Error: " + error);
+                                var err = JSON.parse(xhr.responseText);
+                                console.log(err);
+                                console.log(err.error);
+                                alert(err.error); 
                             }
                         });
                     }
