@@ -7,7 +7,7 @@
             <th scope="col">Apellido M.</th>
             <th scope="col">Teléfono</th>
             <th scope="col">Correo</th>
-            <!--<th scope="col" id="acciones">Acciones</th>-->
+            <th scope="col" id="acciones">Acciones</th>
         </tr>
     </thead>
     <tfoot>
@@ -18,7 +18,7 @@
             <th>Apellido M.</th>
             <th>Teléfono</th>
             <th>Correo</th>
-            <!--<th>Acciones</th>-->
+            <th>Acciones</th>
         </tr>
     </tfoot>
 </table>

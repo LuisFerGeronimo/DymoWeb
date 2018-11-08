@@ -132,7 +132,7 @@
                     var contrasena_input  = $("#password").val();
 
 
-                    alert('Correo: ' + correo_input +', | Contra: ' + contrasena_input);
+                    //alert('Correo: ' + correo_input +', | Contra: ' + contrasena_input);
                     
                     $.ajax({
                         type: "POST",
@@ -150,16 +150,16 @@
 //                            var user = result['user'];
 
 
-                            alert(result['match']);
+                            //alert(result['match']);
 
                             if(status) {
                                 if(match === "true"){
 
-                                    alert("Data: " + result +
+                                    /*alert("Data: " + result +
                                         "\nStatus: " + status + 
                                         "\nid: " + result[0]['id'] + 
                                         "\nNombre " + result[0]['nombre']
-                                    );
+                                    );*/
 
                                     window.location.href = "index.php";
 

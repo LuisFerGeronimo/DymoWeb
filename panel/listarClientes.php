@@ -25,6 +25,10 @@ CREATE TABLE `Cliente` (
 	$queryGenerico->setParamsValues(array());
 	$results = $queryGenerico->read();
 
+	for ($i=0; $i < count($results); $i++) { 
+		$results[$i]["acciones"] = null;
+	}
+
 	header('Content-Type: application/json');
 	echo json_encode($results);
 
