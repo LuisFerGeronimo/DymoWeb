@@ -1,4 +1,5 @@
-<?php include_once  '../includes/cliente.php';?>
+<?php include_once '../includes/db.php';?>
+<?php include_once  '../includes/model/queryGenerico.php';?>
 <?php //header('Content-Type: text/html; charset=utf-8');?>
 <?php 
 
@@ -27,12 +28,22 @@ CREATE TABLE `Cliente` (
 
 
 			// Cliente::Parámetros: ($id, $nombres, $apellidoP, $apellidoM, $telefono, $correo, $contrasena, $empresaID)
-			$clienteBase = new Cliente();
-			$clienteBase->setSelect('id, nombre, apellidoP, apellidoM, correo, contrasena');
-			$clienteBase->setWhere('correo = ? AND contrasena = ?');
-			$clienteBase->setParamsType(array('s', 's'));
-			$clienteBase->setParamsValues(array($correo_input, $contrasena_input));
-			$results = $clienteBase->read();
+			$queryGenerico = new QueryGenerico();
+			$queryGenerico->setTable('Cliente');
+			$queryGenerico->setSelect('id, nombre, apellidoP, apellidoM, correo, contrasena');
+			$queryGenerico->setWhere('correo = ? AND contrasena = ?');
+			$queryGenerico->setParamsType(array('s', 's'));
+			$queryGenerico->setParamsValues(array($correo_input, $contrasena_input));
+			$results = $queryGenerico->read();
+
+
+			if(!$results){
+				$results['match'] = "false";
+			} else {
+				$results['match'] = "true";
+				$results['rows'] = sizeof($results)-1;
+			}
+
 
 
 		} else {

@@ -1,6 +1,5 @@
 <?php include_once '../includes/db.php';?>
-<?php include_once '../includes/cliente.php';?>
-<?php include_once '../includes/empresa.php';?>
+<?php include_once  '../includes/model/queryGenerico.php';?>
 <?php //header('Content-Type: text/html; charset=utf-8');?>
 <?php 
 
@@ -62,33 +61,35 @@
 		
 
 			// Creación de empresa
-			$empresaBase = new Empresa();
-			$empresaBase->setFields('nombre, telefono, correo');
-			$empresaBase->setValues('?, ?, ?');
-			$empresaBase->setParamsType(array('s', 's', 's'));
-			$empresaBase->setParamsValues(array($empresa, $telefonoEmpresa, $correoEmpresa));
-			$resultsCreateEmpresa = $empresaBase->create();
+			$queryGenerico = new QueryGenerico();
+			$queryGenerico->setTable('Empresa');
+			$queryGenerico->setFields('nombre, telefono, correo');
+			$queryGenerico->setValues('?, ?, ?');
+			$queryGenerico->setParamsType(array('s', 's', 's'));
+			$queryGenerico->setParamsValues(array($empresa, $telefonoEmpresa, $correoEmpresa));
+			$resultsCreateEmpresa = $queryGenerico->create();
 
 
 			if($resultsCreateEmpresa["result"]){
 
 				//Selección de la empresa creada.
-				$empresaBase->setSelect('id, nombre');
-				$empresaBase->setWhere('nombre = ?');
-				$empresaBase->setParamsType(array('s'));
-				$empresaBase->setParamsValues(array($empresa));
-				$resultsReadEmpresa = $empresaBase->read();
+				$queryGenerico->setSelect('id, nombre');
+				$queryGenerico->setWhere('nombre = ?');
+				$queryGenerico->setParamsType(array('s'));
+				$queryGenerico->setParamsValues(array($empresa));
+				$resultsReadEmpresa = $queryGenerico->read();
 
 
 				$empresaID = $resultsReadEmpresa[0]['id'];
 
 				// Creación de la cuenta del cliente
-				$clienteBase = new Cliente();
-				$clienteBase->setFields('nombre, apellidoP, apellidoM, telefono, correo, contrasena, empresaID');
-				$clienteBase->setValues('?, ?, ?, ?, ?, ?, ?');
-				$clienteBase->setParamsType(array('s', 's', 's', 's', 's', 's', 'i'));
-				$clienteBase->setParamsValues(array($nombres, $apellidoP, $apellidoM, $telefonoCuenta, $correoCuenta, $contrasena, $empresaID));
-				$resultsCreateCliente = $clienteBase->create();
+				$queryGenerico = new QueryGenerico();
+				$queryGenerico->setTable('Cliente');
+				$queryGenerico->setFields('nombre, apellidoP, apellidoM, telefono, correo, contrasena, empresaID');
+				$queryGenerico->setValues('?, ?, ?, ?, ?, ?, ?');
+				$queryGenerico->setParamsType(array('s', 's', 's', 's', 's', 's', 'i'));
+				$queryGenerico->setParamsValues(array($nombres, $apellidoP, $apellidoM, $telefonoCuenta, $correoCuenta, $contrasena, $empresaID));
+				$resultsCreateCliente = $queryGenerico->create();
 
 				if($resultsCreateCliente["result"]){
 					$results['result'] = true;
