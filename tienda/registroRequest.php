@@ -92,7 +92,22 @@
 				$resultsCreateCliente = $queryGenerico->create();
 
 				if($resultsCreateCliente["result"]){
-					$results['result'] = true;
+					// Creación de empresa
+					$queryGenerico = new QueryGenerico();
+					$queryGenerico->setTable('Direccion');
+					$queryGenerico->setFields('numeroExt, numeroInt, calle, colonia, cp, municipio, estado, empresaID');
+					$queryGenerico->setValues('?, ?, ?, ?, ?, ?, ?, ?');
+					$queryGenerico->setParamsType(array('i', 'i', 's', 's', 'i', 's', 's', 'i'));
+					$queryGenerico->setParamsValues(array($numeroExt, $numeroInt, $calle, $colonia, $codigoPostal, $municipio, $estado, $empresaID));
+					$resultsCreateDireccion = $queryGenerico->create();
+
+					if($resultsCreateDireccion["result"]){
+
+						$results['result'] = true;
+					} else {
+						$results['result'] = false;
+						$results['reason'] = 3;
+					}
 
 				} else {
 					$results['result'] = false;

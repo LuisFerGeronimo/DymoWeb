@@ -112,6 +112,11 @@
             color: white;
         }
 
+        #content-buttons{
+            position:relative;
+            overflow-y: scroll;
+        }
+
         #over-sidebar {
             position:relative;
             overflow-y: scroll;
@@ -159,7 +164,7 @@
 
         /* width */
         ::-webkit-scrollbar {
-            width: 10px;
+            width: 7px;
             height: 10px;
         }
 
@@ -186,207 +191,15 @@
 </head>
 <body>
     <div class="row mr-0" style="height: 100vh;">
-        <div class="col-7 col-sm-4 col-md-3 col-lg-2 bg-dark pr-0" id="over-sidebar">
-            <!-- Sidebar Control Panel -->
-            <ul class="nav flex-column p-0" id="sidebar">
-
-                <div class="row mr-0">
-                    <div class="col-9">
-                        <h3 class="text-white mt-3 ml-3">Panel</h3>
-                    </div>
-                    <div class="col-3 align-content-end mt-3">
-                        <div class="text-center" id="dismiss">
-                            <i class="fas fa-arrow-left mt-2"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- DASHBOARD -->
-                <li class="nav-item mt-5">
-                    <a class="nav-link" href="#"><i class="fas fa-tachometer-alt mr-2"></i>Dashboard</a>
-                </li>
-
-
-                <!-- PEDIDOS -->
-                <li class="nav-item">
-
-                    <!-- PEDIDOS HEADER -->
-                    <a class="nav-link pr-2" data-toggle="collapse" href="#pedidos-opciones" role="button" aria-expanded="false" aria-controls="pedidos-opciones">
-
-                        <i class="fas fa-dollar-sign mr-2 mx-1"></i>
-                        Pedidos
-                        <i class="fas fa-caret-down float-right mt-1"></i>
-
-                    </a>
-
-                    <!-- PEDIDOS COLLAPSE -->
-                    <div class="collapse" id="pedidos-opciones">
-
-                        <!-- PEDIDOS <UL> MENU -->
-                        <div class="list-group" id="pedidosSubmenu">
-
-                            <!-- Gráficas -->    
-<!--                            <a class="list-group-item list-group-item-action active" id="pedidos-graficas" href="#">
-                                <i class="fas fa-chart-pie mr-2"></i>
-                                Gráficas
-                            </a>
--->
-                            <!-- Lista -->    
-                            <a class="list-group-item list-group-item-action" id="pedidos-lista" href="#">
-                                <i class="fas fa-list-ul mr-2"></i>
-                                Lista
-                            </a>
-
-                            <!-- Reporte -->    
-                            <a class="list-group-item list-group-item-action" href="#">
-                                <i class="fas fa-file-pdf mr-2"></i>
-                                Reporte
-                            </a>
-
-                        </div> <!-- FIN PEDIDOS <UL> MENU -->
-                    </div> <!-- FIN PEDIDOS COLLAPSE -->
-
-                </li> <!-- FIN PEDIDOS -->
-
-
-                <!-- CLIENTES -->
-                <li class="nav-item">
-
-                    <!-- CLIENTES HEADER -->
-                    <a class="nav-link pr-2" data-toggle="collapse" href="#clientes-opciones" role="button" aria-expanded="false" aria-controls="clientes-opciones">
-
-                        <i class="fas fa-user mr-2"></i>
-                        Clientes
-                        <i class="fas fa-caret-down float-right mt-1"></i>
-
-                    </a>
-
-
-
-                    <!-- CLIENTES COLLAPSE -->
-                    <div class="collapse" id="clientes-opciones">
-
-                        <!-- CLIENTES <UL> MENU -->
-                        <div class="list-group" id="clientesSubmenu">
-
-                            <!-- Gráficas -->    
-<!--                            <a class="list-group-item list-group-item-action " id="clientes-graficas" href="#">
-                                <i class="fas fa-chart-pie mr-2"></i>
-                                Gráficas
-                            </a>
--->
-                            <!-- Lista -->    
-                            <a class="list-group-item list-group-item-action" id="clientes-lista" href="#">
-                                <i class="fas fa-list-ul mr-2"></i>
-                                Lista
-                            </a>
-
-                            <!-- Reporte -->    
-                            <a class="list-group-item list-group-item-action" href="#">
-                                <i class="fas fa-file-pdf mr-2"></i>
-                                Reporte
-                            </a>
-
-                        </div> <!-- FIN CLIENTES <UL> MENU -->
-
-                    </div> <!-- FIN CLIENTES COLLAPSE -->
-
-                </li> <!-- FIN CLIENTES -->
-
-
-                <!-- VENDEDORES -->
-                <li class="nav-item">
-
-                    <!-- VENDEDORES HEADER -->
-                    <a class="nav-link pr-2" data-toggle="collapse" href="#vendedores-opciones" role="button" aria-expanded="false" aria-controls="vendedores-opciones">
-
-                        <i class="fas fa-hand-holding-heart mr-2"></i>
-                        Vendedores
-                        <i class="fas fa-caret-down float-right mt-1"></i>
-
-                    </a>
-
-                    <!-- VENDEDORES COLLAPSE -->
-                    <div class="collapse" id="vendedores-opciones">
-
-                        <!-- VENDEDORES <UL> MENU -->
-                        <div class="list-group" id="vendedoresSubmenu">
-
-                            <!-- Gráficas -->    
-<!--                            <a class="list-group-item list-group-item-action" id="vendedores-graficas" href="#">
-                                <i class="fas fa-chart-pie mr-2"></i>
-                                Gráficas
-                            </a>
--->
-                            <!-- Lista -->    
-                            <a class="list-group-item list-group-item-action" id="vendedores-lista" href="#">
-                                <i class="fas fa-list-ul mr-2"></i>
-                                Lista
-                            </a>
-
-                            <!-- Reporte -->    
-                            <a class="list-group-item list-group-item-action" href="#">
-                                <i class="fas fa-file-pdf mr-2"></i>
-                                Reporte
-                            </a>
-
-                        </div> <!-- FIN VENDEDORES <UL> MENU -->
-
-                    </div> <!-- FIN VENDEDORES COLLAPSE -->
-
-                </li> <!-- FIN VENDEDORES -->
-
-
-
-                <!-- ADMNINISTRADORES -->
-                <li class="nav-item pb-5">
-
-                    <!-- ADMNINISTRADORES HEADER -->
-                    <a class="nav-link pr-2" data-toggle="collapse" href="#administradores-opciones" role="button" aria-expanded="false" aria-controls="administradores-opciones">
-
-                        <i class="fas fa-key mr-2 "></i>
-                        Administradores
-                        <i class="fas fa-caret-down float-right mt-1"></i>
-
-                    </a>
-
-                    <!-- ADMNINISTRADORES COLLAPSE -->
-                    <div class="collapse" id="administradores-opciones">
-
-                        <!-- ADMNINISTRADORES <UL> MENU -->
-                        <div class="list-group" id="administradoresSubmenu">
-
-                            <!-- Gráficas -->    
-<!--                            <a class="list-group-item list-group-item-action" id="administradores-graficas" href="#">
-                                <i class="fas fa-chart-pie mr-2"></i>
-                                Gráficas
-                            </a>
--->
-                            <!-- Lista -->    
-                            <a class="list-group-item list-group-item-action" id="administradores-lista" href="#">
-                                <i class="fas fa-list-ul mr-2"></i>
-                                Lista
-                            </a>
-
-                            <!-- Reporte -->    
-                            <a class="list-group-item list-group-item-action" href="#">
-                                <i class="fas fa-file-pdf mr-2"></i>
-                                Reporte
-                            </a>
-
-                        </div> <!-- FIN ADMNINISTRADORES <UL> MENU -->
-
-                    </div> <!-- FIN ADMNINISTRADORES COLLAPSE -->
-
-                </li> <!-- FIN ADMNINISTRADORES -->
-
-            </ul>
-        </div>
+        
+        <?php include '../includes/panel_sidebar.html' ?>
 
         <!-- Contenido -->
-        <div class="col-5 col-sm-8 col-md-9 col-lg-10 p-4 m-0 text-white" id="content-buttons">
+        <div class="col p-4 m-0 text-white" id="content-buttons">
 
             <div class="" id="content">
+
+
 
             </div>
 
@@ -430,11 +243,12 @@
     <script type="text/javascript" src="../assets/DataTables/datatables.js"></script>
 
     <script>
-        /*function getArchivoListar(id){
+        function eliminarFila(id){
             switch(id){
-                case 
+                case 1:
+                    break;
             }
-        }*/
+        }
     </script>
 
     <script>
@@ -463,16 +277,46 @@
 
 
     <script>
+
         $(document).ready(function(){
+
+
+            // FUNCIÓN PARA OCULTAR LA BARRA LATERAL Y HACERLA CHICA CON SÓLO ÍCONOS.
+            $('#dismiss').on('click', function(){
+                if($('#dismiss-arrow').hasClass('fa-arrow-left')){
+
+                    $('#over-sidebar').removeClass('col-7 col-sm-4 col-md-3 col-lg-2').addClass('pl-3 pt-2').css('width', '75px');
+                    $('.list-group-item').addClass('pl-3');
+                    $('.item-text').hide();
+                    $('.fa-caret-up, .fa-caret-down').hide();
+                    
+                    $('#dismiss').parent().closest('div').addClass('pl-2').parent().closest('div').removeClass('mr-0').addClass('mx-0');
+                    $('#dismiss-arrow').removeClass('fa-arrow-left').addClass('fa-arrow-right');
+
+                } else {
+
+                    $('#over-sidebar').addClass('col-7 col-sm-4 col-md-3 col-lg-2').removeClass('pl-3 pt-2').css('width', 'auto');
+                    $('.list-group-item').removeClass('pl-3');
+                    $('.item-text').show();
+                    $('.fa-caret-up, .fa-caret-down').show();
+
+                    $('#dismiss').parent().closest('div').removeClass('pl-2').parent().closest('div').addClass('mr-0').removeClass('mx-0');
+                    $('#dismiss-arrow').removeClass('fa-arrow-right').addClass('fa-arrow-left');
+                
+                }
+                
+            });
 
 
             // Cambio de la flecha de dropdown
             $('.nav-link').on('click', function(){
-                if ($(this).find('.fa-caret-up')[0]){
-                    $(this).find('.fa-caret-up').addClass('fa-caret-down').removeClass('fa-caret-up');
-                } else {
-                    $(this).find('.fa-caret-down').addClass('fa-caret-up').removeClass('fa-caret-down');
-                }
+                //if($('#dismiss-arrow').hasClass('fa-arrow-left')){ // Si no está oculto el sidebar... 
+                    if ($(this).find('.fa-caret-up')[0]){
+                        $(this).find('.fa-caret-up').addClass('fa-caret-down').removeClass('fa-caret-up');
+                    } else {
+                        $(this).find('.fa-caret-down').addClass('fa-caret-up').removeClass('fa-caret-down');
+                    }
+                //}
             });
 
             $('#content').on('click', '.btn-editar', function () {
@@ -490,14 +334,14 @@
                     .buttons( 'export, commands', null )
                     .containers()
                     .appendTo( '#panel' );
-*/
+
                 table.buttons('exportar',null).container()
                     .appendTo( $('div.dataTables_length:eq(0)', table.table().container()));
 
 
                 table.buttons('exportar', null).container().addClass('ml-3');
                 table.buttons('exportar', null).container().find('button').removeClass('btn-secondary').addClass('btn-light');
-
+*/
                 //$('.dt-buttons.btn-group').addClass('ml-3');
                 //$('.dt-buttons.btn-group').find('button').removeClass('btn-secondary').addClass('btn-light');
                 
@@ -547,30 +391,37 @@
                     complete: function(data) {
 
                         var table = $('#tabla').DataTable({
-                            "preDrawCallback": function( settings ) {
-                                
-                            },
-                            ajax:{
+
+                            "processing": true,
+                            "serverSide": true,
+                            "order" : [],
+                            "ajax": {
                                 "url": "listarClientes.php",
-                                "dataSrc": ""
+                                "type": "POST"/*,
+                                dataFilter: function(resp) {
+                                    console.log(resp);
+                                    // deserialize resp if needed.
+                                    // peel off the exta data and pass it on
+                                    // make sure the data for the table is the way datatable expects it
+                                    //return that data object for datatables use
+                                }*/
                             },
-                            columns: [
-                                {"data": "id"},
-                                {"data": "nombre"},
-                                {"data": "apellidoP"},
-                                {"data": "apellidoM"},
-                                {"data": "telefono"},
-                                {"data": "correo"},
-                                {"data": "acciones", "orderable":false}
+                            "columns": [
+                                {"data": "0"},
+                                {"data": "1"},
+                                {"data": "2"},
+                                {"data": "3"},
+                                {"data": "4"},
+                                {"data": "5", "orderable":false}
                             ],
 
-                            "columnDefs": [
+                            /*"columnDefs": [
                                 {
                                     "data": null,
-                                    "defaultContent": "<div class='form-row'><div class='col-sm-12 col-md-6 text-center'><a href='#' onclick='editarFila();' class='btn btn-light p-1' id='btn-editar'><i class='far fa-edit fa-md'></i></a></div><div class='col-sm-12 col-md-6 text-center'><a href='#' onclick='eliminarFila();' class='btn btn-danger p-1' id='btn-eliminar'><i class='far fa-trash-alt fa-md'></i></a></div></div>",
+                                    "defaultContent": "<div class='form-row'><div class='col-sm-12 col-md-6 text-center'><a href='#' onclick='editarFila();' class='editar btn btn-light p-1' id=''><i class='far fa-edit fa-md'></i></a></div><div class='col-sm-12 col-md-6 text-center'><a href='#' onclick='eliminarFila();' class='eliminar btn btn-danger p-1 px-2' id=''><i class='far fa-trash-alt fa-md'></i></a></div></div>",
                                     "targets": -1
                                 }
-                            ],
+                            ],*/
                             "initComplete": function() {
 
 
@@ -623,9 +474,13 @@
                                     ]
                                 });*/
 
-                                
+                                 table.buttons('exportar',null).container()
+                                    .appendTo( $('div.dataTables_length:eq(0)', table.table().container()));
 
-                                agegarBotones(table);
+
+                                table.buttons('exportar', null).container().addClass('ml-3');
+                                table.buttons('exportar', null).container().find('button').removeClass('btn-secondary').addClass('btn-light');
+
                                 
                             }
                         });
