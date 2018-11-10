@@ -4,6 +4,8 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 	if(isset($_GET['id'])) {
     	$id = $_GET['id'];
 
+    	$resultado;
+
     	switch($id) {
     		case 'pedidos-lista':
     			break;
@@ -13,13 +15,306 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
                 break;
 
     		case 'clientes-lista':
-				echo ('<h2 class="text-center">Clientes</h2>');
-				include '../includes/tablas\clientes-tabla.php';
-                break;
-    		case 'empresas-lista':
-				echo ('<h2 class="text-center">Empresas</h2>');
-				include '../includes/tablas\empresas-tabla.php';
-                break;
+    			// Obtener el contenido de otro archivo en un string. En este caso el contenido es la tabla.
+				$tabla = implode('', file('../includes/tablas/clientes-tabla.php'));
+
+				$tablasDetalles = array('cliente', 'empresa', 'direccion');
+
+				$columnas = array(
+					array("data" => "0"),
+                    array("data" => "1"),
+					array("data" => "2"),
+                    array("data" => "3"),
+					array("data" => "4", "orderable" => false)
+				);
+
+				$modalBody = '
+					<ul class="nav nav-tabs " id="myTab" role="tablist">
+	                    <li class="nav-item">
+	                        <a class="nav-link tab-link px-2 active" id="cliente-tab" data-toggle="tab" href="#cliente" role="tab" aria-controls="cliente" aria-selected="true">Cliente</a>
+	                    </li>
+	                    <li class="nav-item">
+	                        <a class="nav-link tab-link px-2" id="empresa-tab" data-toggle="tab" href="#empresa" role="tab" aria-controls="empresa" aria-selected="false">Empresa</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link tab-link px-2" id="direccion-tab" data-toggle="tab" href="#direccion" role="tab" aria-controls="direccion" aria-selected="false">Direccion</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane show active" id="cliente" role="tabpanel" aria-labelledby="cliente-tab">
+							<form class="needs-validation px-0 px-sm-3 pb-0 pb-sm-1 pt-2" id="form-registro" autocomplete="off"  novalidate>
+                                <!-- PASO 1 - CUENTA -->
+		                        <div id="paso-1">
+		                            <p class="text-danger" id="resultCuenta"></p>
+
+		                            <div class="form-group">
+		                                <label for="nombres">Nombres <span class="text-danger">*</span></label>
+		                                <div class="input-group">
+		                                    <div class="input-group-prepend">
+		                                        <div class="input-group-text"><i class="fas fa-user"></i></div>
+		                                    </div>
+		                                    <input type="text" class="form-control" id="nombres" name="nombres" placeholder="Juan Carlos" maxlength="<?php echo $maxNombre; ?>" readonly required>
+		                                    <div class="invalid-feedback">
+		                                        Ingrese su nombre.
+		                                    </div>
+		                                </div>
+		                            </div>
+
+		                            <div class="form-row">
+
+		                                <div class="form-group col-md-6">
+		                                    <label for="apellidoP">Apellido Paterno <span class="text-danger">*</span></label>
+		                                    <div class="input-group">
+		                                        <div class="input-group-prepend">
+		                                            <div class="input-group-text"><i class="fas fa-user"></i></div>
+		                                        </div>
+		                                        <input type="text" class="form-control" id="apellidoP" name="apellidoP" placeholder="Perez" maxlength="<?php echo $maxApellido; ?>" readonly required>
+		                                        <div class="invalid-feedback">
+		                                            Ingrese su apellido paterno.
+		                                        </div>
+		                                    </div>
+		                                </div>
+
+		                                <div class="form-group col-md-6">
+		                                    <label for="apellidoM">Apellido Materno</label>
+		                                    <div class="input-group">
+		                                        <div class="input-group-prepend">
+		                                            <div class="input-group-text"><i class="fas fa-user"></i></div>
+		                                        </div>
+		                                        <input type="text" class="form-control" id="apellidoM" name="apellidoM" placeholder="Rodríguez" maxlength="<?php echo $maxApellido; ?>" readonly>
+		                                        <div class="invalid-feedback">
+		                                            Ingrese su apellido materno.
+		                                        </div>
+		                                    </div>
+		                                </div>
+
+		                            </div>
+
+		                            <div class="form-group">
+		                                <label for="correo-cuenta">E-mail <span class="text-danger">*</span></label>
+		                                <div class="input-group">
+		                                    <div class="input-group-prepend">
+		                                        <div class="input-group-text"><i class="fas fa-at"></i></div>
+		                                    </div>
+		                                    <input type="email" class="form-control" id="correo-cuenta" name="correo-cuenta" placeholder="nombre@ejemplo.com" maxlength="<?php echo $maxCorreo; ?>" readonly required>
+		                                    <div class="invalid-feedback">
+		                                        Ingrese un correo válido
+		                                    </div>
+		                                </div>
+		                            </div>
+
+		                            <div class="form-group">
+		                                <label for="telefono-cuenta">Teléfono <span class="text-danger">*</span></label>
+		                                <div class="input-group">
+		                                    <div class="input-group-prepend">
+		                                        <div class="input-group-text"><i class="fas fa-phone"></i></div>
+		                                    </div>
+		                                    <input type="text" class="form-control" id="telefono-cuenta" name="telefono-cuenta" placeholder="777 1234 567" maxlength="<?php echo $maxTelefono; ?>" autocomplete="off" readonly required>
+		                                    <div class="invalid-feedback">
+		                                        Ingrese su número de teléfono.
+		                                    </div>
+		                                </div>
+		                            </div>
+		                        </div>
+	                         </form>
+                        </div>
+
+
+
+
+
+
+                        <!--TAB EMPRESA-->
+                        <div class="tab-pane" id="empresa" role="tabpanel" aria-labelledby="empresa-tab">
+							<form class="needs-validation px-0 px-sm-3 pb-0 pb-sm-1 pt-2" id="form-registro" autocomplete="off"  novalidate>
+
+                        		<!-- PASO 2 - EMPRESA -->
+                                <div id="paso-2">
+                                    <p class="text-danger" id="resultEmpresa"></p>
+                                    <div class="form-group">
+                                        <label for="empresa">Empresa <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="fas fa-user"></i></div>
+                                            </div>
+                                            <input type="text" class="form-control" id="empresa" name="empresa" placeholder="Distribuidora y Mayorista Omega S.A de C.V." maxlength="<?php echo $maxEmpresa; ?>" readonly required>
+                                            <div class="invalid-feedback">
+                                                Ingrese su empresa.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="telefono-empresa">Teléfono <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="fas fa-phone"></i></div>
+                                            </div>
+                                            <input type="text" class="form-control" id="telefono-empresa" name="telefono-empresa" placeholder="777 1234 567" maxlength="<?php echo $maxTelefono; ?>" autocomplete="off" readonly required>
+                                            <div class="invalid-feedback">
+                                                Ingresa el número de teléfono de tu empresa.
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label for="correo-empresa">E-mail <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="fas fa-at"></i></div>
+                                            </div>
+                                            <input type="email" class="form-control" id="correo-empresa" name="correo-empresa" placeholder="nombre@ejemplo.com" maxlength="<?php echo $maxCorreo; ?>" readonly required>
+                                            <div class="invalid-feedback">
+                                                Ingrese un correo válido
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+							</form>
+					
+                        </div>
+
+
+
+
+
+						<!-- TAB DIRECCION -->
+                        <div class="tab-pane" id="direccion" role="tabpanel" aria-labelledby="direccion-tab">
+							
+							<form class="needs-validation px-0 px-sm-3 pb-0 pb-sm-1 pt-2" id="form-registro" autocomplete="off"  novalidate>
+								<!-- PASO 3 - DIRECCION -->
+                                <div id="paso-3">
+
+                                    <p class="text-danger" id="resultDireccion"></p>
+
+                                    <div class="form-row">
+
+                                        <div class="form-group col-md-6">
+                                            <label for="estado">Estado <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text"><i class="fas fa-map-marker-alt"></i></div>
+                                                </div>
+                                                <input type="text" class="form-control" id="estado" name="estado" placeholder="Estado" maxlength="<?php echo $maxEstado; ?>" readonly required>
+                                                <div class="invalid-feedback">
+                                                    Ingrese el Estado de su empresa.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-6">
+                                        <label for="municipio">Municipio <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text"><i class="fas fa-map-marker-alt"></i></div>
+                                                </div>
+                                                <input type="text" class="form-control" id="municipio" name="municipio" placeholder="Municipio" maxlength="<?php echo $maxMunicipio; ?>" readonly required>
+                                                <div class="invalid-feedback">
+                                                    Ingrese el municipio de su empresa.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="codigo-postal">Código Postal <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="fas fa-user"></i></div>
+                                            </div>
+                                            <input type="text" class="form-control" id="codigo-postal" name="codigo-postal" placeholder="Código Postal" maxlength="<?php echo $maxCodigoPostal; ?>" readonly required>
+                                            <div class="invalid-feedback">
+                                                Ingrese el códigio postal.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+
+                                        <div class="form-group col-md-6">
+                                            <label for="colonia">Colonia <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text"><i class="fas fa-user"></i></div>
+                                                </div>
+                                                <input type="text" class="form-control" id="colonia" name="colonia" placeholder="Colonia" maxlength="<?php echo $maxColonia; ?>" readonly required>
+                                                <div class="invalid-feedback">
+                                                    Ingrese la colonia de su empresa.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-6">
+                                            <label for="calle">Calle <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text"><i class="fas fa-user"></i></div>
+                                                </div>
+                                                <input type="text" class="form-control" id="calle" name="calle" placeholder="Calle" maxlength="<?php echo $maxCalle; ?>" readonly required>
+                                                <div class="invalid-feedback">
+                                                    Ingrese la calle de su empresa.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+
+                                        <div class="form-group col-md-6">
+                                            <label for="numero-ext">Número exterior <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text"><i class="fas fa-user"></i></div>
+                                                </div>
+                                                <input type="text" class="form-control" id="numero-ext" name="numero-ext" placeholder="Número exterior" maxlength="<?php echo $maxNumerosExtInt; ?>" readonly required>
+                                                <div class="invalid-feedback">
+                                                    Ingrese el número exterior.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-6">
+                                            <label for="numero-int">Número interior</label>
+                                        
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text"><i class="fas fa-user"></i></div>
+                                                </div>
+                                                <input type="text" class="form-control" id="numero-int" name="numero-int" placeholder="Número interior" maxlength="<?php echo $maxNumerosExtInt; ?>" readonly required>
+                                                <div class="invalid-feedback">
+                                                    Ingrese el número interior.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                        </div>
+                    </div>';
+
+
+                $modalFooter = '
+	                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	                <button type="button" class="btn btn-info" id="modal-btn-editar">Editar</button>
+	                <button type="button" class="btn btn-success d-none" id="modal-btn-guardar" >Guardar cambios</button>';
+
+
+				$resultado = array(
+					'tablaString' => $tabla, 
+					'tituloContenido' => '<h2 class="text-center" id="titulo-contenido">Clientes</h2>',
+					'dataFetchFile' => 'listarClientes.php',
+					'columnas' => $columnas,
+					'modalBody' => $modalBody,
+					'modalFooter' => $modalFooter
+				);
+				break;
+			case 'empresas-lista':
+				return array(
+					'tablaString' => '../includes/tablas/empresas-tabla.php', 
+					'tituloContenido' => '<h2 class="text-center">Empresas</h2>'
+				);
 
           	case 'vendedores-lista':
 					echo ('<div id="dashboard" style="background-color: blue;">
@@ -43,7 +338,9 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 				</div>');
                 break;
         } 
-  	} 
+  	}
+
+  	echo json_encode($resultado);
 } 
 
 ?>

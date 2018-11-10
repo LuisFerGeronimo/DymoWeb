@@ -55,7 +55,7 @@
             <a href="#productos" id="productos-sidebar-link">Productos</a>
          </li>
          <li>
-            <a href="tienda/login.php">Tienda</a>
+            <a href="tienda/">Tienda</a>
          </li>
          <li>
             <a href="#">Contacto</a>
@@ -97,7 +97,7 @@
 
 
 
-
+   <div id="scrolling-div">
    <!-- ---------------------------------------------------------- -->
    <!-- Contendedor del HEADER{NAV} & Jumbotron{ETIQUETADORA-GRIS} -->
    <!-- ---------------------------------------------------------- -->
@@ -327,7 +327,7 @@
          </div>
       </div>
    </footer>
-
+   </div>
 
 
 
@@ -357,6 +357,11 @@
             $('#dismiss, .overlay, #productos-sidebar-link').on('click', function () {
                $('#sidebar').removeClass('active');
                $('.overlay').removeClass('active');
+               /*$('#scrolling-div').css({
+                   overflow: 'auto',
+                   height: '100%'
+               });
+*/
             });
 
             /* Esta es una función para abrir el sidebar pero no se ocupa porque en este caso
@@ -367,6 +372,11 @@
                $('.overlay').addClass('active');
                $('.collapse.in').toggleClass('in');
                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+/*
+               $('#scrolling-div').css({
+                   overflow: 'hidden',
+                   height: '100%'
+               });*/
             });
         });
    </script>

@@ -19,14 +19,12 @@ CREATE TABLE `Cliente` (
 	function getColumnaNombre($columna){
 		switch ($columna) {
 			case 0:
-				return 'nombre';
+				return 'id';
 			case 1:
-				return 'apellidoP';
+				return 'empresa';
 			case 2:
-				return 'apellidoM';
+				return 'nombres';
 			case 3:
-				return 'telefono';
-			case 4:
 				return 'correo';
 		}
 	}
@@ -36,9 +34,9 @@ CREATE TABLE `Cliente` (
 	$paramsValues = array();
 
 	$queryGenerico = new QueryGenerico();
-	$queryGenerico->setTable("Cliente");
-	$queryGenerico->setColumns(array('nombre', 'apellidoP', 'apellidoM', 'telefono', 'correo'));
-	$queryGenerico->setDraw(intval($_POST["draw"]));
+	$queryGenerico->setTable("ListarClientesView");
+	$queryGenerico->setColumns(array('zona', 'nombres', 'empresa', 'correo'));
+	//$queryGenerico->setDraw(intval($_POST["draw"]));
 
 	if(isset($_POST['search']['value'])) {
 		$searchValue = $_POST['search']['value'];
@@ -47,9 +45,10 @@ CREATE TABLE `Cliente` (
 		//echo "Second: ".$searchValue;
 		
 
-		$queryGenerico->setWhere('nombre LIKE CONCAT("%",?,"%") OR apellidoP LIKE CONCAT("%",?,"%") OR apellidoM LIKE CONCAT("%",?,"%") OR correo LIKE CONCAT("%",?,"%")');
+		$queryGenerico->setWhere('empresa LIKE CONCAT("%",?,"%") OR nombres LIKE CONCAT("%",?,"%") OR correo LIKE CONCAT("%",?,"%")');
+			
+		$n = substr_count($queryGenerico->getWhere(), '?');
 
-		$n = 4;
 		for ($i=0; $i < $n; $i++) { 
 			array_push($paramsType, 's');
 			array_push($paramsValues, $searchValue);
@@ -88,39 +87,44 @@ CREATE TABLE `Cliente` (
 	//var_dump($queryGenerico->getParamsValues());
 	//var_dump($queryGenerico->getParamsType());
 
-	$queryGenerico->fetchData();
+	$resArr = $queryGenerico->fetchData();
 
-	
-/*
-	$draw = (int)$_POST['draw'];
-
-	$draw++;
-
-	// Cliente::Parámetros: ($id, $nombres, $apellidoP, $apellidoM, $telefono, $correo, $contrasena, $empresaID)
-	$queryGenerico = new QueryGenerico();
-	$queryGenerico->setTable('Cliente');
-	$queryGenerico->setSelect('id, nombre, apellidoP, apellidoM, telefono, correo');
-	$queryGenerico->setWhere(null);
-	$queryGenerico->setParamsType(array());
-	$queryGenerico->setParamsValues(array());
-	$resultsDB = $queryGenerico->read();
-
-	$total = count($resultsDB);
+	$number_filter_row = $resArr['recordsFiltered'];
+	$resArr = $resArr['resArr'];
 
 
+	$data = array();
 
-	for ($i=0; $i < $total; $i++) { 
-		$resultsDB[$i]['acciones'] = "<div class='form-row'><div class='col-sm-12 col-md-6 text-center'><a href='#' onclick='editarFila();' class='editar btn btn-light p-1' id=''><i class='far fa-edit fa-md'></i></a></div><div class='col-sm-12 col-md-6 text-center'><a href='#' onclick='eliminarFila();' class='eliminar btn btn-danger p-1 px-2' id=''><i class='far fa-trash-alt fa-md'></i></a></div></div>";
-		$resultsDB[$i] = array('DT_RowId' => 'row_'.$resultsDB[$i]['id']) + $resultsDB[$i];
+	for ($i=0; $i < count($resArr); $i++) { 
+	 	$sub_array = array();
+	 	// Columnas
+		if($resArr[$i]["id"] === null){
+			$resArr[$i]["id"] = 'Sin zona';
+		}
+	 	$sub_array[] = '<div  data-id="' . $resArr[$i]["id"]		. '" data-column="zona">'    . $resArr[$i]["id"] 	  .	'</div>';
+	 	$sub_array[] = '<div  data-id="' . $resArr[$i]["empresaID"] . '" data-column="empresa">' . $resArr[$i]["empresa"] . '</div>';
+	 	$sub_array[] = '<div  data-id="' . $resArr[$i]["clienteID"] . '" data-column="cliente">' . $resArr[$i]["nombres"] . '</div>';
+	 	$sub_array[] = '<div  data-id="' . $resArr[$i]["clienteID"] . '" data-column="cliente">' . $resArr[$i]["correo"]  .	'</div>';
+	 	// Botones
+	 	$sub_array[] = '<button type="button" name="detalles" class="btn btn-info btn-xs detalles p-1" id="'.$resArr[$i]["clienteID"].'">Detalles</button>';
+
+	 	$data[] = $sub_array;
+
 	}
 
-	$results['data'] = $resultsDB;
+	$recordsTotal = $queryGenerico->getAllData();
 
-	$results = array('recordsFiltered' => $total) + $results;
-	$results = array('recordsTotal' => $total) + $results;
-	$results = array('draw' => $draw) + $results;
+	if($number_filter_row===null){
+		$number_filter_row = $recordsTotal;
+	}
 
-	header('Content-Type: application/json');
-	echo json_encode($results);
-*/
+	$output = array(
+	 	"draw"    => intval($_POST["draw"]),
+	 	"recordsTotal"  =>  $recordsTotal,
+	 	"recordsFiltered" => $number_filter_row,
+	 	"data"    => $data
+	);
+
+	echo json_encode($output);
+
 ?>

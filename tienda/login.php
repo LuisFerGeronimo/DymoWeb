@@ -132,7 +132,7 @@
                     var contrasena_input  = $("#password").val();
 
 
-                    //alert('Correo: ' + correo_input +', | Contra: ' + contrasena_input);
+                    console.log('Correo: ' + correo_input +', | Contra: ' + contrasena_input);
                     
                     $.ajax({
                         type: "POST",
@@ -150,28 +150,38 @@
 //                            var user = result['user'];
 
 
-                            //alert(result['match']);
+                            console.log('Result: ' + result);
+                            console.log("Status: " + status);
 
                             if(status) {
                                 if(match === "true"){
 
-                                    /*alert("Data: " + result +
+                                    console.log("Data: " + result +
                                         "\nStatus: " + status + 
                                         "\nid: " + result[0]['id'] + 
                                         "\nNombre " + result[0]['nombre']
-                                    );*/
+                                    );
 
                                     window.location.href = "index.php";
 
                                 } else {
-                                    //alert("Datos incorrectos.");
+                                    console.log("Datos incorrectos.");
                                     $("#mensaje-error").html("Datos incorrectos.");
                                 }
 
                             }else{
-                                alert("Algo salio mal...");
+                                console.log("Algo salio mal...");
                             }
 
+                        },
+                        error: function (xhr, status, error) { 
+                            console.log("Xhr: " + xhr);
+                            console.log("Xhr.responseText: " + xhr.responseText);
+                            console.log("Status: " + status);
+                            console.log("Error: " + error);
+                            var err = JSON.parse(xhr.responseText);
+                            console.log(err);
+                            console.log(err.error);
                         }
                     });
          

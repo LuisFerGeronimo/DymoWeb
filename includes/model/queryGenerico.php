@@ -109,7 +109,6 @@ class QueryGenerico{
 
 			/* Número de filas filtradas */
 	    	$number_filter_row =  $stmt->num_rows;
-
 		
 			array_push($this->paramsType, 'i');
 			array_push($this->paramsValues, $this->startValue);
@@ -154,6 +153,15 @@ class QueryGenerico{
 		// Obtención de los resultados.
 		$resArr = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
+
+		$stmt->close();
+		$mysqli->close();
+
+		return array('recordsFiltered' => $number_filter_row, 'resArr' => $resArr);
+
+
+/*
+
 		$data = array();
 
 		for ($i=0; $i < count($resArr); $i++) { 
@@ -181,13 +189,8 @@ class QueryGenerico{
 		 	"data"    => $data
 		);
 
-
-		$stmt->close();
-		$mysqli->close();
-
 		echo json_encode($output);
-
-
+		*/
 
 	}
 
@@ -209,7 +212,7 @@ class QueryGenerico{
 		$stmt->execute();
 
 		$stmt->store_result();
-
+		
 		// Obtención de los resultados.
 		return $stmt->num_rows;
 	}
@@ -218,6 +221,8 @@ class QueryGenerico{
 
 	public function read(){
 
+		// Obtención del objecto de la conexión mysqli
+		$mysqli = $this->db->getDB();
 
 		// Query
 		$query = "SELECT " . $this->select . " FROM " . $this->table;
@@ -225,8 +230,12 @@ class QueryGenerico{
 		if($this->where != null){
 			$query .= " WHERE " . $this->where;
 		}
+/*
+		echo "<br><br>";
+		echo "Query: " . $query;
 
-
+		echo "<br><br>";
+*/
 		// Preparación del statement.
 		$stmt = $mysqli->prepare($query);
 
@@ -395,6 +404,10 @@ class QueryGenerico{
 
 	public function getParamsValues(){
 		return $this->paramsValues;
+	}
+
+	public function getWhere(){
+		return $this->where;
 	}
 
 	public function closeConnection(){

@@ -1612,3 +1612,17 @@ ALTER TABLE `Web_Pregunta`
   ADD CONSTRAINT `Web_Pregunta_preguntaID_fk2` FOREIGN KEY (`preguntaID`) REFERENCES `Pregunta` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
+
+
+
+
+
+CREATE VIEW `ListarClientesView` AS (
+    SELECT  `zona`.`id` AS `id`, 
+            `empresa`.`id` AS `empresaID`, `empresa`.`nombre` AS `empresa`,
+            `cliente`.`id` AS `clienteID`, CONCAT(`cliente`.`nombre`, ' ', `cliente`.`apellidoP`) AS `nombres`,
+            `cliente`.`correo` 
+    FROM `cliente` 
+    JOIN `empresa` ON `empresa`.`id` = `cliente`.`empresaID`
+    LEFT JOIN `zona` ON `zona`.`id` = `empresa`.`zonaID`
+);
