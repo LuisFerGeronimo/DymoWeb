@@ -176,6 +176,18 @@
             
         });
 
+
+        /* Obtener los datos de la fila al apretar "Detalles" */
+        // On Click Listener: Al apretar el botón "Detalles" de alguna fila...
+        $('#content').on( 'click', '.detalles', function () {
+            //console.log(table.row($( this ).closest( "tr" )).data());
+            // Se obtienen los datos de la fila que se insertaron al momento de la instancia del DataTables.
+            //  - El objeto que se obtiene es del mismo tipo del que se recibió del archivo ajax -> url que se puso en el DataTables.
+            llenarModal(table.row($( this ).closest( "tr" )).data() );
+            // Se muestra el modal con los formularios
+            $('#modal-form').modal('show');
+        });
+
         function prueba(rowData){
 
         }
@@ -196,58 +208,57 @@
 
             var parsedArray = obternerParsedArray(datosDeFila);
 
-            console.log(parsedArray);
+            //console.log(parsedArray);
 
 
             // Variable donde se guardan las tablas a las que se van a consultar los detalles.
             // Las tablas son las mismas que los 'tabs' que aparecen en el Modal.
             var tablasADetallar = result['tablasADetallar'];
-            var tablasADetallarFinal = new Array();
-            var tablasDependientes = new Array();
-            var tablasEvaluadas = new Array();
+            var tablasADetallarFinal = [];
+            var tablasDependientes = [];
+            var tablasEvaluadas = [];
             // Array auxiliar para almacenar {tabla, id, llaveForanea, select} y transferirla al array final ('tablasADetallarFinal')
-            var helperArray = new Array();
+            var helperArray = [];
 
 
             $('#modalCenterTitle .text-muted').html('- Zona [' + $(datosDeFila[0]).attr('data-id') + ']');
 
-            // Almacenar la tabla que se evalua temporalmente
+            // Variables auxiliares para acortar código
             var tabla;
-            // Almacenar el id de la tabla que se evalua temporalmente
             var id;
 
 
             for (var i = 0; i < tablasADetallar.length; i++) {
-                console.log("I: " + i);
+                //console.log("I: " + i);
 
 
                 if(jQuery.inArray(tablasADetallar[i]['tabla'], tablasEvaluadas)===-1){
                     if(tablasADetallar[i]['id'] === null){
 
                         tabla = tablasADetallar[i]['tabla'];
-                        console.log("Tabla: " + tabla);
+                        //console.log("Tabla: " + tabla);
 
                         for (var j = 0; j < parsedArray.length; j++) {
-                            console.log("J: " + j);
+                            //console.log("J: " + j);
 
                             if($(parsedArray[j]).attr('data-column').toLowerCase() === tabla.toLowerCase()){
-                                helperArray = new Array();
+                                helperArray = [];
 
                                 id = $(parsedArray[j]).attr('data-id');
 
                                 helperArray['tabla'] = tabla;
 
                                 helperArray['id'] = id;
-                                console.log("ID: " + id);
+                                //console.log("ID: " + id);
 
                                 helperArray['llaveForanea'] = tablasADetallar[i]['llaveForanea'];
-                                console.log("LlaveForanea: " + tablasADetallar[i]['llaveForanea']);
+                                //console.log("LlaveForanea: " + tablasADetallar[i]['llaveForanea']);
 
                                 helperArray['select'] = tablasADetallar[i]['select'];
-                                console.log("Select: " + tablasADetallar[i]['select']);
+                                //console.log("Select: " + tablasADetallar[i]['select']);
 
-                                console.log("Helper Array: ");
-                                console.log(helperArray);
+                                //console.log("Helper Array: ");
+                                //console.log(helperArray);
 
                                 // Se añade 'helperAray' a 'tablasADetallarFinal'
                                 tablasADetallarFinal.push(helperArray);
@@ -256,7 +267,7 @@
                             }
                         }
                     } else {
-                        helperArray = new Array();
+                        helperArray = [];
 
                         helperArray['tabla'] = tablasADetallar[i]['tabla'];
                         helperArray['id'] = tablasADetallar[i]['id'];
@@ -270,13 +281,13 @@
                 }
             }
 
-
+/*
             console.log(tablasADetallar);
             console.log(tablasADetallarFinal);
             console.log(tablasDependientes);
             console.log(helperArray);
-
-
+*/
+            // Obtener los datos de la Tablas Dependientes.
             for (var i = 0; i < tablasDependientes.length; i++) {
 
                 id = tablasDependientes[i]['id'];
@@ -285,7 +296,7 @@
                 for (var j = 0; j < parsedArray.length; j++) {
 
                     if($(parsedArray[j]).attr('data-column').toLowerCase() === id.toLowerCase()){
-                        helperArray = new Array();
+                        helperArray = [];
 
                         helperArray['tabla'] = tablasDependientes[i]['tabla'];
                         helperArray['id'] = $(parsedArray[j]).attr('data-id');
@@ -299,14 +310,95 @@
                 }
             }
 
+
             console.log(tablasADetallarFinal);
 
+
+
+            var where;
+            var inputs;
+            var valoresInput = [];
+            var jQuerySelector;
+            var columnas;
+
+            // Obtener los valores de cada tabla y asignar los valores a cada input de cada tab del Modal.
+            for (var i = 0; i < tablasADetallarFinal.length; i++) {
+
+
+                if(tablasADetallarFinal[i]['llaveForanea'] !== null){
+                    where = tablasADetallarFinal[i]['llaveForanea'] + ' = ?';
+                } else {
+                    where = 'id = ?';
+                }
+                
+/*                valoresInput = obtenerDetalles(
+                    tablasADetallarFinal[i]['tabla'],   // Tabla (e.g. Cliente)
+                    tablasADetallarFinal[i]['select'],  // Select (e.g. 'nombre, apellidoP, apellidoM')
+                    where,                              // Where (e.g. id = ?)
+                    tablasADetallarFinal[i]['id']       // id (e.g. 2),
+                );
+*//*
+                console.log("TABLA: ");
+                console.log(tablasADetallarFinal[i]['tabla']);
+                console.log("SELECT: ");
+                console.log(tablasADetallarFinal[i]['select']);
+                console.log("WHERE: ");
+                console.log(where);
+                console.log("ID: ");
+                console.log(tablasADetallarFinal[i]['id']);
+                
+*/
+
+                obtenerDetalles(
+                    tablasADetallarFinal[i]['tabla'],
+                    tablasADetallarFinal[i]['select'],
+                    where,
+                    tablasADetallarFinal[i]['id'],
+                    i, 
+                    function(i, valoresInput,){
+
+
+                        columnas = tablasADetallarFinal[i]['select'].split(" ").join("").split(',');
+
+                        if(valoresInput != null){
+                            console.log("tablasADetallarFinal[i]['tabla']: ");
+                            console.log(tablasADetallarFinal[i]['tabla']);
+
+                            console.log("Valores Input: ");
+                            console.log(valoresInput);
+                            console.log("[i]: ");
+                            console.log(i);
+                            //console.log("tablasADetallarFinal[i]: ");
+                            //console.log(tablasADetallarFinal[i]);
+
+
+                            console.log("Columnas Array: ");
+                            console.log(columnas);
+
+                            //console.log("ValoresInput: ");
+                            //console.log(valoresInput);
+
+                            $('div[id='+tablasADetallarFinal[i]['tabla']+'] #mensaje-'+tablasADetallarFinal[i]['tabla']).html('');
+                            for (var j = 0; j < columnas.length; j++) {
+                                $('#modal-form form[id=form-' + tablasADetallarFinal[i]['tabla'] + ']').find("input[id=" + columnas[j] + "]").val(valoresInput[columnas[j]]);
+                                
+                            }
+                        } else {
+                            $('div[id='+tablasADetallarFinal[i]['tabla']+'] #mensaje-'+tablasADetallarFinal[i]['tabla']).html('Sin datos asignados. Favor de asignarlos.');
+                            for (var k = 0; k < columnas.length; k++) {
+                                $('#modal-form form[id=form-' + tablasADetallarFinal[i]['tabla'] + ']').find("input[id=" + columnas[k] + "]").val('');
+                                
+                            }
+
+                        }
+                    }
+                );
+
+            }
+
+        }
+
     </script>
-
-
-
-
-
 
 
 
@@ -324,20 +416,36 @@
         // FUNCIONES DE LA BASE DE DATOS
 
         // Obtener un JSON con los datos de una tabla por medio de un ID
-        function selectTableByID(table, select, id){
+        function obtenerDetalles(table, select, where, id, i, callback){
 
             $.ajax({
                 type: "POST",
                 url: 'obtenerDetalles.php',
+                //async: false,
                 data: 
                     {
                         table: table,
                         select: select,
+                        where: where,
                         id: id
                     },
                 dataType:"json",
                 success: function(data) {
-                    return data;
+                    var valoresInput = [];
+                    console.log("AJAX DATA:");
+                    //console.log(data);
+                    //console.log(data);
+                    //console.log(data['data']);
+                    console.log(data['data'][0]);
+                    //callback(data['data'][0]);
+
+                    //console.log("Aquí 'tamos");
+
+                    valoresInput = data['data'][0];
+
+                    callback(i, valoresInput);
+                    
+                    
                 }/*,
                 error: function (xhr, status, error) { 
                     console.log("Xhr: " + xhr);
@@ -535,16 +643,6 @@
                     // Se le asigna una clase de Bootstrap al div que muestra el mensaje "Procesando..."
                     $('#tabla_processing').addClass('bg-info');
 
-                    /* Obtener los datos de la fila al apretar "Detalles" */
-                    // On Click Listener: Al apretar el botón "Detalles" de alguna fila...
-                    $('#tabla tbody tr').on( 'click', '.detalles', function () {
-                        //console.log(table.row($( this ).closest( "tr" )).data());
-                        // Se obtienen los datos de la fila que se insertaron al momento de la instancia del DataTables.
-                        //  - El objeto que se obtiene es del mismo tipo del que se recibió del archivo ajax -> url que se puso en el DataTables.
-                        llenarModal(table.row($( this ).closest( "tr" )).data() );
-                        // Se muestra el modal con los formularios
-                        $('#modal-form').modal('show');
-                    });
 
                     // Añadir la clase .table-responsive al div que contiene la tabla
                     $("#tabla").parent().addClass("table-responsive");

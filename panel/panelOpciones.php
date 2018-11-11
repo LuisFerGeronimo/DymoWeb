@@ -35,7 +35,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
                         'tabla' => 'direccion', 
                         'id' => 'empresa', 
                         'llaveForanea' => 'empresaID', 
-                        'select' => 'estado, municipio, codigoPostal, colonia, calle, numeroExt, numeroInt'
+                        'select' => 'estado, municipio, cp, colonia, calle, numeroExt, numeroInt'
                     )
                 );
 
@@ -60,10 +60,13 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
+
+
                         <div class="tab-pane show active" id="cliente" role="tabpanel" aria-labelledby="cliente-tab">
+                            <p class="text-danger" id="mensaje-cliente"></p>
 							<form class="needs-validation px-0 px-sm-3 pb-0 pb-sm-1 pt-2" id="form-cliente" autocomplete="off"  novalidate>
                                 <!-- PASO 1 - CUENTA -->
-		                        <div id="paso-1">
+		                        <div id="paso-1" class="">
 		                            <p class="text-danger" id="resultCuenta"></p>
 
 		                            <div class="form-group">
@@ -72,7 +75,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 		                                    <div class="input-group-prepend">
 		                                        <div class="input-group-text"><i class="fas fa-user"></i></div>
 		                                    </div>
-		                                    <input type="text" class="form-control" id="nombres" name="nombres" placeholder="Juan Carlos" maxlength="<?php echo $maxNombre; ?>" readonly required>
+		                                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Juan Carlos" maxlength="<?php echo $maxNombre; ?>" readonly required>
 		                                    <div class="invalid-feedback">
 		                                        Ingrese su nombre.
 		                                    </div>
@@ -115,7 +118,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 		                                    <div class="input-group-prepend">
 		                                        <div class="input-group-text"><i class="fas fa-at"></i></div>
 		                                    </div>
-		                                    <input type="email" class="form-control" id="correo-cuenta" name="correo-cuenta" placeholder="nombre@ejemplo.com" maxlength="<?php echo $maxCorreo; ?>" readonly required>
+		                                    <input type="email" class="form-control" id="correo" name="correo" placeholder="nombre@ejemplo.com" maxlength="<?php echo $maxCorreo; ?>" readonly required>
 		                                    <div class="invalid-feedback">
 		                                        Ingrese un correo válido
 		                                    </div>
@@ -128,7 +131,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 		                                    <div class="input-group-prepend">
 		                                        <div class="input-group-text"><i class="fas fa-phone"></i></div>
 		                                    </div>
-		                                    <input type="text" class="form-control" id="telefono-cuenta" name="telefono-cuenta" placeholder="777 1234 567" maxlength="<?php echo $maxTelefono; ?>" autocomplete="off" readonly required>
+		                                    <input type="text" class="form-control" id="telefono" name="telefono" placeholder="777 1234 567" maxlength="<?php echo $maxTelefono; ?>" autocomplete="off" readonly required>
 		                                    <div class="invalid-feedback">
 		                                        Ingrese su número de teléfono.
 		                                    </div>
@@ -145,6 +148,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                         <!--TAB EMPRESA-->
                         <div class="tab-pane" id="empresa" role="tabpanel" aria-labelledby="empresa-tab">
+                            <p class="text-danger" id="mensaje-empresa"></p>
 							<form class="needs-validation px-0 px-sm-3 pb-0 pb-sm-1 pt-2" id="form-empresa" autocomplete="off"  novalidate>
 
                         		<!-- PASO 2 - EMPRESA -->
@@ -156,7 +160,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fas fa-user"></i></div>
                                             </div>
-                                            <input type="text" class="form-control" id="empresa" name="empresa" placeholder="Distribuidora y Mayorista Omega S.A de C.V." maxlength="<?php echo $maxEmpresa; ?>" readonly required>
+                                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Distribuidora y Mayorista Omega S.A de C.V." maxlength="<?php echo $maxEmpresa; ?>" readonly required>
                                             <div class="invalid-feedback">
                                                 Ingrese su empresa.
                                             </div>
@@ -169,7 +173,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fas fa-phone"></i></div>
                                             </div>
-                                            <input type="text" class="form-control" id="telefono-empresa" name="telefono-empresa" placeholder="777 1234 567" maxlength="<?php echo $maxTelefono; ?>" autocomplete="off" readonly required>
+                                            <input type="text" class="form-control" id="telefono" name="telefono" placeholder="777 1234 567" maxlength="<?php echo $maxTelefono; ?>" autocomplete="off" readonly required>
                                             <div class="invalid-feedback">
                                                 Ingresa el número de teléfono de tu empresa.
                                             </div>
@@ -183,7 +187,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fas fa-at"></i></div>
                                             </div>
-                                            <input type="email" class="form-control" id="correo-empresa" name="correo-empresa" placeholder="nombre@ejemplo.com" maxlength="<?php echo $maxCorreo; ?>" readonly required>
+                                            <input type="email" class="form-control" id="correo" name="correo" placeholder="nombre@ejemplo.com" maxlength="<?php echo $maxCorreo; ?>" readonly required>
                                             <div class="invalid-feedback">
                                                 Ingrese un correo válido
                                             </div>
@@ -201,6 +205,8 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 						<!-- TAB DIRECCION -->
                         <div class="tab-pane" id="direccion" role="tabpanel" aria-labelledby="direccion-tab">
+
+                            <p class="text-danger" id="mensaje-direccion"></p>
 							
 							<form class="needs-validation px-0 px-sm-3 pb-0 pb-sm-1 pt-2" id="form-direccion" autocomplete="off"  novalidate>
 								<!-- PASO 3 - DIRECCION -->
@@ -243,7 +249,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fas fa-user"></i></div>
                                             </div>
-                                            <input type="text" class="form-control" id="codigo-postal" name="codigo-postal" placeholder="Código Postal" maxlength="<?php echo $maxCodigoPostal; ?>" readonly required>
+                                            <input type="text" class="form-control" id="cp" name="cp" placeholder="Código Postal" maxlength="<?php echo $maxCodigoPostal; ?>" readonly required>
                                             <div class="invalid-feedback">
                                                 Ingrese el códigio postal.
                                             </div>
@@ -287,7 +293,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text"><i class="fas fa-user"></i></div>
                                                 </div>
-                                                <input type="text" class="form-control" id="numero-ext" name="numero-ext" placeholder="Número exterior" maxlength="<?php echo $maxNumerosExtInt; ?>" readonly required>
+                                                <input type="text" class="form-control" id="numeroExt" name="numeroExt" placeholder="Número exterior" maxlength="<?php echo $maxNumerosExtInt; ?>" readonly required>
                                                 <div class="invalid-feedback">
                                                     Ingrese el número exterior.
                                                 </div>
@@ -301,7 +307,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text"><i class="fas fa-user"></i></div>
                                                 </div>
-                                                <input type="text" class="form-control" id="numero-int" name="numero-int" placeholder="Número interior" maxlength="<?php echo $maxNumerosExtInt; ?>" readonly required>
+                                                <input type="text" class="form-control" id="numeroInt" name="numeroInt" placeholder="Número interior" maxlength="<?php echo $maxNumerosExtInt; ?>" readonly required>
                                                 <div class="invalid-feedback">
                                                     Ingrese el número interior.
                                                 </div>

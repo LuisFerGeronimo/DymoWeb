@@ -18,7 +18,7 @@
 
 			$queryGenerico->setTable($_POST['table']);
 			$queryGenerico->setSelect($_POST['select']);
-			$queryGenerico->setWhere('id = ?');
+			$queryGenerico->setWhere($_POST['where']);
 			$queryGenerico->setParamsType(array('i'));
 			$queryGenerico->setParamsValues(array(intval($_POST['id'])));
 			
