@@ -18,7 +18,26 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
     			// Obtener el contenido de otro archivo en un string. En este caso el contenido es la tabla.
 				$tabla = implode('', file('../includes/tablas/clientes-tabla.php'));
 
-				$tablasDetalles = array('cliente', 'empresa', 'direccion');
+				$tablasADetallar = array(
+                    array(
+                        'tabla' => 'cliente',   
+                        'id' => null,      
+                        'llaveForanea' => null, 
+                        'select' => 'nombre, apellidoP, apellidoM, correo, telefono'
+                    ), 
+                    array(
+                        'tabla' => 'empresa',   
+                        'id' => null,      
+                        'llaveForanea' => null, 
+                        'select' => 'nombre, telefono, correo'
+                    ),
+                    array(
+                        'tabla' => 'direccion', 
+                        'id' => 'empresa', 
+                        'llaveForanea' => 'empresaID', 
+                        'select' => 'estado, municipio, codigoPostal, colonia, calle, numeroExt, numeroInt'
+                    )
+                );
 
 				$columnas = array(
 					array("data" => "0"),
@@ -42,7 +61,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane show active" id="cliente" role="tabpanel" aria-labelledby="cliente-tab">
-							<form class="needs-validation px-0 px-sm-3 pb-0 pb-sm-1 pt-2" id="form-registro" autocomplete="off"  novalidate>
+							<form class="needs-validation px-0 px-sm-3 pb-0 pb-sm-1 pt-2" id="form-cliente" autocomplete="off"  novalidate>
                                 <!-- PASO 1 - CUENTA -->
 		                        <div id="paso-1">
 		                            <p class="text-danger" id="resultCuenta"></p>
@@ -126,7 +145,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                         <!--TAB EMPRESA-->
                         <div class="tab-pane" id="empresa" role="tabpanel" aria-labelledby="empresa-tab">
-							<form class="needs-validation px-0 px-sm-3 pb-0 pb-sm-1 pt-2" id="form-registro" autocomplete="off"  novalidate>
+							<form class="needs-validation px-0 px-sm-3 pb-0 pb-sm-1 pt-2" id="form-empresa" autocomplete="off"  novalidate>
 
                         		<!-- PASO 2 - EMPRESA -->
                                 <div id="paso-2">
@@ -183,7 +202,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 						<!-- TAB DIRECCION -->
                         <div class="tab-pane" id="direccion" role="tabpanel" aria-labelledby="direccion-tab">
 							
-							<form class="needs-validation px-0 px-sm-3 pb-0 pb-sm-1 pt-2" id="form-registro" autocomplete="off"  novalidate>
+							<form class="needs-validation px-0 px-sm-3 pb-0 pb-sm-1 pt-2" id="form-direccion" autocomplete="off"  novalidate>
 								<!-- PASO 3 - DIRECCION -->
                                 <div id="paso-3">
 
@@ -307,7 +326,8 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 					'dataFetchFile' => 'listarClientes.php',
 					'columnas' => $columnas,
 					'modalBody' => $modalBody,
-					'modalFooter' => $modalFooter
+					'modalFooter' => $modalFooter,
+					'tablasADetallar' => $tablasADetallar
 				);
 				break;
 			case 'empresas-lista':

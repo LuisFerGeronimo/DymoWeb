@@ -1,5 +1,5 @@
-<?php include_once 'db.php';?>
-<?php include_once 'model/queryGenerico.php';?>
+<?php include_once '../includes/db.php';?>
+<?php include_once '../includes/model/queryGenerico.php';?>
 <?php 
 	/*SELECT.PHP: Archivo PHP para hacer un select simple */
 
@@ -7,22 +7,23 @@
 	$results;
 	
 	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-		if(isset($_POST['table']) && isset($_POST['select'])){
-
+		if( isset($_POST['table']) && 
+			isset($_POST['select']) && 
+			isset($_POST['where']) && 
+			isset($_POST['id'])
+		){
 
 
 			$queryGenerico = new QueryGenerico();
 
 			$queryGenerico->setTable($_POST['table']);
 			$queryGenerico->setSelect($_POST['select']);
-			$queryGenerico->setParamsType(array());
-			$queryGenerico->setParamsValues(array());
-
-			if(isset($_POST['where'])){
-				$queryGenerico->setWhere($_POST['where']);
-			}
+			$queryGenerico->setWhere('id = ?');
+			$queryGenerico->setParamsType(array('i'));
+			$queryGenerico->setParamsValues(array(intval($_POST['id'])));
 			
-			$results = $queryGenerico->read();
+			
+			$results['data'] = $queryGenerico->read();
 
 			$results['match'] = 'true';
 		} else {

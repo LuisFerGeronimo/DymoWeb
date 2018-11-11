@@ -41,197 +41,15 @@
     <link rel="stylesheet" href="../assets/css/regular.css">
     <link rel="stylesheet" href="../assets/css/fontawesome.css">
 
+    <!-- Estilos de DataTables -->
     <link rel="stylesheet" type="text/css" href="../assets/DataTables/datatables.css"/>
   
-    
-
-
-    <style>
-        @font-face {
-            font-family: 'WorkSans-Bold';
-            src: url(../assets/fonts/WorkSans-Bold.ttf);
-        }
-
-        @font-face {
-            font-family: 'WorkSans-ExtraLight';
-            src: url(../assets/fonts/WorkSans-ExtraLight.ttf);
-        }
-        @font-face {
-            font-family: 'WorkSans-Light';
-            src: url(../assets/fonts/WorkSans-Light.ttf);
-        }
-        @font-face {
-            font-family: 'WorkSans-Medium';
-            src: url(../assets/fonts/WorkSans-Medium.ttf);
-        }
-        @font-face {
-            font-family: 'WorkSans-Regular';
-            src: url(../assets/fonts/WorkSans-Regular.ttf);
-        }
-
-        @font-face {
-            font-family: 'WorkSans-SemiBold';
-            src: url(../assets/fonts/WorkSans-SemiBold.ttf);
-        }
-
-        body{
-            background-color: #4d555e
-        }
+    <!-- Estilos propios del panel -->
+    <link rel="stylesheet" type="text/css" href="../assets/css/panel-style.css"/>
         
-        a {
-            color: #fff;
-            list-style: none;
-            text-decoration: none;
-        }
-
-        .active-sidebar {
-            /*background-color: #2d353d !important;*/
-            background-color: white !important;
-            color: #343A40 !important;
-            border: 0;
-            font-family: 'Worksans-SemiBold' !important;
-        }
-
-        .nav-link{
-            border-top: 1px solid #272b30;
-            font-family: 'WorkSans-SemiBold';
-
-        }
-
-        .nav-link.active {
-            color:#495057;
-            background-color: #f2f2f2 !important;
-            border-color: #dee2e6 #dee2e6 #fff;
-        }
-
-        .nav-link.tab-link{
-            background-color: white;
-            color: black;
-
-        }
-
-        .nav-link.tab-link:hover{
-
-        }
-
-        .nav-link:hover{
-            background-color: #f2f2f2 !important;
-            color: black;
-        }
-
-        .list-group{
-            border:0;
-            border-radius: 0;
-
-        }
-
-        .list-group-item{
-            background-color: #3E4449;
-            padding-left: 30px;
-            border:0;
-            border-radius: 0;
-        }
-
-        .list-group-item:first-child{
-            border-top-left-radius: 0;
-            border-top-right-radius: 0;
-        }
-
-        .list-group-item:last-child {
-            border-bottom-right-radius: 0;
-            border-bottom-left-radius: 0;
-        }
-
-        .list-group-item-action{
-            color: white;
-            font-family: 'WorkSans-Light';
-        }
-
-        .list-group-item-action:hover{
-            background-color: #2d353d;
-            color: white;
-        }
-
-        #content{
-            position:relative;
-            overflow-y: scroll;
-        }
-
-        #over-sidebar {
-            position:relative;
-            overflow-y: scroll;
-        }
-
-        .sidebar-header-items > li > a{
-            padding: 5px 0;
-            
-        }
-
-        #sidebar .nav-item > a{
-            background-color: #343A40;
-            
-        }
-
-
-        #dismiss {
-            width: 35px;
-            height: 35px;
-            line-height: 35px;
-            background: #343A40;
-        /*    position: absolute;
-            top: 20px;
-            right: 10px;
-        */  
-            cursor: pointer;
-            -webkit-transition: all 0.3s;
-            -o-transition: all 0.3s;
-            transition: all 0.3s;
-            color: white;
-        }
-
-        #dismiss:hover {
-            background: #fff;
-            color: #343A40;
-        }
-
-        table.dataTable tbody td {
-          vertical-align: top;
-        }
-
-
-
-    /*************************************************/
-    /*************************************************/
-    /*************************************************/
-    /*************** SCROLLBAR SETTINGS **************/
-
-
-        /* width */
-        ::-webkit-scrollbar {
-            width: 7px;
-            height: 10px;
-        }
-
-        /* Track */
-        ::-webkit-scrollbar-track {
-            background: #343A40; 
-        }
-
-        /* Handle */
-        ::-webkit-scrollbar-thumb {
-            background: #4e5b68; 
-        }
-
-        /* Handle on hover */
-        ::-webkit-scrollbar-thumb:hover {
-            background: white; 
-        }
-
-
-
-    </style>
-
+    <!-- Titulo -->
     <title>Dymo - Panel de Control</title>
+
 </head>
 <body>
 
@@ -257,7 +75,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalCenterTitle">Modal title</h5>
+                    <h5 class="modal-title" id="modalCenterTitle"><span id="mainTitle">Modal title</span><span class="text-muted"></span></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -278,177 +96,303 @@
 
 
 
+
+
+
+
+
+
+
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="../assets/js/jquery-3.3.1.js"></script>
     <script src="../assets/js/popper.js"></script>
     <script src="../assets/js/bootstrap.js"></script>
 
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
-
-
+    <!-- DataTables JS -->
     <script type="text/javascript" src="../assets/DataTables/datatables.js"></script>
 
+
+
+
+
+
+
+
+
+
     <script>
-        // GLOBAL VARIABLES
+        /* VARIABLES GLOBALES */
+        // result: Almacena el resultado que se obtiene de la petición ajax al archivo panelOpciones.php
         var result;
+
+        // table: Almacena la instancia que se obtiene del plugin DataTables.
         var table;
+
+        // tablasDetalles: Almacena las tablas que se necesian detallas en el modal al presionar "Detalles".
         var tablasDetalles;
     </script>
 
+
+
+
+
+
+
+
+
+
+
     <script>
-        function eliminarFila(id){
-            switch(id){
-                case 1:
-                    break;
-            }
-        }
-    </script>
 
-    <script>
-        /*$(document).ready(function(){
-
-            $.fn.dataTable.ext.buttons.editar = {
-                text: '<i class="far fa-edit fa-lg"></i>',
-                action: function ( e, dt, node, config ) {
-                    // Modal con formulario
-                    $('#modal-form').find('.modal-body').html('Estás editando');
-                    $('#modal-form').modal('show')
-
-                }
-            };
-
-            $.fn.dataTable.ext.buttons.eliminar = {
-                text: '<i class="far fa-trash-alt fa-lg"></i>',
-                action: function ( e, dt, node, config ) {
-                    // Modal con formulario
-                    $('#modal-form').find('.modal-body').html('Estás editando');
-                    $('#modal-form').modal('show');
-                }
-            };
-        });*/
+        /****************************************************************************************/
+        /****************************************************************************************/
+        /****************************************************************************************/
+        /****************************** FUNCIONES REFERENTES AL MODAL ***************************/
 
 
-   
-
+        // On click listener para el boton "Editar" del Footer del Modal (.modal-footer).
         $(".modal-footer").on('click', '#modal-btn-editar', function(){
-            editarModal();
-        });
-
-        $(".modal-footer").on('click', '#modal-btn-guardar', function(){
-            guardarModal();
-        });
-
-        function llenarModal(rowData){
-            var columns = [];
-            var tables = [];
-            var table;
-            var tablasDetalles = result['tablasDetalles'];
-
-            $('#modalCenterTitle').append('<span class="text-muted"> - Zona [' + $(rowData[0]).attr('data-id') + ']</span>');
-
-
-            for (var i = 0; i < rowData.length-1; i++) {
-                columns[i] = $.parseHTML(rowData[i]);
-
-                if(columns[i])
-
-                table = $(columns[i]).attr('data-column');
-
-                if(table.toLowerCase() === 'zona'){
-                    
-                }
-
-                if(jQuery.inArray(table, tables ) == -1 ){
-                    tables.push(table);
-                }
-            }
-
-            console.log(tables);
-
-
-
-
-
-            //console.log('Data-Column: ' + $(div).attr('data-column'));
-            //console.log('Data-ID: ' + $(div).attr('data-id'));
-            //console.log(dom_nodes);
-
-        }
-
-        function editarModal(){
+            // Al dar click al boton de "Editar"...
+            // ... se muestra el botón de "Guardar Cambios", quitándole la clase de "d-none" de Bootstrap
             $('#modal-btn-guardar').removeClass('d-none');
+            // Se le PERMITE al usuario modificar el contenido de todos los input, QUITÁNDOLES el atributo de SÓLO LECTURA
             $('.modal-body').find('input').attr('readonly', false); 
             
+            //... se esconde el botón "Editar", añadiéndole la clase de "d-none-" de Bootstrap
             $('#modal-btn-editar').addClass('d-none');
-        }
+        });
 
-        function guardarModal(){
-            $('.modal-body').find('input').attr('readonly', true); 
-            
-            $('#modal-btn-guardar').addClass('d-none');
+        // On click listener para el boton "Guardar Cambios" del Footer del Modal (.modal-footer).
+        $(".modal-footer").on('click', '#modal-btn-guardar', function(){
+            // Al dar click al boton de "Guardar Cambios"...
+            // ... se muestra el botón de "Editar", quitándole la clase de "d-none" de Bootstrap
             $('#modal-btn-editar').removeClass('d-none');
+            // Se le PROHIBE al usuario modificar el contenido de todos los input, cambiándolos a SÓLO LECTURA
+            $('.modal-body').find('input').attr('readonly', true); 
+            // Se esconde el botón de "Gurdar Cambios", añadiéndole la clase de "d-none-" de Bootstrap
+            $('#modal-btn-guardar').addClass('d-none');
+            
+        });
+
+        function prueba(rowData){
 
         }
-    
+
+        function obternerParsedArray(rowData){
+            var parsed = [];
+
+            for (var i = 0; i < rowData.length-1; i++) {
+                parsed[i] = $.parseHTML(rowData[i]);
+            }
+
+            return parsed;
+
+        }
+
+
+        function llenarModal(datosDeFila){
+
+            var parsedArray = obternerParsedArray(datosDeFila);
+
+            console.log(parsedArray);
+
+
+            // Variable donde se guardan las tablas a las que se van a consultar los detalles.
+            // Las tablas son las mismas que los 'tabs' que aparecen en el Modal.
+            var tablasADetallar = result['tablasADetallar'];
+            var tablasADetallarFinal = new Array();
+            var tablasDependientes = new Array();
+            var tablasEvaluadas = new Array();
+            // Array auxiliar para almacenar {tabla, id, llaveForanea, select} y transferirla al array final ('tablasADetallarFinal')
+            var helperArray = new Array();
+
+
+            $('#modalCenterTitle .text-muted').html('- Zona [' + $(datosDeFila[0]).attr('data-id') + ']');
+
+            // Almacenar la tabla que se evalua temporalmente
+            var tabla;
+            // Almacenar el id de la tabla que se evalua temporalmente
+            var id;
+
+
+            for (var i = 0; i < tablasADetallar.length; i++) {
+                console.log("I: " + i);
+
+
+                if(jQuery.inArray(tablasADetallar[i]['tabla'], tablasEvaluadas)===-1){
+                    if(tablasADetallar[i]['id'] === null){
+
+                        tabla = tablasADetallar[i]['tabla'];
+                        console.log("Tabla: " + tabla);
+
+                        for (var j = 0; j < parsedArray.length; j++) {
+                            console.log("J: " + j);
+
+                            if($(parsedArray[j]).attr('data-column').toLowerCase() === tabla.toLowerCase()){
+                                helperArray = new Array();
+
+                                id = $(parsedArray[j]).attr('data-id');
+
+                                helperArray['tabla'] = tabla;
+
+                                helperArray['id'] = id;
+                                console.log("ID: " + id);
+
+                                helperArray['llaveForanea'] = tablasADetallar[i]['llaveForanea'];
+                                console.log("LlaveForanea: " + tablasADetallar[i]['llaveForanea']);
+
+                                helperArray['select'] = tablasADetallar[i]['select'];
+                                console.log("Select: " + tablasADetallar[i]['select']);
+
+                                console.log("Helper Array: ");
+                                console.log(helperArray);
+
+                                // Se añade 'helperAray' a 'tablasADetallarFinal'
+                                tablasADetallarFinal.push(helperArray);
+                                tablasEvaluadas.push(tabla);
+                                break;
+                            }
+                        }
+                    } else {
+                        helperArray = new Array();
+
+                        helperArray['tabla'] = tablasADetallar[i]['tabla'];
+                        helperArray['id'] = tablasADetallar[i]['id'];
+                        helperArray['llaveForanea'] = tablasADetallar[i]['llaveForanea'];
+                        helperArray['select'] = tablasADetallar[i]['select'];
+
+
+                        tablasDependientes.push(helperArray);
+
+                    }
+                }
+            }
+
+
+            console.log(tablasADetallar);
+            console.log(tablasADetallarFinal);
+            console.log(tablasDependientes);
+            console.log(helperArray);
+
+
+            for (var i = 0; i < tablasDependientes.length; i++) {
+
+                id = tablasDependientes[i]['id'];
+                
+
+                for (var j = 0; j < parsedArray.length; j++) {
+
+                    if($(parsedArray[j]).attr('data-column').toLowerCase() === id.toLowerCase()){
+                        helperArray = new Array();
+
+                        helperArray['tabla'] = tablasDependientes[i]['tabla'];
+                        helperArray['id'] = $(parsedArray[j]).attr('data-id');
+                        helperArray['llaveForanea'] = tablasDependientes[i]['llaveForanea'];
+                        helperArray['select'] = tablasDependientes[i]['select'];
+
+                        // Se añade 'helperAray' a 'tablasADetallarFinal'
+                        tablasADetallarFinal.push(helperArray);
+
+                    }
+                }
+            }
+
+            console.log(tablasADetallarFinal);
+
     </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     <script>
 
+        // FUNCIONES DE LA BASE DE DATOS
+
+        // Obtener un JSON con los datos de una tabla por medio de un ID
+        function selectTableByID(table, select, id){
+
+            $.ajax({
+                type: "POST",
+                url: 'obtenerDetalles.php',
+                data: 
+                    {
+                        table: table,
+                        select: select,
+                        id: id
+                    },
+                dataType:"json",
+                success: function(data) {
+                    return data;
+                }/*,
+                error: function (xhr, status, error) { 
+                    console.log("Xhr: " + xhr);
+                    console.log("Xhr.responseText: " + xhr.responseText);
+                    console.log("Status: " + status);
+                    console.log("Error: " + error);
+                    var err = JSON.parse(xhr.responseText);
+                    console.log(err);
+                    console.log(err.error);
+                    alert(err.error); 
+                }*/
+            });
+        }
+
+
+    </script>
+
+
+
+
+
+
+
+
+    <!-- JavaScript del Panel para: -->
+    <!--  - Hacer el Sidebar más chico y viceversa -->
+    <!--  - Cambiar el ícono (la flechita hacia abajo/arriba) del dropdown al hacer click -->
+    <script src="../assets/js/panelSidebar.js"></script>
+
+
+
+
+
+
+
+    <!-- Script para obtener la información necesaria que se mostrará en el contenido (#content) -->
+    <script>
         $(document).ready(function(){
-
-
-            // FUNCIÓN PARA OCULTAR LA BARRA LATERAL Y HACERLA CHICA CON SÓLO ÍCONOS.
-            $('#dismiss').on('click', function(){
-                if($('#dismiss-arrow').hasClass('fa-arrow-left')){
-
-                    $('#over-sidebar').removeClass('col-7 col-sm-4 col-md-3 col-lg-2').addClass('pl-3 pt-2').css('width', '75px');
-                    $('.list-group-item').addClass('pl-3');
-                    $('.item-text').hide();
-                    $('.fa-caret-up, .fa-caret-down').hide();
-                    
-                    $('#dismiss').parent().closest('div').addClass('pl-2').parent().closest('div').removeClass('mr-0').addClass('mx-0');
-                    $('#dismiss-arrow').removeClass('fa-arrow-left').addClass('fa-arrow-right');
-
-                } else {
-
-                    $('#over-sidebar').addClass('col-7 col-sm-4 col-md-3 col-lg-2').removeClass('pl-3 pt-2').css('width', 'auto');
-                    $('.list-group-item').removeClass('pl-3');
-                    $('.item-text').show();
-                    $('.fa-caret-up, .fa-caret-down').show();
-
-                    $('#dismiss').parent().closest('div').removeClass('pl-2').parent().closest('div').addClass('mr-0').removeClass('mx-0');
-                    $('#dismiss-arrow').removeClass('fa-arrow-right').addClass('fa-arrow-left');
-                
-                }
-                
-            });
-
-
-            // Cambio de la flecha de dropdown
-            $('.nav-link').on('click', function(){
-                //if($('#dismiss-arrow').hasClass('fa-arrow-left')){ // Si no está oculto el sidebar... 
-                    if ($(this).find('.fa-caret-up')[0]){
-                        $(this).find('.fa-caret-up').addClass('fa-caret-down').removeClass('fa-caret-up');
-                    } else {
-                        $(this).find('.fa-caret-down').addClass('fa-caret-up').removeClass('fa-caret-down');
-                    }
-                //}
-            });
-
-
-
+            // On click listener para el
             $('a.list-group-item-action').on('click', function(){
+                // Quitarle la clase 'active' a cualquier link que lo tenga...
                 $('#sidebar .active-sidebar').removeClass("active-sidebar");
-
+                // ... y añadírsela al link que se le ha hecho click
                 $(this).addClass('active-sidebar');
 
-
+                // Obtener el id del link para saber qué información mostrarle al usuario.
                 var id = $(this).attr('id');
 
-
-
+                // Esta función de ajax nos ayuda a obtener:
+                // - El titulo del contenido,
+                // - El esqueleto de la tabla,
+                // - El array de columnas que se pondrán al DataTable,
+                // - ModalBody: El formulario que irá en el modal cuando se le da click en "Detalles",
+                // - ModalFooter: El footer del modal, y
+                // - El nombre del archivo donde se sacaran los datos de la tabla
                 $.ajax({
 
                     type: "GET",
@@ -457,20 +401,12 @@
                     dataType:"json",
                     success: function(data) {
 
-                        /*
-                        console.log(JSON.stringify(data['columnas']));
-                        console.log(data['columnas']);
-                        console.log("Titulo Contenido: " + data['tituloContenido']);
-                        console.log("Tabla String: " + data['tablaString']);
-                        console.log("Data Fetch File: " + data['dataFetchFile']);
-                        console.log("Columnas: " + data['columnas']);
-                        console.log(JSON.stringify(data['columnas']));*/
-
+                        // Se asigna el result a una variable global
                         result = data;
 
                         $('#content').html(result['tituloContenido'] + result['tablaString']);
                         var tituloContenido = $('#titulo-contenido').text().toLowerCase();
-                        $('#modalCenterTitle').html('Detalles de ' + tituloContenido);
+                        $('#modalCenterTitle #mainTitle').html('Detalles de ' + tituloContenido);
 
                         //switch(tituloContenido){
                           //  case 'clientes':
@@ -480,150 +416,142 @@
                         //}
                     },
 
-                    complete: function(data) {
-
-                        table = $('#tabla').DataTable({
-
-                            "processing": true,
-                            "serverSide": true,
-                            "order" : [],
-                            "ajax": {
-                                "url": result['dataFetchFile'],
-                                "type": "POST"/*,
-                                dataFilter: function(resp) {
-                                    console.log(resp);
-                                    // deserialize resp if needed.
-                                    // peel off the exta data and pass it on
-                                    // make sure the data for the table is the way datatable expects it
-                                    //return that data object for datatables use
-                                }*/
-                            },
-                            "columns": result['columnas'],
-                            "language": {
-                                "decimal":        "",
-                                "emptyTable":     "No hay datos disponibles en la tabla",
-                                "info":           "Mostrando _START_ - _END_ de _TOTAL_ entradas",
-                                "infoEmpty":      "Mostrando 0 - 0 de 0 entradas",
-                                "infoFiltered":   "(filtrado de _MAX_ entradas en total)",
-                                "infoPostFix":    "",
-                                "thousands":      ",",
-                                "lengthMenu":     "Mostrar _MENU_ entradas",
-                                "loadingRecords": "Cargando...",
-                                "processing":     "Procesando...",
-                                "search":         "Buscar:",
-                                "zeroRecords":    "No se encontró ningún registro",
-                                "paginate": {
-                                    "first":      "Primero",
-                                    "last":       "Último",
-                                    "next":       "Siguiente",
-                                    "previous":   "Anterior"
-                                }
-                            },
-                            "initComplete": function() {
-
-
-                                new $.fn.dataTable.Buttons( table, {
-                                    name: 'exportar',
-                                    buttons: [
-                                        {
-                                            extend: 'excel',
-                                            text: '<i class="fas fa-file-excel fa-lg text-success"></i>', 
-                                            exportOptions: {
-                                                columns: 'th:not(:last-child)'
-                                            }
-                                        },
-                                        {
-                                            extend:'pdf',
-                                            text: '<i class="fas fa-file-pdf fa-lg text-danger"></i>', 
-                                            exportOptions: {
-                                                columns: 'th:not(:last-child)'
-                                            }
-                                        },
-                                        { 
-                                            extend: 'print',
-                                            text: '<i class="fas fa-print fa-lg text-secondary"></i>', 
-                                            exportOptions: {
-                                                columns: 'th:not(:last-child)'
-                                            }
-                                        },
-                                        {
-                                            text: '<i class="fas fa-sync-alt fa-lg text-success"></i>',
-                                            action: function ( e, dt, node, config ) {
-                                                dt.ajax.reload();
-                                            }
-                                        }
-                                    ]
-                                });
-
-                                /*
-                                new $.fn.dataTable.Buttons( table, {
-                                    name: 'modificar',
-                                    buttons: [
-                                        {
-                                            text: '<i class='far fa-edit fa-lg'></i>',
-                                            action: function ( e, dt, node, config ) {
-                                                // Modal con formulario
-                                                $('#modal-form').find('.modal-body').html('Estás editando');
-                                                $('#modal-form').modal('show')
-
-                                            }
-                                        },
-                                        {
-                                            text: '<i class="far fa-trash-alt fa-lg"></i>',
-                                            action: function ( e, dt, node, config ) {
-                                                // Modal con formulario
-                                                $('#modal-form').find('.modal-body').html('Estás editando');
-                                                $('#modal-form').modal('show');
-                                            }
-                                        }
-                                    ]
-                                });*/
-
-                                 //table.buttons('exportar',null).container()
-                                   // .appendTo( $('div.dataTables_length:eq(0)', table.table().container()) );
-
-                                // Insertar div donde van los botones de exportar. Después del título del contenido.
-                                $('#titulo-contenido').after("<div class='text-center' id='div-exportar'></div>");
-
-                                // Insertar set de botones de exportar dentro del div.
-                                $('#div-exportar').html(table.buttons('exportar',null).container());
-
-                                // Poner el width en auto.
-                                table.buttons('exportar', null).container().css('width', 'auto');
-                                table.buttons('exportar', null).container().find('button').removeClass('btn-secondary').addClass('btn-light');
-
-                                $('#tabla_processing').addClass('bg-info');
-
-
-                                // Obtener datos de la fila seleccionada
-                                $('#tabla tbody tr').on( 'click', '.detalles', function () {
-                                    console.log(table.row($( this ).closest( "tr" )).data());
-                                    llenarModal(table.row($( this ).closest( "tr" )).data() );
-                                    $('#modal-form').modal('show');
-                                } );
-                                
-                            }
-                        });
-
-
-
-                        // Añadir la clase .table-responsive al div padre de la tabla
-                        $("#tabla").parent().addClass("table-responsive");
-                        
-
-
-                    }
+                    complete: function(data) {createDataTable();}
 
                 });
-
-
-
-
-
             });
-
-
         });
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+        function createDataTable(){
+            // Se le asigna a la variable global "table" la instancia creada del DataTable
+            // Se hace referencia al id del esqueleto de la tabla agregado al hacer click en un link del sidebar
+            table = $('#tabla').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "order" : [],
+                "ajax": {
+                    "url": result['dataFetchFile'],
+                    "type": "POST"/*,
+                    dataFilter: function(resp) {
+                        console.log(resp);
+                        // deserialize resp if needed.
+                        // peel off the exta data and pass it on
+                        // make sure the data for the table is the way datatable expects it
+                        //return that data object for datatables use
+                    }*/
+                },
+                "columns": result['columnas'],
+                // Opciones de lenguaje de las funciones de la tabla
+                "language": {
+                    "decimal":        "",
+                    "emptyTable":     "No hay datos disponibles en la tabla",
+                    "info":           "Mostrando _START_ - _END_ de _TOTAL_ entradas",
+                    "infoEmpty":      "Mostrando 0 - 0 de 0 entradas",
+                    "infoFiltered":   "(filtrado de _MAX_ entradas en total)",
+                    "infoPostFix":    "",
+                    "thousands":      ",",
+                    "lengthMenu":     "Mostrar _MENU_ entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing":     "Procesando...",
+                    "search":         "Buscar:",
+                    "zeroRecords":    "No se encontró ningún registro",
+                    "paginate": {
+                        "first":      "Primero",
+                        "last":       "Último",
+                        "next":       "Siguiente",
+                        "previous":   "Anterior"
+                    }
+                },
+                "initComplete": function() {
+
+                    /*****************************************************/
+                    /*****************************************************/
+                    /*** I. Inserción de botones "Exportar": Pasos 1-5 ***/
+
+                    // (1/5) Creación de botones DataTable.
+                    new $.fn.dataTable.Buttons( table, {
+                        name: 'exportar',
+                        buttons: [
+                            {
+                                extend: 'excel',
+                                text: '<i class="fas fa-file-excel fa-lg text-success"></i>', 
+                                exportOptions: {
+                                    columns: 'th:not(:last-child)'
+                                }
+                            },
+                            {
+                                extend:'pdf',
+                                text: '<i class="fas fa-file-pdf fa-lg text-danger"></i>', 
+                                exportOptions: {
+                                    columns: 'th:not(:last-child)'
+                                }
+                            },
+                            { 
+                                extend: 'print',
+                                text: '<i class="fas fa-print fa-lg text-secondary"></i>', 
+                                exportOptions: {
+                                    columns: 'th:not(:last-child)'
+                                }
+                            },
+                            {
+                                text: '<i class="fas fa-sync-alt fa-lg text-success"></i>',
+                                action: function ( e, dt, node, config ) {
+                                    dt.ajax.reload();
+                                }
+                            }
+                        ]
+                    });
+
+                    // (2/5) Insertar div donde van los botones de exportar. Después del título del contenido.
+                    //      Se le asigna la clase "text-center" para que centre su contenido.
+                    //      Se le asigna un id "div-exportar" para hacer referencia a él en el siguiente paso.
+                    $('#titulo-contenido').after("<div class='text-center' id='div-exportar'></div>");
+
+                    // (3/5) Insertar set de botones de "exportar" dentro del div haciendo referencia al id creado en el paso 2.
+                    $('#div-exportar').html(table.buttons('exportar',null).container());
+
+                    // (4/5) Poner el width en auto para que se pueda centrar el contenedor creado en el paso 1.
+                    table.buttons('exportar', null).container().css('width', 'auto');
+
+                    // (5/5) Se le quita a los botones la clase de bootstrap 'btn-secondary' y se le añade la clase 'btn-light'
+                    table.buttons('exportar', null).container().find('button').removeClass('btn-secondary').addClass('btn-light');
+
+
+                    // Se le asigna una clase de Bootstrap al div que muestra el mensaje "Procesando..."
+                    $('#tabla_processing').addClass('bg-info');
+
+                    /* Obtener los datos de la fila al apretar "Detalles" */
+                    // On Click Listener: Al apretar el botón "Detalles" de alguna fila...
+                    $('#tabla tbody tr').on( 'click', '.detalles', function () {
+                        //console.log(table.row($( this ).closest( "tr" )).data());
+                        // Se obtienen los datos de la fila que se insertaron al momento de la instancia del DataTables.
+                        //  - El objeto que se obtiene es del mismo tipo del que se recibió del archivo ajax -> url que se puso en el DataTables.
+                        llenarModal(table.row($( this ).closest( "tr" )).data() );
+                        // Se muestra el modal con los formularios
+                        $('#modal-form').modal('show');
+                    });
+
+                    // Añadir la clase .table-responsive al div que contiene la tabla
+                    $("#tabla").parent().addClass("table-responsive");
+                    
+                }
+            });
+        }
     </script>
 
 
