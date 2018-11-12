@@ -1,24 +1,89 @@
 <?php
-    // Cuenta Personal
-    define('MAX_NOMBRE', 32);
-    define('MAX_APELLIDO', 24);
-    define('MAX_CORREO', 64);
-    define('MAX_TELEFONO', 19);
-    
-    // Empresa
-    define('MAX_EMPRESA', 100);
-    
-    // Dirección
-    define('MAX_ESTADO', 24);
-    define('MAX_MUNICIPIO', 50);
-    define('MAX_CODIGO_POSTAL', 5);
-    define('MAX_COLONIA', 50);
-    define('MAX_CALLE', 50);
-    define('MAX_NUMEROS_EXT_INT', 5);
 
-    //Contraseña
-    define('MIN_CONTRASENA', 10);
-    define('MAX_CONTRASENA', 26);
+/* Sublime Text 3: TabSize=4 */
+
+/**
+ * Panel de Control para Vendedores y Administradores
+ *
+ * La principal finalidad del Panel de Control es que los Vendedores puedan
+ * tomar los pedidos de los clientes teniendo la posibilidad de ver una lista
+ * de éstos mismos con toda la información necesaria.
+ *
+ * Además de esto, el admnistrador podrá ver lo mismo y gestionar a los
+ * vendedores.
+ * 
+ * PHP version 7.2.10
+ *
+ * @author Luis Fernando Gerónimo Carranza <luisfergeronimo@gmail.com>
+ * @author Jesús Emmanuel Zetina Chevez <zcjo151173@upemor.edu.mx>
+ */
+
+// {{{ constants
+
+
+//===============================================================================
+// CONSTANTES PARA EL NÚMERO MÁXIMO DE CARACTERES EN LOS INPUTS DE
+//===============================================================================
+
+
+//-----------------------------------------------------
+// Cuenta Del Cliente
+//-----------------------------------------------------
+
+// Nombre de cliente
+define('MAX_NOMBRE', 32);
+
+// Apellidos del cliente
+define('MAX_APELLIDO', 24);
+
+// Correo del cliente 
+define('MAX_CORREO', 64);
+
+// Teléfono del cliente
+define('MAX_TELEFONO', 19);
+
+
+//-----------------------------------------------------
+// Empresa Del Cliente
+//-----------------------------------------------------
+
+// Empresa del cliente
+define('MAX_EMPRESA', 100);
+
+
+//-----------------------------------------------------
+// Dirección De La Empresa
+//-----------------------------------------------------
+
+// Estado de la empresa
+define('MAX_ESTADO', 24);
+
+// Municipio de la empresa
+define('MAX_MUNICIPIO', 50);
+
+// Código postal de la empresa
+define('MAX_CODIGO_POSTAL', 5);
+
+// Colonia de la empresa
+define('MAX_COLONIA', 50);
+
+// Calle de la empresa
+define('MAX_CALLE', 50);
+
+// Número Interior y Exterior de la empresa
+define('MAX_NUMEROS_EXT_INT', 5);
+
+
+//-----------------------------------------------------
+// Seguridad De La Cuenta
+//-----------------------------------------------------
+
+// Mínimo y máximo de la contraseña de la cuenta
+define('MIN_CONTRASENA', 10);
+define('MAX_CONTRASENA', 26);
+
+// }}}
+
 ?>
 
 
@@ -44,7 +109,7 @@
     <!-- Estilos de DataTables -->
     <link rel="stylesheet" type="text/css" href="../assets/DataTables/datatables.css"/>
   
-    <!-- Estilos propios del panel -->
+    <!-- Estilos propios del panel de control -->
     <link rel="stylesheet" type="text/css" href="../assets/css/panel-style.css"/>
         
     <!-- Titulo -->
@@ -58,9 +123,10 @@
 
 
 
-
+<!-- Website Wrapper -->
 <div class="row mr-0" style="height: 100vh;">
     
+    <!-- Sidebar Izquierdo -->
     <?php include '../includes/panel_sidebar.html' ?>
 
     <!-- Contenido -->
@@ -74,15 +140,20 @@
 <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
+            <!-- Modal Header -->
             <div class="modal-header">
+                <!-- Modal Title -->
                 <h5 class="modal-title" id="modalCenterTitle"><span id="mainTitle">Modal title</span><span class="text-muted"></span></h5>
+                <!-- Modal Dismiss Button -->
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <!-- Modal Body - Aquí van las pestañas con sus respectivos formularios -->
             <div class="modal-body">
                 
             </div>
+            <!-- Modal Footer - Aquí van los botones de Cerrar/Editar/Guardar Cambios -->
             <div class="modal-footer">
                 
             </div>
@@ -104,7 +175,7 @@
 
 
 
-<!-- Optional JavaScript -->
+
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="../assets/js/jquery-3.3.1.js"></script>
 <script src="../assets/js/popper.js"></script>
@@ -123,15 +194,28 @@
 
 
 <script>
-    /* VARIABLES GLOBALES */
-    // result: Almacena el resultado que se obtiene de la petición ajax al archivo panelOpciones.php
+    /**
+     * Variables globales
+     *
+     * Este script se encarga de extraer los input y el formulario en 
+     * variables para poder accesarlas más adelante de manera más fácil.
+     *
+     * @author Luis Fernando Gerónimo Carranza <luisfergeronimo@gmail.com>
+     * @author Jesús Emmanuel Zetina Chevez <zcjo151173@upemor.edu.mx>
+     */
+    
+    //======================================================================
+    // VARIABLES GLOBALES
+    //======================================================================
+    
+    /*
+     * Almacena la respuesta que se obtiene de la solicitud ajax enviada al
+     * archivo panelOpciones.php 
+     */
     var result;
 
-    // table: Almacena la instancia que se obtiene del plugin DataTables.
+    // Almacena la instancia de la tabla que se obtiene del plugin DataTables.
     var table;
-
-    // tablasDetalles: Almacena las tablas que se necesian detallas en el modal al presionar "Detalles".
-    var tablasDetalles;
 </script>
 
 
@@ -145,177 +229,372 @@
 
 
 <script>
-
-    /****************************************************************************************/
-    /****************************************************************************************/
-    /****************************************************************************************/
-    /****************************** FUNCIONES REFERENTES AL MODAL ***************************/
-
-    /*=============================================
-    =            Section comment block            =
-    =============================================*/
-    
-
-    
-    
-    /*=====  End of Section comment block  ======*/
-    
+    /**
+     * Script para operaciones referentes al Modal
+     *
+     * Dentro de este script se estructura el modal para mostarle al usuario
+     * los detalles de algún registro en la base de datos.
+     *
+     * @todo Modificar el título del modal (Zona...) para que sea genérico.
+     *       Esto sólo es para los Clientes. Al menos por ahora.
+     * 
+     * @author Luis Fernando Gerónimo Carranza <luisfergeronimo@gmail.com>
+     * @author Jesús Emmanuel Zetina Chevez <zcjo151173@upemor.edu.mx>
+     */
 
 
-    // On click listener para el boton "Editar" del Footer del Modal (.modal-footer).
+    //======================================================================
+    // ON CLICK LISTENERS DE BOTONES
+    //======================================================================
+
+    //-----------------------------------------------------
+    // Boton "Editar"
+    //-----------------------------------------------------
     $(".modal-footer").on('click', '#modal-btn-editar', function(){
-        // Al dar click al boton de "Editar"...
-        // ... se muestra el botón de "Guardar Cambios", quitándole la clase de "d-none" de Bootstrap
+
+        // Se muestra el botón de "Guardar Cambios".
         $('#modal-btn-guardar').removeClass('d-none');
-        // Se le PERMITE al usuario modificar el contenido de todos los input, QUITÁNDOLES el atributo de SÓLO LECTURA
+        
+        // Se le quita a los input el atributo de sólo lecutra.
         $('.modal-body').find('input').attr('readonly', false); 
         
-        //... se esconde el botón "Editar", añadiéndole la clase de "d-none-" de Bootstrap
+        // Se oculta el botón "Editar".
         $('#modal-btn-editar').addClass('d-none');
     });
 
-    // On click listener para el boton "Guardar Cambios" del Footer del Modal (.modal-footer).
+    //-----------------------------------------------------
+    // Boton "Guardar Cambios"
+    //-----------------------------------------------------
     $(".modal-footer").on('click', '#modal-btn-guardar', function(){
-        // Al dar click al boton de "Guardar Cambios"...
-        // ... se muestra el botón de "Editar", quitándole la clase de "d-none" de Bootstrap
+
+        // Se muestra el botón de "Editar".
         $('#modal-btn-editar').removeClass('d-none');
-        // Se le PROHIBE al usuario modificar el contenido de todos los input, cambiándolos a SÓLO LECTURA
+
+        // Se le pone a los input el atributo de sólo lecutra.
         $('.modal-body').find('input').attr('readonly', true); 
-        // Se esconde el botón de "Gurdar Cambios", añadiéndole la clase de "d-none-" de Bootstrap
+        
+        // Se oculta el botón "Guardar Cambios".
         $('#modal-btn-guardar').addClass('d-none');
         
     });
 
-
-    /* Obtener los datos de la fila al apretar "Detalles" */
-    // On Click Listener: Al apretar el botón "Detalles" de alguna fila...
+    //-----------------------------------------------------
+    // Boton "Detalles" De La Tabla
+    //-----------------------------------------------------
+    
+    /*
+     * Esta función es para detectar el click sobre el botón "Detalles" que
+     * aparece en todas las filas y poder llenar la información de esa fila
+     * en el modal.
+     */
     $('#content').on( 'click', '.detalles', function () {
-        //console.log(table.row($( this ).closest( "tr" )).data());
-        // Se obtienen los datos de la fila que se insertaron al momento de la instancia del DataTables.
-        //  - El objeto que se obtiene es del mismo tipo del que se recibió del archivo ajax -> url que se puso en el DataTables.
+
+        /*
+         * Se obtienen los datos de la fila que se insertaron al momento de la
+         * instancia del DataTables y se envían al método llenarModal.
+         * 
+         * El objeto que se obtiene es del mismo tipo del que se recibió del
+         * archivo (ajax -> url: result['dataFetchFile']) que se puso en el
+         * DataTables.
+         */
         llenarModal(table.row($( this ).closest( "tr" )).data() );
+        
         // Se muestra el modal con los formularios
         $('#modal-form').modal('show');
     });
 
 
     /**
-     * @param  array @rowData objeto array con los elementos html en String
-     *                        
-     * @return {DOM nodes array}
+     * Transforma un arreglo con elementos HTML dentro en forma de String's
+     * a nodos del DOM. Esta 'transformación' se hace para poder accesar a
+     * los atributos de los elementos HTML. Y siendo nodos del DOM facilita
+     * este trabajo a que si estuviesen en String.
+     * 
+     * @param  {array}   @rowData  arreglo con los elementos html en forma 
+     *                             de String              
+     * @return {array}             arreglo con los elementos HTML en forma
+     *                             de nodos DOM.
      */
-    function obternerParsedArray(rowData){
+    function obtenerParsedArray(rowData){
+        /**
+         * Arreglo para almacenar los nodoes del DOM
+         * @type {Array}
+         */
         var parsed = [];
 
+        /*
+         * Se recorre el arreglo rowData y se van transformando los elementos
+         * en forma de String a Nodos DOM, almacenándolos en el arreglo parsed.
+         */
         for (var i = 0; i < rowData.length-1; i++) {
             parsed[i] = $.parseHTML(rowData[i]);
         }
 
         return parsed;
-
     }
                                                                         
 
+    /**
+     * Llena la información de la fila de manera más detalla en los input's
+     * que contiene el Modal. Para que después el usuario pueda modificar sin
+     * problemas.
+     * 
+     * @param  {array} datosDeFila [description]
+     * @return {void}             [description]
+     */
     function llenarModal(datosDeFila){
 
-        var parsedArray = obternerParsedArray(datosDeFila);
+        // 'Transformación' de elementos HTML.
+        var parsedArray = obtenerParsedArray(datosDeFila);
 
-        //console.log(parsedArray);
 
+        //======================================================================
+        // DECLARACIÓN DE VARIABLES AUXILIARES
+        //======================================================================
 
-        // Variable donde se guardan las tablas a las que se van a consultar los detalles.
-        // Las tablas son las mismas que los 'tabs' que aparecen en el Modal.
+        /**
+         * Aquí se almacenan las tablas que están dentro del array
+         * result['tablasADetallar']. Esta es una lista de las tablas que se 
+         * van a consultar en la base de datos y de las cuales se sacarán
+         * información para llenar el modal.
+         *
+         * La lista de tablas es la misma que las pestañas que aparecen en el
+         * modal.
+         *
+         * Los datos que almacena para cada índice (y cada tabla) son los
+         * siguientes:
+         *
+         * [i]: {
+         *   Tabla => String,
+         *   id => int/String,
+         *   llaveForanea => String,
+         *   select => String
+         * }
+         * 
+         * @type {array}
+         */
         var tablasADetallar = result['tablasADetallar'];
+
+        /**
+         * Aquí se almacena la misma información que en arreglo de
+         * tablasADetallar, a excepción que ya se tienen bien definidos los
+         * datos de cada tabla para poder hacer correctamente las consultas
+         * en la BD.
+         * 
+         * @type {Array}
+         */
         var tablasADetallarFinal = [];
+
+        /**
+         * Aquí se almacenan temporalmente las tablas que se van a detallar
+         * pero que ninguna de sus propiedades se encuentra en la columna
+         * de la tabla DataTable. Y es dependiente de otras tablas, es decir
+         * necesita de un ID sacado de las tablas NO dependientes para poder
+         * extraer su información.
+         *
+         * Un ejemplo es la tabla de Dirección en la opcion de enlistar los
+         * clientes. No existe información de la dirección en la tabla 
+         * DataTable pero sí se detalla en el modal.
+         *
+         * Como no existe ninguna columna de Dirección, no podemos saber
+         * qué información extraer de la BD. A menos que extraigamos primero
+         * algún llave única (en este cass, una llave foránea) para poder
+         * consultar la información. Así que se extrae el id de la tabla
+         * Empresa, ya que Dirección depende de Empresa. De ahí el nombre de
+         * 'tablasDependientes'.
+         *
+         * Las tablas dependientes se identifican porque su id contiene el
+         * nombre de la tabla de la que es dependiente y por ende su
+         * id es diferente (!==) de null.
+         * 
+         * @type {Array}
+         */
         var tablasDependientes = [];
+
+        /**
+         * Almacena una lista de las tablas que ya fueron evaluadas. Es decir,
+         * las tablas a las que ya se les definió la información necesaria
+         * para el siguiente paso: La consulta en la BD.
+         * 
+         * @type {Array}
+         */
         var tablasEvaluadas = [];
-        // Array auxiliar para almacenar {tabla, id, llaveForanea, select} y transferirla al array final ('tablasADetallarFinal')
+
+        /**
+         * Arreglo auxiliar para almacenar la información de las tablas y
+         * transferirlas de tablasADetallar a tablasADetallarFinal.
+         * 
+         * @type {Array}
+         */
         var helperArray = [];
 
-
+        // Asignación de la zona del cliente en el título del modal.
         $('#modalCenterTitle .text-muted').html('- Zona [' + $(datosDeFila[0]).attr('data-id') + ']');
 
-        // Variables auxiliares para acortar código
+        /* Variables Auxiliares Para Acortar Código */
+        /**
+         * Almacena temporalmente el nombre de la tabla que está siendo
+         * evaluada con la finalidad de simplificar código.
+         * 
+         * @type {String}
+         */
         var tabla;
+
+        /**
+         * Almacena temporalmente el id de la tabla que está siendo
+         * evaluada con la finalidad de simplificar código.
+         * 
+         * @type {int}
+         */
         var id;
 
+        //======================================================================
+        // OBTENCIÓN DE LA INFORMACIÓN DE LAS TABLAS NO DEPENDIENTES
+        //======================================================================
 
+
+        /**
+         * Recorre las tablas que se deben detallar.
+         * 
+         * Dentro de este ciclo se separan las tablas dependientes de las NO
+         * dependientes. A las tablas NO dependientes se les asigna su ID y se
+         * transfieren al arreglo tablasADetallarFinal.
+         *
+         * Las tablas dependiente, son pasadas al arreglo tablasDependientes.
+         * 
+         * @param  {int}   var i   variable incremental, empezando desde 0
+         *                         hasta la longitud del arreglo tablasADetalar
+         *                         
+         * @param  {array} var tablasADetallar  arreglo que contiene la info.
+         *                                      de las tablas que se deben
+         *                                      detallar.
+         * @return {void}
+         */
         for (var i = 0; i < tablasADetallar.length; i++) {
-            //console.log("I: " + i);
 
-
+            // Verifica si la tabla ya ha sido evaluada anteriormente.
             if(jQuery.inArray(tablasADetallar[i]['tabla'], tablasEvaluadas)===-1){
+
+                // Verifica si es una tabla dependiente.
                 if(tablasADetallar[i]['id'] === null){
 
+                    //-----------------------------------------------------
+                    // Tablas No Dependientes
+                    //-----------------------------------------------------
+
+                    // Obtención del nombre de la tabla
                     tabla = tablasADetallar[i]['tabla'];
-                    //console.log("Tabla: " + tabla);
 
+                    /**
+                     * Recorre los nodos DOM para extraer sus atributos.
+                     * 
+                     * Los atributos que contiene son los siguientes:
+                     *   - data-column: {String} Tabla a la que pertenece
+                     *   - data-id: {int} Llave primaria del registro.
+                     *
+                     * 
+                     * @param  {[type]} var j  variable incremental, empezando
+                     *                         en 0, hasta la longitud del
+                     *                         arreglo parsedArray.
+                     *                         
+                     * @return {void}
+                     */
                     for (var j = 0; j < parsedArray.length; j++) {
-                        //console.log("J: " + j);
 
+                        /*
+                         * Verifica si el nodo DOM es de la tabla que está
+                         * siendo evaluada.
+                         */
                         if($(parsedArray[j]).attr('data-column').toLowerCase() === tabla.toLowerCase()){
+
+                            // Instanciación
                             helperArray = [];
 
+                            // Obtención del id del nodo DOM
                             id = $(parsedArray[j]).attr('data-id');
 
-                            helperArray['tabla'] = tabla;
+                            //-----------------------------------------------------
+                            // Transferencia De Datos Al Arreglo Auxiliar
+                            //-----------------------------------------------------
 
-                            helperArray['id'] = id;
-                            //console.log("ID: " + id);
-
+                            helperArray['tabla']        = tabla;
+                            helperArray['id']           = id;
                             helperArray['llaveForanea'] = tablasADetallar[i]['llaveForanea'];
-                            //console.log("LlaveForanea: " + tablasADetallar[i]['llaveForanea']);
+                            helperArray['select']       = tablasADetallar[i]['select'];
 
-                            helperArray['select'] = tablasADetallar[i]['select'];
-                            //console.log("Select: " + tablasADetallar[i]['select']);
-
-                            //console.log("Helper Array: ");
-                            //console.log(helperArray);
-
-                            // Se añade 'helperAray' a 'tablasADetallarFinal'
+                            // Se añade 'helperAray' a 'tablasADetallarFinal'.
                             tablasADetallarFinal.push(helperArray);
+
+                            // Se añade la tabla al arreglo de tablas evaluadas.
                             tablasEvaluadas.push(tabla);
+
+                            /*
+                             * Se sale del ciclo porque ya se encontró el nodo
+                             * DOM en el parsedArray de la tabla que se evaluaba.
+                             */
                             break;
                         }
                     }
                 } else {
+                    //-----------------------------------------------------
+                    // Tablas Dependientes
+                    //-----------------------------------------------------
                     helperArray = [];
+
+
+                    //-----------------------------------------------------
+                    // Transferencia De Datos Al Arreglo Auxiliar
+                    //-----------------------------------------------------
 
                     helperArray['tabla'] = tablasADetallar[i]['tabla'];
                     helperArray['id'] = tablasADetallar[i]['id'];
                     helperArray['llaveForanea'] = tablasADetallar[i]['llaveForanea'];
                     helperArray['select'] = tablasADetallar[i]['select'];
 
-
+                    // Se añade 'helperAray' a 'tablasDependientes'.
                     tablasDependientes.push(helperArray);
 
                 }
             }
         }
 
-/*
-        console.log(tablasADetallar);
-        console.log(tablasADetallarFinal);
-        console.log(tablasDependientes);
-        console.log(helperArray);
-*/
-        // Obtener los datos de la Tablas Dependientes.
+        //======================================================================
+        // OBTENCIÓN DE LA INFORMACIÓN DE LAS TABLAS DEPENDIENTES
+        //======================================================================
+        
         for (var i = 0; i < tablasDependientes.length; i++) {
 
-            id = tablasDependientes[i]['id'];
-            
+            /*
+             * Se obtiene el 'id' de la tabla dependiente, que en realidad es
+             * el nombre de la tabla de la cual depende.
+             * e.g. Tabla: 'Dirección' -- depende de -> id: 'Empresa'.
+             */
+            id = tablasDependientes[i]['id'];            
 
+            /**
+             * Recorre los nodos DOM para extraer sus atributos.
+             * 
+             * @param  {[type]} var j  variable incremental, empezando
+             *                         en 0, hasta la longitud del
+             *                         arreglo parsedArray.
+             *                         
+             * @return {void}
+             */
             for (var j = 0; j < parsedArray.length; j++) {
 
+                /*
+                 * Verifica si el nodo DOM es de la tabla NO dependiente
+                 * de la cual depende la tabla que está siendo evaluada.
+                 */
                 if($(parsedArray[j]).attr('data-column').toLowerCase() === id.toLowerCase()){
                     helperArray = [];
 
-                    helperArray['tabla'] = tablasDependientes[i]['tabla'];
-                    helperArray['id'] = $(parsedArray[j]).attr('data-id');
+                    helperArray['tabla']        = tablasDependientes[i]['tabla'];
+                    helperArray['id']           = $(parsedArray[j]).attr('data-id');
                     helperArray['llaveForanea'] = tablasDependientes[i]['llaveForanea'];
-                    helperArray['select'] = tablasDependientes[i]['select'];
+                    helperArray['select']       = tablasDependientes[i]['select'];
 
-                    // Se añade 'helperAray' a 'tablasADetallarFinal'
+                    // Se añade 'helperAray' a 'tablasADetallarFinal'.
                     tablasADetallarFinal.push(helperArray);
 
                 }
@@ -323,10 +602,13 @@
         }
 
 
-        console.log(tablasADetallarFinal);
 
-
-
+        //======================================================================
+        // DECLARACIÓN DE VARIABLES AUXILIARES
+        //======================================================================
+        // TODO: CONTINUACIÓN...
+        //       Lunes - 12/11/2018 - 05:42 a.m. - Commit 24
+        
         var where;
         var inputs;
         var valoresInput = [];

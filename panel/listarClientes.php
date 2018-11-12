@@ -1,6 +1,6 @@
 <?php 
 
-/* Sublime Text 3: Tab Size=4  */
+/* Sublime Text 3: TabSize=4  */
 
 /**
  * Lista de clientes para la tabla del Panel de Control.

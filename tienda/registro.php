@@ -520,32 +520,47 @@ define('MAX_CONTRASENA', 26);
 <script>
 
     /**
+     * Instancias de input's y el form
+     *
+     * Este script se encarga de extraer los input y el formulario en 
+     * variables para poder accesarlas más adelante de manera más fácil.
      *
      * @author Luis Fernando Gerónimo Carranza <luisfergeronimo@gmail.com>
      * @author Jesús Emmanuel Zetina Chevez <zcjo151173@upemor.edu.mx>
-     * 
-     * 
-     * Este script guarda las instancias de los input en variables
-     * para que puedan ser accesadas más adelante.
      */
     
+    //======================================================================
+    // VARIABLES GLOBALES DE INSTANCIAS DE ELEMENTOS HTML
+    //======================================================================
+
+    //-----------------------------------------------------
     // Formulario
+    //-----------------------------------------------------
+    
     var form = $("#form-registro");
 
-    // Paso 1 - Cuenta
-    /** @type {[type]} [description] */
+    //-----------------------------------------------------
+    // Paso 1: Cuenta
+    //-----------------------------------------------------
+    
     var inputNombres         = $("#nombres");
     var inputApellidoP       = $("#apellidoP");
     var inputApellidoM       = $("#apellidoM");
     var inputCorreoCuenta    = $("#correo-cuenta");
     var inputTelefonoCuenta  = $("#telefono-cuenta");
 
-    // Paso 2 - Empresa
+    //-----------------------------------------------------
+    // Paso 2: Empresa
+    //-----------------------------------------------------
+    
     var inputEmpresa         = $("#empresa");
     var inputTelefonoEmpresa = $("#telefono-empresa");
     var inputCorreoEmpresa   = $("#correo-empresa");
 
-    // Paso 3 - Dirección
+    //-----------------------------------------------------
+    // Paso 3: Dirección
+    //-----------------------------------------------------
+    
     var inputEstado          = $("#estado");
     var inputMunicipio       = $("#municipio");
     var inputCodigoPostal    = $("#codigo-postal");
@@ -554,7 +569,10 @@ define('MAX_CONTRASENA', 26);
     var inputNumeroExt       = $("#numero-ext");
     var inputNumeroInt       = $("#numero-int");
 
-    // Paso 4 - Seguridad
+    //-----------------------------------------------------
+    // Paso 4: Seguridad
+    //-----------------------------------------------------
+
     var inputContrasena         = $("#contrasena");
     var inputContrasenaRepetida = $("#contrasena-repetida");
 
@@ -562,10 +580,6 @@ define('MAX_CONTRASENA', 26);
 
 <script>
     /**
-     *
-     * @author Luis Fernando Gerónimo Carranza <luisfergeronimo@gmail.com>
-     * @author Jesús Emmanuel Zetina Chevez <zcjo151173@upemor.edu.mx>
-     *
      * Script de validaciones del input
      * 
      * Este script se encarga de hacer las siguientes validaciones:
@@ -604,6 +618,9 @@ define('MAX_CONTRASENA', 26);
      *   + Longitud
      *   + Coincidencia (En el caso de las contraseñas)
      *   + Vacío
+     *   
+     * @author Luis Fernando Gerónimo Carranza <luisfergeronimo@gmail.com>
+     * @author Jesús Emmanuel Zetina Chevez <zcjo151173@upemor.edu.mx>
      */
     
     $(document).ready(function() {
