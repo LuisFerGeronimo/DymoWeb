@@ -125,33 +125,44 @@
             <!-- Navbar MENU -->
             <div class="collapse navbar-collapse" id="navbarNav">
                <ul class="navbar-nav ml-auto">
+                  <!-- Inicio Link -->
                   <li class="nav-item active">
                      <a class="nav-link text-uppercase" href="#">Inicio <span class="sr-only">(current)</span></a>
                   </li>
+                  <!-- Productos Link -->
                   <li class="nav-item">
                      <a class="nav-link text-uppercase" href="#productos">Productos</a>
                   </li>
+                  <!-- Tienda Link -->
                   <li class="nav-item">
                      <a class="nav-link text-uppercase" href="tienda/login.php">Tienda</a>
                   </li> 
+                  <!-- Contacto Link -->
                   <li class="nav-item">
                      <a class="nav-link text-uppercase" href="#">Contacto</a>
                   </li>
+                  <!-- Acerca de Link -->
                   <li class="nav-item">
                      <a class="nav-link text-uppercase" href="#">Acerca de</a>
                   </li>
+                  <!-- Acceder Dropdown Menu -->
                   <li class="nav-item dropdown">
+
+                     <!-- Acceder Dropdown Link -->
                      <a class="nav-link dropdown-toggle text-uppercase" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Acceder
                      </a>
                      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <!-- Cliente Link -->
                         <a class="dropdown-item" href="tienda/login.php">Cliente</a>
+                        <!-- Distribuidor Link -->
                         <a class="dropdown-item" href="tienda/login.php">Distribuidor</a>
+                        <!-- Administrador Link -->
                         <a class="dropdown-item" href="#">Administrador</a>
                      </div>
-                  </li>
+                  </li><!-- FIN Acceder Dropdown Menu -->
                </ul>
-            </div>
+            </div><!-- FIN Navbar MENU -->
 
          </nav>
       </div>
@@ -160,16 +171,18 @@
 
 
       <!-- --------------------------  -->
-      <!--    MEJROES ETIQUETADORAS    -->
+      <!--    MEJORES ETIQUETADORAS    -->
       <!-- --------------------------  -->
-      <div class="jumbotron jumbotron-fluid bg-transparent mb-0" style="">
+      <div class="jumbotron jumbotron-fluid bg-transparent mb-0">
          <div class="container">
             <div class="row align-items-center">
+               <!-- Div Izquierdo con Títulos -->
                <div class="col-sm-6 col-lg-6">
                   <h1 class="display-5 text-white">Las mejores etiquetadoras del mercado</h1>
                   <p class="lead mb-4 text-light">Nunca fue más fácil etiquetar tus productos</p>
                   <a class="btn btn-success py-2 px-4" href="tienda/">Ir a la tienda</a>
                </div>
+               <!-- Div Derecho con Imagen  -->
                <div class="col-sm-6 col-lg-6 mt-5">
                   <img src="assets/img/products/5.png" class="img-fluid float-right hidden-sm-down" width="380px" alt="Etiquetadora-gris">
                </div>
@@ -178,36 +191,43 @@
          </div>
       </div>
 
+   </header><!-- Final del HEADER -->
 
-
-   </header>
-   <!-- Final del HEADER -->
 
    <!-- --------------------------  -->
    <!-- ¿AÚN NO ESTÁS CON NOSOTROS? -->
    <!-- --------------------------  -->
+   <!-- Jumbotron  -->
    <div class="jumbotron jumbotron-fluid bg-white mb-0">
       <div class="container">
          <div class="row">
+            <!-- Columna izquierdo IMAGEN de 'Mujer de negocios' -->
             <div class="col-sm-5 d-none d-lg-block">
                <img class=" float-left" src="assets/img/ui/bussinesswoman.jpg" style="width: 100%;">
-            </div>
-
+            </div><!-- FIN Columna izquierdo IMAGEN de 'Mujer de negocios' -->
+            
+            <!-- Columna derecha: Títulos, Diálogos && Botones -->
             <div class="col-lg-6 offset-lg-1 col-md-12 align-self-center">
                <h6 class="text-muted text-uppercase">Regístrate</h6>
                <h3>¿Aún no estás con nosotros?</h3>
                <p class="mb-4">Te permitimos crear una cuenta para poder llevar a cabo tus pedidos en nuestra <a href="tienda/" class="text-primary">tienda online</a>.</p>
+
+               <!-- FILA de Diálogos de: Regístrate && Inicia sesión -->
                <div class="row">
+                  <!-- Columna izquierda: Regístrate -->
                   <div class="col-sm-6 mb-3">
                      <h5>Regístrate</h5>
                      <p>Sólo te llevará 2 minutos. No, menos... 5 minutos.</p><br>
                      <a class="btn btn-success d-sm-none"href="tienda/registro.php">Regístrate</a>
                   </div>
+                  <!-- Columna derecha: Inicia sesión -->
                   <div class="col-sm-6">
                      <h5>Inicia sesión</h5>
                      <p>¿Ya eres parte de la tienda?<br>Ingresa ahora mismo a ver nuestros productos más recientes.</p>
                   </div>
-               </div>
+               </div><!-- FIN FILA de Diálogos de: Regístrate && Inicia sesión -->
+
+               <!-- Botones: Regístrate && Inicia sesión -->
                <div class="row">
                   <div class="col-sm-6 mb-3 d-none d-sm-block">
                      <a class="btn btn-success"href="tienda/registro.php">Regístrate</a>
@@ -215,12 +235,11 @@
                   <div class="col-sm-6">
                      <a class="btn btn-primary"href="tienda/login.php">Inicia sesión</a>
                   </div>
-               </div>
-            </div>
+               </div><!-- FIN Botones: Regístrate && Inicia sesión -->
+            </div><!-- FIN Columna derecha: Títulos, Diálogos && Botones -->
          </div>
-
       </div>
-   </div>
+   </div><!-- FIN Jumbotron  -->
    
 
 
@@ -364,8 +383,8 @@
 */
             });
 
-            /* Esta es una función para abrir el sidebar pero no se ocupa porque en este caso
-               se abre dependiendo del tamaño de la pantalla */
+            /* Esta es una función para abrir el sidebar y el botón se muestra */
+            /* dependiendo del tamaño de la pantalla */
             $('#sidebarCollapse').on('click', function () {
 
                $('#sidebar').addClass('active');

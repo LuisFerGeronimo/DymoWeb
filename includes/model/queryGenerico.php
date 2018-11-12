@@ -1,49 +1,66 @@
 <?php
 
+/* Sublime Text 3: Tab Size=4  */
+
+/**
+ * Clase genérica para hacer operaciones en la BD de datos
+ *
+
+ * 
+ * PHP version 7.2.10
+ *
+ * @author Luis Fernando Gerónimo Carranza <luisfergeronimo@gmail.com>
+ * @author Jesús Emmanuel Zetina Chevez <zcjo151173@upemor.edu.mx>
+ */
+
+/**
+ * Ayuda a hacer el CRUD de la base de datos utilizando Prepared
+ * Statements para evitar los ataques de inyecciones SQL.
+ *
+ * Es genérica ya que puede ser utilizada para todas las tablas
+ * de la base de datos.
+ */
 class QueryGenerico{
 
-	public $draw = null;
 
-	public $columns = null;
-	public $searchValue = null;
-	public $order = null;
-	public $startValue = null;
-	public $lengthValue = null;
-	public $length = null;
+	private $_order = null;
+	private $_startValue = null;
+	private $_lengthValue = null;
+	private $_length = null;
 
 
-	public $table = null;
-	public $select = null;
-	public $where = null;
-	public $fields = null;
-	public $values = null;
+	private $_table = null;
+	private $_select = null;
+	private $_where = null;
+	private $_fields = null;
+	private $_values = null;
 
-	public $params = null;
-	public $paramsType = null;
-	public $paramsValues = null;
+	private $_params = null;
+	private $_paramsType = null;
+	private $_paramsValues = null;
 
-	public $db;
+	private $_db;
 
 
 	public function __construct() {
 
-		$this->db = new Database();
+		$this->_db = new Database();
 
 	}
 
 	public function fetchData(){
 		// Obtención del objecto de la conexión mysqli
-		$mysqli = $this->db->getDB();
+		$mysqli = $this->_db->getDB();
 
 
-		$query = "SELECT * FROM " . $this->table;
+		$query = "SELECT * FROM " . $this->_table;
 
 		/********************************************************************************************************************/
 		/********************************************************************************************************************/
 		/****************************************************** 1/3 *********************************************************/
 
-		if($this->where != null){ 
-			$query .= ' WHERE ' . $this->where; 
+		if($this->_where != null){ 
+			$query .= ' WHERE ' . $this->_where; 
 		}
 
 		/********************************************************************************************************************/
@@ -51,8 +68,8 @@ class QueryGenerico{
 		/****************************************************** 2/3 *********************************************************/
 
 		
-		if($this->order != null){
-			$query .= ' ORDER BY ' . $this->order;
+		if($this->_order != null){
+			$query .= ' ORDER BY ' . $this->_order;
 		} else {
 			$query .= ' ORDER BY id ASC ';
 		}
@@ -63,8 +80,8 @@ class QueryGenerico{
 
 		$query1 = '';
 
-		if($this->length != null){
-		 	$query1 = ' LIMIT ' . $this->length;
+		if($this->_length != null){
+		 	$query1 = ' LIMIT ' . $this->_length;
 		}
 
 		/********************************************************************************************************************/
@@ -79,21 +96,13 @@ class QueryGenerico{
 		if($stmt === false) {
 		  trigger_error('Wrong SQL: ' . $query . ' Error: ' . $mysqli->errno . ' ' . $mysqli->error, E_USER_ERROR);
 		}
-/*
-		echo "Query: " . $query;
-		echo "<br><br>";
 
-		var_dump($this->paramsType);
-		echo "<br><br>";
-		var_dump($this->paramsValues);
-		echo "<br><br>";
- */
 
 		$this->paramsBuilder();
 
 		/* use call_user_func_array, as $stmt->bind_param('s', $param); does not accept params array */
-		if(count($this->params) > 0){
-			call_user_func_array(array($stmt, 'bind_param'), $this->params);
+		if(count($this->_params) > 0){
+			call_user_func_array(array($stmt, 'bind_param'), $this->_params);
 		}
 		 
 		/* Execute statement */
@@ -110,11 +119,11 @@ class QueryGenerico{
 			/* Número de filas filtradas */
 	    	$number_filter_row =  $stmt->num_rows;
 		
-			array_push($this->paramsType, 'i');
-			array_push($this->paramsValues, $this->startValue);
+			array_push($this->_paramsType, 'i');
+			array_push($this->_paramsValues, $this->_startValue);
 			
-			array_push($this->paramsType, 'i');
-			array_push($this->paramsValues, $this->lengthValue);
+			array_push($this->_paramsType, 'i');
+			array_push($this->_paramsValues, $this->_lengthValue);
 
 
 			// Preparación del statement.
@@ -127,17 +136,17 @@ class QueryGenerico{
 			echo "Query: " . $query.$query1;
 			echo "<br><br>";
 
-			var_dump($this->paramsType);
+			var_dump($this->_paramsType);
 			echo "<br><br>";
-			var_dump($this->paramsValues);
+			var_dump($this->_paramsValues);
 			echo "<br><br>";
 */	 
 
 			$this->paramsBuilder();
 
 			/* use call_user_func_array, as $stmt->bind_param('s', $param); does not accept params array */
-			if(count($this->params) > 0){
-				call_user_func_array(array($stmt, 'bind_param'), $this->params);
+			if(count($this->_params) > 0){
+				call_user_func_array(array($stmt, 'bind_param'), $this->_params);
 			}
 			 
 			/* Execute statement */
@@ -157,48 +166,15 @@ class QueryGenerico{
 		$stmt->close();
 		$mysqli->close();
 
-		return array('recordsFiltered' => $number_filter_row, 'resArr' => $resArr);
-
-
-/*
-
-		$data = array();
-
-		for ($i=0; $i < count($resArr); $i++) { 
-		 	$sub_array = array();
-		 	$sub_array[] = '<div  class="update" data-id="'.$resArr[$i]["id"].'" data-column="nombre">' . $resArr[$i]["nombre"] . '</div>';
-		 	$sub_array[] = '<div  class="update" data-id="'.$resArr[$i]["id"].'" data-column="apellidoP">' . $resArr[$i]["apellidoP"] . '</div>';
-		 	$sub_array[] = '<div  class="update" data-id="'.$resArr[$i]["id"].'" data-column="apellidoM">' . $resArr[$i]["apellidoM"] . '</div>';
-		 	$sub_array[] = '<div  class="update" data-id="'.$resArr[$i]["id"].'" data-column="telefono">' . $resArr[$i]["telefono"] . '</div>';
-		 	$sub_array[] = '<div  class="update" data-id="'.$resArr[$i]["id"].'" data-column="correo">' . $resArr[$i]["correo"] . '</div>';
-		 	$sub_array[] = '<button type="button" name="edit" class="btn btn-light btn-xs edit p-1" id="'.$resArr[$i]["id"].'"><i class="far fa-edit fa-md "></i></button><button type="button" name="delete" class="btn btn-danger btn-xs delete px-2 py-1 ml-2" id="'.$resArr[$i]["id"].'"><i class="far fa-trash-alt fa-md p-0"></i></button>';
-		 	$data[] = $sub_array;
-
-		}
-
-		$recordsTotal = $this->getAllData();
-
-		if($number_filter_row===null){
-			$number_filter_row = $recordsTotal;
-		}
-
-		$output = array(
-		 	"draw"    => intval($this->draw),
-		 	"recordsTotal"  =>  $recordsTotal,
-		 	"recordsFiltered" => $number_filter_row,
-		 	"data"    => $data
-		);
-
-		echo json_encode($output);
-		*/
+		return array('recordsFiltered' => $number_filter_row, 'records' => $resArr);
 
 	}
 
 	public function getAllData(){
 		// Obtención del objecto de la conexión mysqli
-		$mysqli = $this->db->getDB();
+		$mysqli = $this->_db->getDB();
 
-		$query = "SELECT * FROM " . $this->table;
+		$query = "SELECT * FROM " . $this->_table;
 
 
 		// Preparación del statement.
@@ -212,9 +188,14 @@ class QueryGenerico{
 		$stmt->execute();
 
 		$stmt->store_result();
+
+		$num_rows = $stmt->num_rows;
+
+		$stmt->close();
+		$mysqli->close();
 		
 		// Obtención de los resultados.
-		return $stmt->num_rows;
+		return $num_rows;
 	}
 
 
@@ -222,13 +203,13 @@ class QueryGenerico{
 	public function read(){
 
 		// Obtención del objecto de la conexión mysqli
-		$mysqli = $this->db->getDB();
+		$mysqli = $this->_db->getDB();
 
 		// Query
-		$query = "SELECT " . $this->select . " FROM " . $this->table;
+		$query = "SELECT " . $this->_select . " FROM " . $this->_table;
 
-		if($this->where != null){
-			$query .= " WHERE " . $this->where;
+		if($this->_where != null){
+			$query .= " WHERE " . $this->_where;
 		}
 /*
 		echo "<br><br>";
@@ -247,8 +228,8 @@ class QueryGenerico{
 		$this->paramsBuilder();
 
 		/* use call_user_func_array, as $stmt->bind_param('s', $param); does not accept params array */
-		if(count($this->params) > 0){
-			call_user_func_array(array($stmt, 'bind_param'), $this->params);
+		if(count($this->_params) > 0){
+			call_user_func_array(array($stmt, 'bind_param'), $this->_params);
 		}
 		 
 		/* Execute statement */
@@ -274,16 +255,16 @@ class QueryGenerico{
 	public function create(){
 
 		// Obtención del objecto de la conexión mysqli
-		$mysqli = $this->db->getDB();
+		$mysqli = $this->_db->getDB();
 
 		// Query
-		$query = "INSERT INTO " . $this->table;
+		$query = "INSERT INTO " . $this->_table;
 
-		if($this->fields != null){
-			$query .= "(".$this->fields.")";
+		if($this->_fields != null){
+			$query .= "(".$this->_fields.")";
 		}
 
-		$query .= " VALUES(".$this->values.")";
+		$query .= " VALUES(".$this->_values.")";
 
 
 		// Preparación del statement.
@@ -296,7 +277,7 @@ class QueryGenerico{
 		$this->paramsBuilder();
 
 		/* use call_user_func_array, as $stmt->bind_param('s', $param); does not accept params array */
-		call_user_func_array(array($stmt, 'bind_param'), $this->params);
+		call_user_func_array(array($stmt, 'bind_param'), $this->_params);
 		 
 
 		/* Execute statement */
@@ -311,13 +292,13 @@ class QueryGenerico{
 
 	public function delete(){
 
-		if($this->where != null){
+		if($this->_where != null){
 
 			// Obtención del objecto de la conexión mysqli
-			$mysqli = $this->db->getDB();
+			$mysqli = $this->_db->getDB();
 
 			// Query
-			$query = "DELETE FROM " . $this->table . " WHERE " . $this->where;
+			$query = "DELETE FROM " . $this->_table . " WHERE " . $this->_where;
 
 
 			// Preparación del statement.
@@ -330,7 +311,7 @@ class QueryGenerico{
 			$this->paramsBuilder();
 
 			/* use call_user_func_array, as $stmt->bind_param('s', $param); does not accept params array */
-			call_user_func_array(array($stmt, 'bind_param'), $this->params);
+			call_user_func_array(array($stmt, 'bind_param'), $this->_params);
 			 
 
 			/* Execute statement */
@@ -347,94 +328,82 @@ class QueryGenerico{
 
 
 	public function setTable($table){
-		$this->table = $table;
-	}
-
-	public function setColumns($columns){
-		$this->columns = $columns;
+		$this->_table = $table;
 	}
 
 	public function setSelect($select){
-		$this->select = $select;
+		$this->_select = $select;
 	}
 
 	public function setWhere($where){
-		$this->where = $where;
+		$this->_where = $where;
 	}
 
 	public function setOrder($order){
-		$this->order = $order;
+		$this->_order = $order;
 	}
 
 	public function setLength($length){
-		$this->length = $length;
+		$this->_length = $length;
 	}
 
 	public function setStartValue($startValue){
-		$this->startValue = $startValue;
+		$this->_startValue = $startValue;
 	}
 
 	public function setLengthValue($lengthValue){
-		$this->lengthValue = $lengthValue;
+		$this->_lengthValue = $lengthValue;
 	}
 
 	public function setFields($fields){
-		$this->fields = $fields;
+		$this->_fields = $fields;
 	}
 
 	public function setValues($values){
-		$this->values = $values;
-	}
-
-	public function setDraw($draw){
-		$this->draw = $draw;
+		$this->_values = $values;
 	}
 
 	public function setParamsType($paramsType){
-		$this->paramsType = $paramsType;
+		$this->_paramsType = $paramsType;
 	}
 
 	public function setParamsValues($paramsValues){
-		$this->paramsValues = $paramsValues;
+		$this->_paramsValues = $paramsValues;
 	}
 
 	public function getParamsType(){
-		return $this->paramsType;
+		return $this->_paramsType;
 	}
 
 	public function getParamsValues(){
-		return $this->paramsValues;
+		return $this->_paramsValues;
 	}
 
 	public function getWhere(){
-		return $this->where;
-	}
-
-	public function closeConnection(){
-		$mysqli->close();
+		return $this->_where;
 	}
 
 
 
 	public function paramsBuilder(){
 		/* Bind parameters. Types: s = string, i = integer, d = double,  b = blob */
-		$this->params = array();
+		$this->_params = array();
 		 
 		$param_type_string = '';
 
-		$n = count($this->paramsType);
+		$n = count($this->_paramsType);
 		for($i = 0; $i < $n; $i++) {
-			$param_type_string .= $this->paramsType[$i];
+			$param_type_string .= $this->_paramsType[$i];
 		}
 		 
 		/* with call_user_func_array, array params must be passed by reference */
 		if($n>0){/* AÑADIR A DONDE SE DEBA */
-			$this->params[] = & $param_type_string;
+			$this->_params[] = & $param_type_string;
 		}/* AÑADIR A DONDE SE DEBA */
 		 
 		for($i = 0; $i < $n; $i++) {
 			/* with call_user_func_array, array params must be passed by reference */
-	  		$this->params[] = & $this->paramsValues[$i];
+	  		$this->_params[] = & $this->_paramsValues[$i];
 		}
 
 	}
