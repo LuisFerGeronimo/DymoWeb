@@ -61,6 +61,13 @@
  *  	- Values 		:Obligatorio
  *  	- ParamsType 	:Obligatorio, ya que Values es obligatorio
  *  	- ParamsValues  :Obligatorio, ya que Values es obligatorio
+ *
+ *  + update():
+ *  	- Tabla 		:Obligatorio
+ *  	- Set 			:obligatorio
+ * 		- Where 		:Obligatorio (preferentemente, aunque no lo es)
+ *  	- ParamsType 	:Obligatorio, ya que Values es obligatorio
+ *  	- ParamsValues  :Obligatorio, ya que Values es obligatorio
  * 
  *  + delete():
  *  	- Tabla 		:Obligatorio
@@ -84,7 +91,11 @@
  *   - Select - Campos que se desean seleccionar
  *
  *   INSERT
- *   - $_fields - Los campos de la tabla el insert
+ *   - $_fields - Los campos de la tabla del insert
+ *   - $_values - Los valores para esos campos
+ *
+ *   UPDATE
+ *   - $_set - Los campos de la tabla del update
  *   - $_values - Los valores para esos campos
  *
  * 
@@ -168,7 +179,7 @@ class QueryGenerico{
 	private $_fields = null;
 
 	/**
-	 * Lo valores que serán asignados al insert.
+	 * Lo valores que serán asignados al insert o update.
 	 * Ejemplo:
 	 * 
 	 * <code>
@@ -178,6 +189,18 @@ class QueryGenerico{
 	 * @var String
 	 */
 	private $_values = null;
+
+	/**
+	 * Los campos de la tabla que se modificarán en el update.
+	 * Ejemplo:
+	 * 
+	 * <code>
+	 * $queryGenerico->setSet('nombre, apellidoP, correo, telefono');
+	 * </code>
+	 * 
+	 * @var String
+	 */
+	private $_set = null;
 
 
 	//-----------------------------------------------------
@@ -812,14 +835,18 @@ class QueryGenerico{
 		//-----------------------------------------------------
 		// INSERT INTO [Table]
 		//-----------------------------------------------------
-		
-		// Declaración del Query.
 		$query = "INSERT INTO " . $this->_table;
 
+		//-----------------------------------------------------
+		//  ( [fields] )
+		//-----------------------------------------------------
 		if($this->_fields != null){
 			$query .= "(".$this->_fields.")";
 		}
 
+		//-----------------------------------------------------
+		// VALUES ( [values] )
+		//-----------------------------------------------------
 		$query .= " VALUES(".$this->_values.")";
 
 
@@ -878,6 +905,108 @@ class QueryGenerico{
 
 
 
+
+
+
+	/**
+	 * Método para hacer modificaciones en la BD. 
+	 * Los sig. valores se ocupan en el método:
+ 	 *  - Tabla 		:Obligatorio
+ 	 *  - Set 			:obligatorio
+ 	 *  - Where 		:Obligatorio (preferentemente, aunque no lo es)
+  	 *  - ParamsType 	:Obligatorio, ya que Set es obligatorio
+  	 *  - ParamsValues  :Obligatorio, ya que Set es obligatorio
+	 *  
+	 * @return array  arreglo con las filas resultantes de la consulta.
+	 */
+	public function update(){
+
+		//======================================================================
+		// BASE DE DATOS
+		//======================================================================
+
+		// Obtención del objeto de la conexión mysqli
+		$mysqli = $this->_db->getDB();
+
+		//======================================================================
+		// QUERY
+		//======================================================================
+
+
+		//-----------------------------------------------------
+		// UPDATE [table]
+		//-----------------------------------------------------
+		$query = "UPDATE " . $this->_table;
+
+		//-----------------------------------------------------
+		// SET [set]
+		//-----------------------------------------------------
+		$query .= " SET ".$this->_set;
+		
+		//-----------------------------------------------------
+		// WHERE [where]
+		//-----------------------------------------------------
+		$query .= " WHERE ".$this->_where;
+
+
+		//======================================================================
+		// PREPARED STATEMENT
+		//======================================================================
+
+		//-----------------------------------------------------
+		// Preparación Del Statement
+		//-----------------------------------------------------
+		$stmt = $mysqli->prepare($query);
+
+		//-----------------------------------------------------
+		// Mensaje De Error
+		//-----------------------------------------------------
+		// Verificación de errores de sintaxis MySQL.
+		if($stmt === false) {
+			// Mensaje de sintaxis incorrecta.
+		  	trigger_error('Wrong SQL: ' . $query . ' Error: ' . $mysqli->errno . ' ' . $mysqli->error, E_USER_ERROR);
+		}
+ 
+ 		//-----------------------------------------------------
+		// Construcción De Los Parámetros
+		//-----------------------------------------------------
+		$this->paramsBuilder();
+
+		//-----------------------------------------------------
+		// Vinculación De Parámetros Con El Query
+		//-----------------------------------------------------
+		// Se vincula el Statement con los parámetros ($this->_params)
+		call_user_func_array(array($stmt, 'bind_param'), $this->_params);
+		 
+
+		//-----------------------------------------------------
+		// Ejecucíón Del Prepared Statement
+		//-----------------------------------------------------
+		/*
+		 * Se ejecuta el Prepared Statement y se almacena el resultado de la
+		 * inserción. Puede ser verdadero o falso.
+		 */
+		$stmt->execute();
+
+		//-----------------------------------------------------
+		// Obención Información De La Ejecución Del Query
+		//-----------------------------------------------------
+		/*
+		 * Se obtiene el número de filas coincidentes, cambiasdas y warnings
+		 * se almacena dentro del array info.
+		 */
+
+		$info = $this->_getRowsMatched($mysqli->info);
+
+		//-----------------------------------------------------
+		// Cierre De Los Objetos Stmt && Mysqli
+		//-----------------------------------------------------
+		$stmt->close();
+		$mysqli->close();
+
+		// Se retorna el número de filas afectadas.
+		return $info;
+	}
 
 
 
@@ -983,6 +1112,13 @@ class QueryGenerico{
 		}
 	}
 
+
+	private function _getRowsMatched($mysqliInfo){
+		preg_match_all('/(\S[^:]+): (\d+)/', $mysqliInfo, $matches); 
+		$infoArr = array_combine ($matches[1], $matches[2]);
+		return $infoArr;
+	}
+
 	/**
 	 * Setter para la tabla con la que se va a trabajar.
 	 * (Ver la declaración del atributo para encontrar un ejemplo.)
@@ -1011,6 +1147,59 @@ class QueryGenerico{
 	 */
 	public function setWhere($where){
 		$this->_where = $where;
+	}
+
+	/**
+	 * Setter para los campos que se desean insertar.
+	 * (Ver la declaración del atributo para encontrar un ejemplo.)
+	 * 
+	 * @param String $length campos separados por coma.
+	 */
+	public function setFields($fields){
+		$this->_fields = $fields;
+	}
+
+	/**
+	 * Setter para los espacios de los parámetros de los valores que
+	 * se desean insertar.
+	 * (Ver la declaración del atributo para encontrar un ejemplo.)
+	 * 
+	 * @param String $length espacios de los parámetros separados por comas.
+	 */
+	public function setValues($values){
+		$this->_values = $values;
+	}
+
+	/**
+	 * Setter para los campos que se desean modificar.
+	 * (Ver la declaración del atributo para encontrar un ejemplo.)
+	 * 
+	 * @param String $length campos separados por coma.
+	 */
+	public function setSet($set){
+		$this->_set = $set;
+	}
+
+	/**
+	 * Setter para los tipos de parámetros que se ocuparán en un query.
+	 * (Ver la declaración del atributo para encontrar un ejemplo.)
+	 * 
+	 * @param array $length arreglo con caracteres, representando cada uno
+	 *                      de los tipos de parámetros que se están pasando
+	 *                      al query.
+	 */
+	public function setParamsType($paramsType){
+		$this->_paramsType = $paramsType;
+	}
+
+	/**
+	 * Setter para los valores de los parámetros que se ocuparán en un query.
+	 * (Ver la declaración del atributo para encontrar un ejemplo.)
+	 * 
+	 * @param array $length arreglo con los valores de los parámetros.
+	 */
+	public function setParamsValues($paramsValues){
+		$this->_paramsValues = $paramsValues;
 	}
 
 	/**
@@ -1051,49 +1240,6 @@ class QueryGenerico{
 	 */
 	public function setLengthValue($lengthValue){
 		$this->_lengthValue = $lengthValue;
-	}
-
-	/**
-	 * Setter los campos que se desean insertar.
-	 * (Ver la declaración del atributo para encontrar un ejemplo.)
-	 * 
-	 * @param String $length campos separados por coma.
-	 */
-	public function setFields($fields){
-		$this->_fields = $fields;
-	}
-
-	/**
-	 * Setter para los espacios de los parámetros de los valores que
-	 * se desean insertar.
-	 * (Ver la declaración del atributo para encontrar un ejemplo.)
-	 * 
-	 * @param String $length espacios de los parámetros separados por comas.
-	 */
-	public function setValues($values){
-		$this->_values = $values;
-	}
-
-	/**
-	 * Setter para los tipos de parámetros que se ocuparán en un query.
-	 * (Ver la declaración del atributo para encontrar un ejemplo.)
-	 * 
-	 * @param array $length arreglo con caracteres, representando cada uno
-	 *                      de los tipos de parámetros que se están pasando
-	 *                      al query.
-	 */
-	public function setParamsType($paramsType){
-		$this->_paramsType = $paramsType;
-	}
-
-	/**
-	 * Setter para los valores de los parámetros que se ocuparán en un query.
-	 * (Ver la declaración del atributo para encontrar un ejemplo.)
-	 * 
-	 * @param array $length arreglo con los valores de los parámetros.
-	 */
-	public function setParamsValues($paramsValues){
-		$this->_paramsValues = $paramsValues;
 	}
 
 	/**

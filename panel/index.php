@@ -25,7 +25,7 @@
 // CONSTANTES PARA EL NÚMERO MÁXIMO DE CARACTERES EN LOS INPUTS DE
 //===============================================================================
 
-
+    
 //-----------------------------------------------------
 // Cuenta Del Cliente
 //-----------------------------------------------------
@@ -217,6 +217,23 @@ define('MAX_CONTRASENA', 26);
     // Almacena la instancia de la tabla que se obtiene del plugin DataTables.
     var table;
 
+    /*
+     * Almacena el título del contenido que se está mostrando. Contiene el
+     * nombre de una tabla.
+     */
+    var tituloContenido
+
+
+    /**
+     * Aquí se almacena la misma información que en arreglo de
+     * tablasADetallar, a excepción que ya se tienen bien definidos los
+     * datos de cada tabla para poder hacer correctamente las consultas
+     * en la BD.
+     * 
+     * @type {Array}
+     */
+    var tablasADetallarFinal;
+
     //======================================================================
     // VARIABLES GLOBALES DE INSTANCIAS DE ELEMENTOS HTML
     //======================================================================
@@ -224,7 +241,7 @@ define('MAX_CONTRASENA', 26);
     //-----------------------------------------------------
     // Formularios Listar Clientes
     //-----------------------------------------------------
-    $('#modal-form form[id=form-' + tablasADetallarFinal[i]['tabla'] + ']').find("input[id=" + columnas[j] + "]").val(valoresInput[columnas[j]]);
+    // $('#modal-form form[id=form-' + tablasADetallarFinal[i]['tabla'] + ']').find("input[id=" + columnas[j] + "]").val(valoresInput[columnas[j]]);
 
     var formCliente = $("#modal-form  form[id=form-cliente]");
     var formEmpresa = $("#modal-form  form[id=form-empresa]");
@@ -278,468 +295,575 @@ define('MAX_CONTRASENA', 26);
 
 
 <script>
-    /**
-     * Script para operaciones referentes al Modal
-     *
-     * Dentro de este script se estructura el modal para mostarle al usuario
-     * los detalles de algún registro en la base de datos.
-     *
-     * @todo Modificar el título del modal (Zona...) para que sea genérico.
-     *       Esto sólo es para los Clientes. Al menos por ahora.
-     * 
-     * @author Luis Fernando Gerónimo Carranza <luisfergeronimo@gmail.com>
-     * @author Jesús Emmanuel Zetina Chevez <zcjo151173@upemor.edu.mx>
-     */
+/**
+ * Script para operaciones referentes al Modal
+ *
+ * Dentro de este script se estructura el modal para mostarle al usuario
+ * los detalles de algún registro en la base de datos.
+ *
+ * @todo Modificar el título del modal (Zona...) para que sea genérico.
+ *       Esto sólo es para los Clientes. Al menos por ahora.
+ * 
+ * @author Luis Fernando Gerónimo Carranza <luisfergeronimo@gmail.com>
+ * @author Jesús Emmanuel Zetina Chevez <zcjo151173@upemor.edu.mx>
+ */
 
 
-    //======================================================================
-    // ON CLICK LISTENERS DE BOTONES
-    //======================================================================
+//======================================================================
+// ON CLICK LISTENERS DE BOTONES
+//======================================================================
 
-    //-----------------------------------------------------
-    // Boton "Editar"
-    //-----------------------------------------------------
-    $(".modal-footer").on('click', '#modal-btn-editar', function(){
+//-----------------------------------------------------
+// Boton "Editar"
+//-----------------------------------------------------
+$(".modal-footer").on('click', '#modal-btn-editar', function(){
 
-        // Se muestra el botón de "Guardar Cambios".
-        $('#modal-btn-guardar').removeClass('d-none');
-        
-        // Se le quita a los input el atributo de sólo lecutra.
-        $('.modal-body').find('input').attr('readonly', false); 
-        
-        // Se oculta el botón "Editar".
-        $('#modal-btn-editar').addClass('d-none');
-    });
-
-    //-----------------------------------------------------
-    // Boton "Guardar Cambios"
-    //-----------------------------------------------------
-    $(".modal-footer").on('click', '#modal-btn-guardar', function(){
-
-        // Se muestra el botón de "Editar".
-        $('#modal-btn-editar').removeClass('d-none');
-
-        // Se le pone a los input el atributo de sólo lecutra.
-        $('.modal-body').find('input').attr('readonly', true); 
-        
-        // Se oculta el botón "Guardar Cambios".
-        $('#modal-btn-guardar').addClass('d-none');
-        
-    });
-
-    //-----------------------------------------------------
-    // Boton "Detalles" De La Tabla
-    //-----------------------------------------------------
+    // Se muestra el botón de "Guardar Cambios".
+    $('#modal-btn-guardar').removeClass('d-none');
     
+    // Se le quita a los input el atributo de sólo lecutra.
+    $('.modal-body').find('input').attr('readonly', false); 
+    
+    // Se oculta el botón "Editar".
+    $('#modal-btn-editar').addClass('d-none');
+});
+
+//-----------------------------------------------------
+// Boton "Guardar Cambios"
+//-----------------------------------------------------
+$(".modal-footer").on('click', '#modal-btn-guardar', function(){
+
+    guardarCambios();
+
+    // Se muestra el botón de "Editar".
+    $('#modal-btn-editar').removeClass('d-none');
+
+    // Se le pone a los input el atributo de sólo lecutra.
+    $('.modal-body').find('input').attr('readonly', true); 
+    
+    // Se oculta el botón "Guardar Cambios".
+    $('#modal-btn-guardar').addClass('d-none');
+    
+});
+
+//-----------------------------------------------------
+// Boton "Detalles" De La Tabla
+//-----------------------------------------------------
+
+/*
+ * Esta función es para detectar el click sobre el botón "Detalles" que
+ * aparece en todas las filas y poder llenar la información de esa fila
+ * en el modal.
+ */
+$('#content').on( 'click', '.detalles', function () {
+
     /*
-     * Esta función es para detectar el click sobre el botón "Detalles" que
-     * aparece en todas las filas y poder llenar la información de esa fila
-     * en el modal.
-     */
-    $('#content').on( 'click', '.detalles', function () {
-
-        /*
-         * Se obtienen los datos de la fila que se insertaron al momento de la
-         * instancia del DataTables y se envían al método llenarModal.
-         * 
-         * El objeto que se obtiene es del mismo tipo del que se recibió del
-         * archivo (ajax -> url: result['dataFetchFile']) que se puso en el
-         * DataTables.
-         */
-        llenarModal(table.row($( this ).closest( "tr" )).data() );
-        
-        // Se muestra el modal con los formularios
-        $('#modal-form').modal('show');
-    });
-
-
-    /**
-     * Transforma un arreglo con elementos HTML dentro en forma de String's
-     * a nodos del DOM. Esta 'transformación' se hace para poder accesar a
-     * los atributos de los elementos HTML. Y siendo nodos del DOM facilita
-     * este trabajo a que si estuviesen en String.
+     * Se obtienen los datos de la fila que se insertaron al momento de la
+     * instancia del DataTables y se envían al método llenarModal.
      * 
-     * @param  {array}   @rowData  arreglo con los elementos html en forma 
-     *                             de String              
-     * @return {array}             arreglo con los elementos HTML en forma
-     *                             de nodos DOM.
+     * El objeto que se obtiene es del mismo tipo del que se recibió del
+     * archivo (ajax -> url: result['dataFetchFile']) que se puso en el
+     * DataTables.
      */
-    function obtenerParsedArray(rowData){
-        /**
-         * Arreglo para almacenar los nodoes del DOM
-         * @type {Array}
-         */
-        var parsed = [];
+    llenarModal(table.row($( this ).closest( "tr" )).data() );
+    
+    // Se muestra el modal con los formularios
+    $('#modal-form').modal('show');
+});
 
-        /*
-         * Se recorre el arreglo rowData y se van transformando los elementos
-         * en forma de String a Nodos DOM, almacenándolos en el arreglo parsed.
-         */
-        for (var i = 0; i < rowData.length-1; i++) {
-            parsed[i] = $.parseHTML(rowData[i]);
-        }
 
-        return parsed;
+/**
+ * Transforma un arreglo con elementos HTML dentro en forma de String's
+ * a nodos del DOM. Esta 'transformación' se hace para poder accesar a
+ * los atributos de los elementos HTML. Y siendo nodos del DOM facilita
+ * este trabajo a que si estuviesen en String.
+ * 
+ * @param  {array}   @rowData  arreglo con los elementos html en forma 
+ *                             de String              
+ * @return {array}             arreglo con los elementos HTML en forma
+ *                             de nodos DOM.
+ */
+function obtenerParsedArray(rowData){
+    /**
+     * Arreglo para almacenar los nodoes del DOM
+     * @type {Array}
+     */
+    var parsed = [];
+
+    /*
+     * Se recorre el arreglo rowData y se van transformando los elementos
+     * en forma de String a Nodos DOM, almacenándolos en el arreglo parsed.
+     */
+    for (var i = 0; i < rowData.length-1; i++) {
+        parsed[i] = $.parseHTML(rowData[i]);
     }
-                                                                        
+
+    return parsed;
+}
+                                                                    
+
+/**
+ * Llena la información de la fila de manera más detalla en los input's
+ * que contiene el Modal. Para que después el usuario pueda modificar sin
+ * problemas.
+ * 
+ * @param  {array} datosDeFila [description]
+ * @return {void}             [description]
+ */
+function llenarModal(datosDeFila){
+
+    // 'Transformación' de elementos HTML.
+    var parsedArray = obtenerParsedArray(datosDeFila);
+
+
+    //======================================================================
+    // DECLARACIÓN DE VARIABLES AUXILIARES
+    //======================================================================
 
     /**
-     * Llena la información de la fila de manera más detalla en los input's
-     * que contiene el Modal. Para que después el usuario pueda modificar sin
-     * problemas.
+     * Aquí se almacenan las tablas que están dentro del array
+     * result['tablasADetallar']. Esta es una lista de las tablas que se 
+     * van a consultar en la base de datos y de las cuales se sacarán
+     * información para llenar el modal.
+     *
+     * La lista de tablas es la misma que las pestañas que aparecen en el
+     * modal.
+     *
+     * Los datos que almacena para cada índice (y cada tabla) son los
+     * siguientes:
+     *
+     * [i]: {
+     *   Tabla => String,
+     *   id => int/String,
+     *   llaveForanea => String,
+     *   select => String
+     * }
      * 
-     * @param  {array} datosDeFila [description]
-     * @return {void}             [description]
+     * @type {array}
      */
-    function llenarModal(datosDeFila){
+    var tablasADetallar = result['tablasADetallar'];
 
-        // 'Transformación' de elementos HTML.
-        var parsedArray = obtenerParsedArray(datosDeFila);
+    /**
+     * Aquí se almacena la misma información que en arreglo de
+     * tablasADetallar, a excepción que ya se tienen bien definidos los
+     * datos de cada tabla para poder hacer correctamente las consultas
+     * en la BD.
+     * 
+     * @type {Array}
+     */
+    tablasADetallarFinal = [];
 
+    /**
+     * Aquí se almacenan temporalmente las tablas que se van a detallar
+     * pero que ninguna de sus propiedades se encuentra en la columna
+     * de la tabla DataTable. Y es dependiente de otras tablas, es decir
+     * necesita de un ID sacado de las tablas NO dependientes para poder
+     * extraer su información.
+     *
+     * Un ejemplo es la tabla de Dirección en la opcion de enlistar los
+     * clientes. No existe información de la dirección en la tabla 
+     * DataTable pero sí se detalla en el modal.
+     *
+     * Como no existe ninguna columna de Dirección, no podemos saber
+     * qué información extraer de la BD. A menos que extraigamos primero
+     * algún llave única (en este cass, una llave foránea) para poder
+     * consultar la información. Así que se extrae el id de la tabla
+     * Empresa, ya que Dirección depende de Empresa. De ahí el nombre de
+     * 'tablasDependientes'.
+     *
+     * Las tablas dependientes se identifican porque su id contiene el
+     * nombre de la tabla de la que es dependiente y por ende su
+     * id es diferente (!==) de null.
+     * 
+     * @type {Array}
+     */
+    var tablasDependientes = [];
 
-        //======================================================================
-        // DECLARACIÓN DE VARIABLES AUXILIARES
-        //======================================================================
+    /**
+     * Almacena una lista de las tablas que ya fueron evaluadas. Es decir,
+     * las tablas a las que ya se les definió la información necesaria
+     * para el siguiente paso: La consulta en la BD.
+     * 
+     * @type {Array}
+     */
+    var tablasEvaluadas = [];
 
-        /**
-         * Aquí se almacenan las tablas que están dentro del array
-         * result['tablasADetallar']. Esta es una lista de las tablas que se 
-         * van a consultar en la base de datos y de las cuales se sacarán
-         * información para llenar el modal.
-         *
-         * La lista de tablas es la misma que las pestañas que aparecen en el
-         * modal.
-         *
-         * Los datos que almacena para cada índice (y cada tabla) son los
-         * siguientes:
-         *
-         * [i]: {
-         *   Tabla => String,
-         *   id => int/String,
-         *   llaveForanea => String,
-         *   select => String
-         * }
-         * 
-         * @type {array}
-         */
-        var tablasADetallar = result['tablasADetallar'];
+    /**
+     * Arreglo auxiliar para almacenar la información de las tablas y
+     * transferirlas de tablasADetallar a tablasADetallarFinal.
+     * 
+     * @type {Array}
+     */
+    var helperArray = [];
 
-        /**
-         * Aquí se almacena la misma información que en arreglo de
-         * tablasADetallar, a excepción que ya se tienen bien definidos los
-         * datos de cada tabla para poder hacer correctamente las consultas
-         * en la BD.
-         * 
-         * @type {Array}
-         */
-        var tablasADetallarFinal = [];
+    // Asignación de la zona del cliente en el título del modal.
+    $('#modalCenterTitle .text-muted').html('- Zona [' + $(datosDeFila[0]).attr('data-id') + ']');
 
-        /**
-         * Aquí se almacenan temporalmente las tablas que se van a detallar
-         * pero que ninguna de sus propiedades se encuentra en la columna
-         * de la tabla DataTable. Y es dependiente de otras tablas, es decir
-         * necesita de un ID sacado de las tablas NO dependientes para poder
-         * extraer su información.
-         *
-         * Un ejemplo es la tabla de Dirección en la opcion de enlistar los
-         * clientes. No existe información de la dirección en la tabla 
-         * DataTable pero sí se detalla en el modal.
-         *
-         * Como no existe ninguna columna de Dirección, no podemos saber
-         * qué información extraer de la BD. A menos que extraigamos primero
-         * algún llave única (en este cass, una llave foránea) para poder
-         * consultar la información. Así que se extrae el id de la tabla
-         * Empresa, ya que Dirección depende de Empresa. De ahí el nombre de
-         * 'tablasDependientes'.
-         *
-         * Las tablas dependientes se identifican porque su id contiene el
-         * nombre de la tabla de la que es dependiente y por ende su
-         * id es diferente (!==) de null.
-         * 
-         * @type {Array}
-         */
-        var tablasDependientes = [];
+    /* Variables Auxiliares Para Acortar Código */
+    /**
+     * Almacena temporalmente el nombre de la tabla que está siendo
+     * evaluada con la finalidad de simplificar código.
+     * 
+     * @type {String}
+     */
+    var tabla;
 
-        /**
-         * Almacena una lista de las tablas que ya fueron evaluadas. Es decir,
-         * las tablas a las que ya se les definió la información necesaria
-         * para el siguiente paso: La consulta en la BD.
-         * 
-         * @type {Array}
-         */
-        var tablasEvaluadas = [];
+    /**
+     * Almacena temporalmente el id de la tabla que está siendo
+     * evaluada con la finalidad de simplificar código.
+     * 
+     * @type {int}
+     */
+    var id;
 
-        /**
-         * Arreglo auxiliar para almacenar la información de las tablas y
-         * transferirlas de tablasADetallar a tablasADetallarFinal.
-         * 
-         * @type {Array}
-         */
-        var helperArray = [];
-
-        // Asignación de la zona del cliente en el título del modal.
-        $('#modalCenterTitle .text-muted').html('- Zona [' + $(datosDeFila[0]).attr('data-id') + ']');
-
-        /* Variables Auxiliares Para Acortar Código */
-        /**
-         * Almacena temporalmente el nombre de la tabla que está siendo
-         * evaluada con la finalidad de simplificar código.
-         * 
-         * @type {String}
-         */
-        var tabla;
-
-        /**
-         * Almacena temporalmente el id de la tabla que está siendo
-         * evaluada con la finalidad de simplificar código.
-         * 
-         * @type {int}
-         */
-        var id;
-
-        //======================================================================
-        // OBTENCIÓN DE LA INFORMACIÓN DE LAS TABLAS NO DEPENDIENTES
-        //======================================================================
+    //======================================================================
+    // OBTENCIÓN DE LA INFORMACIÓN DE LAS TABLAS NO DEPENDIENTES
+    //======================================================================
 
 
-        /**
-         * Recorre las tablas que se deben detallar.
-         * 
-         * Dentro de este ciclo se separan las tablas dependientes de las NO
-         * dependientes. A las tablas NO dependientes se les asigna su ID y se
-         * transfieren al arreglo tablasADetallarFinal.
-         *
-         * Las tablas dependiente, son pasadas al arreglo tablasDependientes.
-         * 
-         * @param  {int}   var i   variable incremental, empezando desde 0
-         *                         hasta la longitud del arreglo tablasADetalar
-         *                         
-         * @param  {array} var tablasADetallar  arreglo que contiene la info.
-         *                                      de las tablas que se deben
-         *                                      detallar.
-         * @return {void}
-         */
-        for (var i = 0; i < tablasADetallar.length; i++) {
+    /**
+     * Recorre las tablas que se deben detallar.
+     * 
+     * Dentro de este ciclo se separan las tablas dependientes de las NO
+     * dependientes. A las tablas NO dependientes se les asigna su ID y se
+     * transfieren al arreglo tablasADetallarFinal.
+     *
+     * Las tablas dependiente, son pasadas al arreglo tablasDependientes.
+     * 
+     * @param  {int}   var i   variable incremental, empezando desde 0
+     *                         hasta la longitud del arreglo tablasADetalar
+     *                         
+     * @param  {array} var tablasADetallar  arreglo que contiene la info.
+     *                                      de las tablas que se deben
+     *                                      detallar.
+     * @return {void}
+     */
+    for (var i = 0; i < tablasADetallar.length; i++) {
 
-            // Verifica si la tabla ya ha sido evaluada anteriormente.
-            if(jQuery.inArray(tablasADetallar[i]['tabla'], tablasEvaluadas)===-1){
+        // Verifica si la tabla ya ha sido evaluada anteriormente.
+        if(jQuery.inArray(tablasADetallar[i]['tabla'], tablasEvaluadas)===-1){
 
-                // Verifica si es una tabla dependiente.
-                if(tablasADetallar[i]['id'] === null){
+            // Verifica si es una tabla dependiente.
+            if(tablasADetallar[i]['id'] === null){
 
-                    //-----------------------------------------------------
-                    // Tablas No Dependientes
-                    //-----------------------------------------------------
+                //-----------------------------------------------------
+                // Tablas No Dependientes
+                //-----------------------------------------------------
 
-                    // Obtención del nombre de la tabla
-                    tabla = tablasADetallar[i]['tabla'];
+                // Obtención del nombre de la tabla
+                tabla = tablasADetallar[i]['tabla'];
 
-                    /**
-                     * Recorre los nodos DOM para extraer sus atributos.
-                     * 
-                     * Los atributos que contiene son los siguientes:
-                     *   - data-column: {String} Tabla a la que pertenece
-                     *   - data-id: {int} Llave primaria del registro.
-                     *
-                     * 
-                     * @param  {[type]} var j  variable incremental, empezando
-                     *                         en 0, hasta la longitud del
-                     *                         arreglo parsedArray.
-                     *                         
-                     * @return {void}
+                /**
+                 * Recorre los nodos DOM para extraer sus atributos.
+                 * 
+                 * Los atributos que contiene son los siguientes:
+                 *   - data-column: {String} Tabla a la que pertenece
+                 *   - data-id: {int} Llave primaria del registro.
+                 *
+                 * 
+                 * @param  {[type]} var j  variable incremental, empezando
+                 *                         en 0, hasta la longitud del
+                 *                         arreglo parsedArray.
+                 *                         
+                 * @return {void}
+                 */
+                for (var j = 0; j < parsedArray.length; j++) {
+
+                    /*
+                     * Verifica si el nodo DOM es de la tabla que está
+                     * siendo evaluada.
                      */
-                    for (var j = 0; j < parsedArray.length; j++) {
+                    if($(parsedArray[j]).attr('data-column').toLowerCase() === tabla.toLowerCase()){
+
+                        // Instanciación
+                        helperArray = [];
+
+                        // Obtención del id del nodo DOM
+                        id = $(parsedArray[j]).attr('data-id');
+
+                        //-----------------------------------------------------
+                        // Transferencia De Datos Al Arreglo Auxiliar
+                        //-----------------------------------------------------
+
+                        helperArray['tabla']        = tabla;
+                        helperArray['id']           = id;
+                        helperArray['llaveForanea'] = tablasADetallar[i]['llaveForanea'];
+                        helperArray['select']       = tablasADetallar[i]['select'];
+
+                        // Se añade 'helperAray' a 'tablasADetallarFinal'.
+                        tablasADetallarFinal.push(helperArray);
+
+                        // Se añade la tabla al arreglo de tablas evaluadas.
+                        tablasEvaluadas.push(tabla);
 
                         /*
-                         * Verifica si el nodo DOM es de la tabla que está
-                         * siendo evaluada.
+                         * Se sale del ciclo porque ya se encontró el nodo
+                         * DOM en el parsedArray de la tabla que se evaluaba.
                          */
-                        if($(parsedArray[j]).attr('data-column').toLowerCase() === tabla.toLowerCase()){
-
-                            // Instanciación
-                            helperArray = [];
-
-                            // Obtención del id del nodo DOM
-                            id = $(parsedArray[j]).attr('data-id');
-
-                            //-----------------------------------------------------
-                            // Transferencia De Datos Al Arreglo Auxiliar
-                            //-----------------------------------------------------
-
-                            helperArray['tabla']        = tabla;
-                            helperArray['id']           = id;
-                            helperArray['llaveForanea'] = tablasADetallar[i]['llaveForanea'];
-                            helperArray['select']       = tablasADetallar[i]['select'];
-
-                            // Se añade 'helperAray' a 'tablasADetallarFinal'.
-                            tablasADetallarFinal.push(helperArray);
-
-                            // Se añade la tabla al arreglo de tablas evaluadas.
-                            tablasEvaluadas.push(tabla);
-
-                            /*
-                             * Se sale del ciclo porque ya se encontró el nodo
-                             * DOM en el parsedArray de la tabla que se evaluaba.
-                             */
-                            break;
-                        }
+                        break;
                     }
-                } else {
-                    //-----------------------------------------------------
-                    // Tablas Dependientes
-                    //-----------------------------------------------------
-                    helperArray = [];
-
-
-                    //-----------------------------------------------------
-                    // Transferencia De Datos Al Arreglo Auxiliar
-                    //-----------------------------------------------------
-
-                    helperArray['tabla'] = tablasADetallar[i]['tabla'];
-                    helperArray['id'] = tablasADetallar[i]['id'];
-                    helperArray['llaveForanea'] = tablasADetallar[i]['llaveForanea'];
-                    helperArray['select'] = tablasADetallar[i]['select'];
-
-                    // Se añade 'helperAray' a 'tablasDependientes'.
-                    tablasDependientes.push(helperArray);
-
                 }
+            } else {
+                //-----------------------------------------------------
+                // Tablas Dependientes
+                //-----------------------------------------------------
+                helperArray = [];
+
+
+                //-----------------------------------------------------
+                // Transferencia De Datos Al Arreglo Auxiliar
+                //-----------------------------------------------------
+
+                helperArray['tabla'] = tablasADetallar[i]['tabla'];
+                helperArray['id'] = tablasADetallar[i]['id'];
+                helperArray['llaveForanea'] = tablasADetallar[i]['llaveForanea'];
+                helperArray['select'] = tablasADetallar[i]['select'];
+
+                // Se añade 'helperAray' a 'tablasDependientes'.
+                tablasDependientes.push(helperArray);
+
             }
         }
+    }
 
-        //======================================================================
-        // OBTENCIÓN DE LA INFORMACIÓN DE LAS TABLAS DEPENDIENTES
-        //======================================================================
-        
-        for (var i = 0; i < tablasDependientes.length; i++) {
+    //======================================================================
+    // OBTENCIÓN DE LA INFORMACIÓN DE LAS TABLAS DEPENDIENTES
+    //======================================================================
+    
+    for (var i = 0; i < tablasDependientes.length; i++) {
+
+        /*
+         * Se obtiene el 'id' de la tabla dependiente, que en realidad es
+         * el nombre de la tabla de la cual depende.
+         * e.g. Tabla: 'Dirección' -- depende de -> id: 'Empresa'.
+         */
+        id = tablasDependientes[i]['id'];            
+
+        /**
+         * Recorre los nodos DOM para extraer sus atributos.
+         * 
+         * @param  {[type]} var j  variable incremental, empezando
+         *                         en 0, hasta la longitud del
+         *                         arreglo parsedArray.
+         *                         
+         * @return {void}
+         */
+        for (var j = 0; j < parsedArray.length; j++) {
 
             /*
-             * Se obtiene el 'id' de la tabla dependiente, que en realidad es
-             * el nombre de la tabla de la cual depende.
-             * e.g. Tabla: 'Dirección' -- depende de -> id: 'Empresa'.
+             * Verifica si el nodo DOM es de la tabla NO dependiente
+             * de la cual depende la tabla que está siendo evaluada.
              */
-            id = tablasDependientes[i]['id'];            
+            if($(parsedArray[j]).attr('data-column').toLowerCase() === id.toLowerCase()){
+                helperArray = [];
 
-            /**
-             * Recorre los nodos DOM para extraer sus atributos.
-             * 
-             * @param  {[type]} var j  variable incremental, empezando
-             *                         en 0, hasta la longitud del
-             *                         arreglo parsedArray.
-             *                         
-             * @return {void}
-             */
-            for (var j = 0; j < parsedArray.length; j++) {
+                helperArray['tabla']        = tablasDependientes[i]['tabla'];
+                helperArray['id']           = $(parsedArray[j]).attr('data-id');
+                helperArray['llaveForanea'] = tablasDependientes[i]['llaveForanea'];
+                helperArray['select']       = tablasDependientes[i]['select'];
 
-                /*
-                 * Verifica si el nodo DOM es de la tabla NO dependiente
-                 * de la cual depende la tabla que está siendo evaluada.
-                 */
-                if($(parsedArray[j]).attr('data-column').toLowerCase() === id.toLowerCase()){
-                    helperArray = [];
+                // Se añade 'helperAray' a 'tablasADetallarFinal'.
+                tablasADetallarFinal.push(helperArray);
 
-                    helperArray['tabla']        = tablasDependientes[i]['tabla'];
-                    helperArray['id']           = $(parsedArray[j]).attr('data-id');
-                    helperArray['llaveForanea'] = tablasDependientes[i]['llaveForanea'];
-                    helperArray['select']       = tablasDependientes[i]['select'];
-
-                    // Se añade 'helperAray' a 'tablasADetallarFinal'.
-                    tablasADetallarFinal.push(helperArray);
-
-                }
             }
         }
+    }
 
 
 
-        //======================================================================
-        // DECLARACIÓN DE VARIABLES AUXILIARES
-        //======================================================================
-        // TODO: CONTINUACIÓN...
-        //       Lunes - 12/11/2018 - 05:42 a.m. - Commit 24
+    //======================================================================
+    // DECLARACIÓN DE VARIABLES AUXILIARES
+    //======================================================================
+    // TODO: CONTINUACIÓN...
+    //       Lunes - 12/11/2018 - 05:42 a.m. - Commit 24
+    
+    var where;
+    var inputs;
+    var valoresInput = [];
+    var jQuerySelector;
+    var columnas;
+
+    // Obtener los valores de cada tabla y asignar los valores a cada input de cada tab del Modal.
+    for (var i = 0; i < tablasADetallarFinal.length; i++) {
+
+
+        if(tablasADetallarFinal[i]['llaveForanea'] !== null){
+            where = tablasADetallarFinal[i]['llaveForanea'] + ' = ?';
+        } else {
+            where = 'id = ?';
+        }
         
-        var where;
-        var inputs;
-        var valoresInput = [];
-        var jQuerySelector;
-        var columnas;
-
-        // Obtener los valores de cada tabla y asignar los valores a cada input de cada tab del Modal.
-        for (var i = 0; i < tablasADetallarFinal.length; i++) {
-
-
-            if(tablasADetallarFinal[i]['llaveForanea'] !== null){
-                where = tablasADetallarFinal[i]['llaveForanea'] + ' = ?';
-            } else {
-                where = 'id = ?';
-            }
-            
 /*                valoresInput = obtenerDetalles(
-                tablasADetallarFinal[i]['tabla'],   // Tabla (e.g. Cliente)
-                tablasADetallarFinal[i]['select'],  // Select (e.g. 'nombre, apellidoP, apellidoM')
-                where,                              // Where (e.g. id = ?)
-                tablasADetallarFinal[i]['id']       // id (e.g. 2),
-            );
+            tablasADetallarFinal[i]['tabla'],   // Tabla (e.g. Cliente)
+            tablasADetallarFinal[i]['select'],  // Select (e.g. 'nombre, apellidoP, apellidoM')
+            where,                              // Where (e.g. id = ?)
+            tablasADetallarFinal[i]['id']       // id (e.g. 2),
+        );
 *//*
-            console.log("TABLA: ");
-            console.log(tablasADetallarFinal[i]['tabla']);
-            console.log("SELECT: ");
-            console.log(tablasADetallarFinal[i]['select']);
-            console.log("WHERE: ");
-            console.log(where);
-            console.log("ID: ");
-            console.log(tablasADetallarFinal[i]['id']);
-            
+        console.log("TABLA: ");
+        console.log(tablasADetallarFinal[i]['tabla']);
+        console.log("SELECT: ");
+        console.log(tablasADetallarFinal[i]['select']);
+        console.log("WHERE: ");
+        console.log(where);
+        console.log("ID: ");
+        console.log(tablasADetallarFinal[i]['id']);
+        
 */
 
-            obtenerDetalles(
-                tablasADetallarFinal[i]['tabla'],
-                tablasADetallarFinal[i]['select'],
-                where,
-                tablasADetallarFinal[i]['id'],
-                i, 
-                function(i, valoresInput,){
+        obtenerDetalles(
+            tablasADetallarFinal[i]['tabla'],
+            tablasADetallarFinal[i]['select'],
+            where,
+            tablasADetallarFinal[i]['id'],
+            i, 
+            function(i, valoresInput,){
 
 
-                    columnas = tablasADetallarFinal[i]['select'].split(" ").join("").split(',');
+                columnas = tablasADetallarFinal[i]['select'].split(" ").join("").split(',');
 
-                    if(valoresInput != null){
-                        console.log("tablasADetallarFinal[i]['tabla']: ");
-                        console.log(tablasADetallarFinal[i]['tabla']);
+                if(valoresInput != null){
+                    console.log("tablasADetallarFinal[i]['tabla']: ");
+                    console.log(tablasADetallarFinal[i]['tabla']);
 
-                        console.log("Valores Input: ");
-                        console.log(valoresInput);
-                        console.log("[i]: ");
-                        console.log(i);
-                        //console.log("tablasADetallarFinal[i]: ");
-                        //console.log(tablasADetallarFinal[i]);
+                    console.log("Valores Input: ");
+                    console.log(valoresInput);
+                    console.log("[i]: ");
+                    console.log(i);
+                    //console.log("tablasADetallarFinal[i]: ");
+                    //console.log(tablasADetallarFinal[i]);
 
 
-                        console.log("Columnas Array: ");
-                        console.log(columnas);
+                    console.log("Columnas Array: ");
+                    console.log(columnas);
 
-                        //console.log("ValoresInput: ");
-                        //console.log(valoresInput);
+                    //console.log("ValoresInput: ");
+                    //console.log(valoresInput);
 
-                        $('div[id='+tablasADetallarFinal[i]['tabla']+'] #mensaje-'+tablasADetallarFinal[i]['tabla']).html('');
-                        for (var j = 0; j < columnas.length; j++) {
-                            $('#modal-form form[id=form-' + tablasADetallarFinal[i]['tabla'] + ']').find("input[id=" + columnas[j] + "]").val(valoresInput[columnas[j]]);
-                            
-                        }
-                    } else {
-                        $('div[id='+tablasADetallarFinal[i]['tabla']+'] #mensaje-'+tablasADetallarFinal[i]['tabla']).html('Sin datos asignados. Favor de asignarlos.');
-                        for (var k = 0; k < columnas.length; k++) {
-                            $('#modal-form form[id=form-' + tablasADetallarFinal[i]['tabla'] + ']').find("input[id=" + columnas[k] + "]").val('');
-                            
-                        }
-
+                    $('div[id='+tablasADetallarFinal[i]['tabla']+'] #mensaje-'+tablasADetallarFinal[i]['tabla']).html('');
+                    for (var j = 0; j < columnas.length; j++) {
+                        $('#modal-form form[id=form-' + tablasADetallarFinal[i]['tabla'] + ']').find("input[id=" + columnas[j] + "]").val(valoresInput[columnas[j]]);
+                        
                     }
-                }
-            );
+                } else {
+                    $('div[id='+tablasADetallarFinal[i]['tabla']+'] #mensaje-'+tablasADetallarFinal[i]['tabla']).html('Sin datos asignados. Favor de asignarlos.');
+                    for (var k = 0; k < columnas.length; k++) {
+                        $('#modal-form form[id=form-' + tablasADetallarFinal[i]['tabla'] + ']').find("input[id=" + columnas[k] + "]").val('');
+                        
+                    }
 
-        }
+                }
+            }
+        );
 
     }
+}
+
+
+
+function guardarCambios(){
+   var tabla;
+
+   for (var i = 0; i < result['tablasADetallar'].length; i++) {
+        tabla = tablasADetallarFinal[i]['tabla'];
+        id = tablasADetallarFinal[i]['id'];
+
+
+        console.log('GUARDAR CAMBIOS!!!!!!!!!!!!!!!!!');
+
+        console.log("Tabla: " + tabla);
+
+        var form = $('#modal-form form[id=form-' + tabla + ']');
+        var formSerialized = form.serialize() + "&id="+ id;
+
+        console.log(formSerialized);
+
+        tabla = tabla.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+            return letter.toUpperCase();
+        });
+
+        console.log("Tabla: " + tabla);
+        console.log("URL: " + 'modificar' + tabla + '.php');
+
+        $.ajax({
+            type: "POST",
+            url: 'modificar' + tabla + '.php',
+            //async: false,
+            data: formSerialized,
+            dataType:"json",
+            success: function(data) {
+                var result = data['result'];
+                var affectedRows = data['affectedRows'];
+
+                console.log('Result:');
+                console.log(data['result']);
+
+                if(result){
+                    // Alert cambios guardados
+                    console.log('Affected Rows:');
+                    console.log(data['affectedRows']);
+                } else {
+                    // Error inesperado.
+                    console.log(data['reason']);
+                }
+            }
+        });
+   }
+
+   $('#reloadButton').trigger('click');
+}
+
+function eliminarRegistro(){
+   var tabla;
+
+   for (var i = 0; i < result['tablasADetallar'].length; i++) {
+        tabla = tablasADetallarFinal[i]['tabla'];
+        id = tablasADetallarFinal[i]['id'];
+
+
+        console.log('GUARDAR CAMBIOS!!!!!!!!!!!!!!!!!');
+
+        console.log("Tabla: " + tabla);
+
+        var form = $('#modal-form form[id=form-' + tabla + ']');
+        var formSerialized = form.serialize() + "&id="+ id;
+
+        console.log(formSerialized);
+
+        tabla = tabla.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+            return letter.toUpperCase();
+        });
+
+        console.log("Tabla: " + tabla);
+        console.log("URL: " + 'modificar' + tabla + '.php');
+
+        $.ajax({
+            type: "POST",
+            url: 'modificar' + tabla + '.php',
+            //async: false,
+            data: formSerialized,
+            dataType:"json",
+            success: function(data) {
+                var result = data['result'];
+                var affectedRows = data['affectedRows'];
+
+                console.log('Result:');
+                console.log(data['result']);
+
+                if(result){
+                    // Alert cambios guardados
+                    console.log('Affected Rows:');
+                    console.log(data['affectedRows']);
+                } else {
+                    // Error inesperado.
+                    console.log(data['reason']);
+                }
+            }
+        });
+   }
+
+   $('#reloadButton').trigger('click');
+}
 
 </script>
 
@@ -826,6 +950,9 @@ define('MAX_CONTRASENA', 26);
 
 <!-- Script para obtener la información necesaria que se mostrará en el contenido (#content) -->
 <script>
+    /**
+     * 
+     */
     $(document).ready(function(){
         // On click listener para el
         $('a.list-group-item-action').on('click', function(){
@@ -856,7 +983,7 @@ define('MAX_CONTRASENA', 26);
                     result = data;
 
                     $('#content').html(result['tituloContenido'] + result['tablaString']);
-                    var tituloContenido = $('#titulo-contenido').text().toLowerCase();
+                    tituloContenido = $('#titulo-contenido').text().toLowerCase();
                     $('#modalCenterTitle #mainTitle').html('Detalles de ' + tituloContenido);
 
                     //switch(tituloContenido){
@@ -973,6 +1100,9 @@ define('MAX_CONTRASENA', 26);
                             text: '<i class="fas fa-sync-alt fa-lg text-success"></i>',
                             action: function ( e, dt, node, config ) {
                                 dt.ajax.reload();
+                            },
+                            attr:  {
+                                id: 'reloadButton'
                             }
                         }
                     ]

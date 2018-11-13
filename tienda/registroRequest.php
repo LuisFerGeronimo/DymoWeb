@@ -197,7 +197,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$resultsCreateCliente = $queryGenerico->create();
 
 			if($resultsCreateCliente["result"]){
-				// Creación de empresa
+				//======================================================================
+				// CREACIÓN DE LA DIRECCIÓN DE LA EMPRESA
+				//======================================================================
 				$queryGenerico = new QueryGenerico();
 				$queryGenerico->setTable('Direccion');
 				$queryGenerico->setFields('numeroExt, numeroInt, calle, colonia, cp, municipio, estado, empresaID');
