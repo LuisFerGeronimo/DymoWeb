@@ -216,9 +216,58 @@ define('MAX_CONTRASENA', 26);
 
     // Almacena la instancia de la tabla que se obtiene del plugin DataTables.
     var table;
+
+    //======================================================================
+    // VARIABLES GLOBALES DE INSTANCIAS DE ELEMENTOS HTML
+    //======================================================================
+
+    //-----------------------------------------------------
+    // Formularios Listar Clientes
+    //-----------------------------------------------------
+    $('#modal-form form[id=form-' + tablasADetallarFinal[i]['tabla'] + ']').find("input[id=" + columnas[j] + "]").val(valoresInput[columnas[j]]);
+
+    var formCliente = $("#modal-form  form[id=form-cliente]");
+    var formEmpresa = $("#modal-form  form[id=form-empresa]");
+    var formDireccion = $("#modal-form  form[id=form-direccion]");
+
+    //-----------------------------------------------------
+    // Paso 1: Cuenta
+    //-----------------------------------------------------
+    
+    var inputNombres         = $("#nombres");
+    var inputApellidoP       = $("#apellidoP");
+    var inputApellidoM       = $("#apellidoM");
+    var inputCorreoCuenta    = $("#correo-cuenta");
+    var inputTelefonoCuenta  = $("#telefono-cuenta");
+
+    //-----------------------------------------------------
+    // Paso 2: Empresa
+    //-----------------------------------------------------
+    
+    var inputEmpresa         = $("#empresa");
+    var inputTelefonoEmpresa = $("#telefono-empresa");
+    var inputCorreoEmpresa   = $("#correo-empresa");
+
+    //-----------------------------------------------------
+    // Paso 3: Dirección
+    //-----------------------------------------------------
+    
+    var inputEstado          = $("#estado");
+    var inputMunicipio       = $("#municipio");
+    var inputCodigoPostal    = $("#codigo-postal");
+    var inputColonia         = $("#colonia");
+    var inputCalle           = $("#calle");
+    var inputNumeroExt       = $("#numero-ext");
+    var inputNumeroInt       = $("#numero-int");
+
+    //-----------------------------------------------------
+    // Paso 4: Seguridad
+    //-----------------------------------------------------
+
+    var inputContrasena         = $("#contrasena");
+    var inputContrasenaRepetida = $("#contrasena-repetida");
+
 </script>
-
-
 
 
 

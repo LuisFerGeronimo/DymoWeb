@@ -1,5 +1,7 @@
 <?php
 
+/* Sublime Text 3:      TabSize=4 */
+
 if($_SERVER['REQUEST_METHOD'] == 'GET') {
 	if(isset($_GET['id'])) {
     	$id = $_GET['id'];
@@ -20,19 +22,19 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 				$tablasADetallar = array(
                     array(
-                        'tabla' => 'cliente',   
+                        'tabla' => 'cliente',
                         'id' => null,      
                         'llaveForanea' => null, 
                         'select' => 'nombre, apellidoP, apellidoM, correo, telefono'
                     ), 
                     array(
-                        'tabla' => 'empresa',   
+                        'tabla' => 'empresa',
                         'id' => null,      
                         'llaveForanea' => null, 
                         'select' => 'nombre, telefono, correo'
                     ),
                     array(
-                        'tabla' => 'direccion', 
+                        'tabla' => 'direccion',
                         'id' => 'empresa', 
                         'llaveForanea' => 'empresaID', 
                         'select' => 'estado, municipio, cp, colonia, calle, numeroExt, numeroInt'

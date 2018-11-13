@@ -5,259 +5,815 @@
 /**
  * Clase genérica para hacer operaciones en la BD de datos
  *
-
+ * Este archivo maneja variables de operaciones SQL del lenguaje MySQL.
+ * También maneja variables que maneja el plugin DataTables.
+ * Finalmente, las operaciones se hacen por medio de Prepared Statements
+ * para evitar los ataques de inyecciones SQL.
+ *
  * 
  * PHP version 7.2.10
  *
  * @author Luis Fernando Gerónimo Carranza <luisfergeronimo@gmail.com>
  * @author Jesús Emmanuel Zetina Chevez <zcjo151173@upemor.edu.mx>
+ * @todo  -  Analizar si es se puede juntar los métodos read y fetchData.
  */
 
 /**
+ * Un auxiliar genérico para hacer consultas a la base de datos
+ * 
  * Ayuda a hacer el CRUD de la base de datos utilizando Prepared
  * Statements para evitar los ataques de inyecciones SQL.
  *
  * Es genérica ya que puede ser utilizada para todas las tablas
  * de la base de datos.
+ *
+ * Se hace uso extensivo de los Setter's para asignar los parámetros de los
+ * Query's y de los Prepared Statements.
+ *
+ *
+ * 
+ * A continuación, se enlistan los métodos dentro de esta clase con los
+ * atributos necesarios para ejecutar un query exitoso.
+ *
+ *  + fetchData():
+ *  	- $_table  		:Obligatorio
+ *      - $_where
+ *      - $_order
+ *      - $_length
+ *      - $_startValue
+ *      - $_lengthValue
+ *      - $_paramsType
+ *      - $_paramsValue
+ *
+ *  + getAllData():
+ *  	- $_table 		:Obligatorio
+ * 
+ *  + read():
+ *  	- Select     	:Obligatorio
+ *  	- Tabla 		:Obligatorio
+ *  	- Where
+ *  	- ParamsType 	:Obligatorio, sólo si se asignaron espacios '?'
+ *  	- ParamsValues  :Obligatorio, sólo si se asignaron espacios '?'
+ *
+ *  + create():
+ *  	- Tabla 		:Obligatorio
+ *  	- Fields
+ *  	- Values 		:Obligatorio
+ *  	- ParamsType 	:Obligatorio, ya que Values es obligatorio
+ *  	- ParamsValues  :Obligatorio, ya que Values es obligatorio
+ * 
+ *  + delete():
+ *  	- Tabla 		:Obligatorio
+ *  	- Where 		:Obligatorio
+ *  	- ParamsType 	:Obligatorio, ya que Where es obligatorio
+ *  	- ParamsValues  :Obligatorio, ya que Where es obligatorio
+ *
+ *
+ * 
+ * Ahora, clasificamos los parámetros para tener una mejor perspectiva de ellos:
+ * 
+ * //-----------------------------------------------------
+ * // Parámetros de Query's:
+ * //-----------------------------------------------------
+ * 
+ * 	 General:
+ *   - Table - La tabla o vista afectada
+ *   - Where - La condición del Query
+ *
+ *   SELECT
+ *   - Select - Campos que se desean seleccionar
+ *
+ *   INSERT
+ *   - $_fields - Los campos de la tabla el insert
+ *   - $_values - Los valores para esos campos
+ *
+ * 
+ * //-----------------------------------------------------
+ * // Parámetros de Prepared Statement:
+ * //-----------------------------------------------------
+ *   - $_paramsType - Tipos de parámetros
+ *   - $_paramsValues - Los valores para esos tipos de parámetros
+ *
+ * 
+ * //-----------------------------------------------------
+ * // Parámetros enviados por DataTables
+ * //-----------------------------------------------------
+ *   - $_order 	     - String de ordenamiento (e.g. 'id DESC')
+ *   - $_startValue  - Variable de inicio de límite
+ *   - $_lengthValue - Variable de límite
+ *   - $_length 	 - String de parámetros de límite (e.g. '?, ?')
+ * 
+ * @author Luis Fernando Gerónimo Carranza <luisfergeronimo@gmail.com>
+ * @author Jesús Emmanuel Zetina Chevez <zcjo151173@upemor.edu.mx>
  */
 class QueryGenerico{
 
-
-	private $_order = null;
-	private $_startValue = null;
-	private $_lengthValue = null;
-	private $_length = null;
+	//=====================================================================
+	// DECLARACIÓN DE PROPIEDADES
+	//======================================================================
 
 
+	//-----------------------------------------------------
+	// Propiedades De Query's
+	//-----------------------------------------------------
+
+	/**
+	 * La tabla con la que se hará el Query.
+	 * Ejemplo:
+	 * 
+	 * <code>
+	 * $queryGenerico->setTable('cliente');
+	 * </code>
+	 * 
+	 * @var String
+	 */
 	private $_table = null;
-	private $_select = null;
+
+	/**
+	 * La condición que se aplicará al Query.
+	 *
+	 * La condición suele venir con signos de interrogación para los 
+	 * parámetros del Prepared Statement. 
+	 * Ejemplo:
+	 * 
+	 * <code>
+	 * $queryGenerico->setWhere('nombre = ? AND apellidoP = ?');
+	 * </code>
+	 * 
+	 * @var String
+	 */
 	private $_where = null;
+
+	/**
+	 * Campos que se seleccionan en un query.
+	 * Ejemplo:
+	 * 
+	 * <code>
+	 * $queryGenerico->setSelect('nombre, apellidoP, correo' );
+	 * </code>
+	 * @var String
+	 */
+	private $_select = null;
+
+	/**
+	 * Los campos que serán insertados.
+	 * Ejemplo:
+	 * 
+	 * <code>
+	 * $queryGenerico->setFields('nombre, apellidoP, correo, telefono' );
+	 * </code>
+	 * 
+	 * @var String
+	 */
 	private $_fields = null;
+
+	/**
+	 * Lo valores que serán asignados al insert.
+	 * Ejemplo:
+	 * 
+	 * <code>
+	 * $queryGenerico->setValues('?, ?, ?');
+	 * </code>
+	 * 
+	 * @var String
+	 */
 	private $_values = null;
 
+
+	//-----------------------------------------------------
+	// Propiedades De Prepared Statements
+	//-----------------------------------------------------
+
+	/**
+	 * Los parámetros que serán "bindeados" al Query Statement dentro del
+	 * Prepared Statement.
+	 *
+	 * Este arreglo contendrá los tipos de parámetros y los valores de
+	 * los parámetros.
+	 * 
+	 * @var array
+	 */
 	private $_params = null;
+
+	/**
+	 * Los tipos de parámetros que serán "bindeados" al Query Statement
+	 * dentro del Prepared Statement.
+	 *
+	 * Este arreglo contendrá los caracteres del tipo de parámetros.
+	 *
+	 * El número de tipos de parámetros debe ser igual que el número
+	 * de valores de parámetros (@$_paramsValues).
+	 * Ejemplo:
+	 * 
+	 * <code>
+	 * $queryGenerico->setParamsType(array( 's', 's', 's', 's', 'i'));
+	 * </code>
+	 * 
+	 * 
+	 * @var array
+	 */
 	private $_paramsType = null;
+
+	/**
+	 * Los valores de parámetros que serán "bindeados" al Query Statement
+	 * dentro del Prepared Statement.
+	 *
+	 * Este arreglo contendrá los valores del tipo de parámetros.
+	 *
+	 * El número de valores de parámetros debe ser igual que el número
+	 * de tipos de parámetros (@$_paramsType).
+	 * Ejemplo:
+	 * 
+	 * <code>
+	 * $queryGenerico->setParamsValues(array( $nombre, $apellidoP, $apellidoM, $estado, $codigoPostal));
+	 * </code>
+	 * 
+	 * @var array
+	 */
 	private $_paramsValues = null;
 
+
+
+	//-----------------------------------------------------
+	// Propiedades De DataTables
+	//-----------------------------------------------------
+	/**
+	 * El orden en que debe ir el resultado de la consulta.
+	 * Ejemplo:
+	 * 
+	 * <code>
+	 * $queryGenerico->setOrder('nombre ASC');
+	 * </code>
+	 * 
+	 * @var array
+	 */
+	private $_order = null;
+
+	/**
+	 * El índice de fila por el cual comienza a mostrase una consulta.
+	 * Ejemplo:
+	 * 
+	 * <code>
+	 * $queryGenerico->setStartValue(0);
+	 * </code>
+	 * 
+	 * @var int
+	 */
+	private $_startValue = null;
+
+	/**
+	 * El índice límite de fila hasta donde termina de mostrase una consulta.
+	 * Ejemplo:
+	 * 
+	 * <code>
+	 * // Se muestran 10 filas apartir del índice de startValue.
+	 * $queryGenerico->setLengthValue(10); 
+	 * </code>
+	 * 
+	 * @var int
+	 */
+	private $_lengthValue = null;
+
+	/**
+	 * Los espacios de los parámetros para el LIMIT.
+	 * Ejemplo:
+	 * 
+	 * <code>
+	 * $queryGenerico->setLength('?, ?');
+	 * </code>
+	 * 
+	 * @var String
+	 */
+	private $_length = null;
+
+	/**
+	 * La conexión a la Base de Dato.
+	 * 
+	 * @var Database
+	 */
 	private $_db;
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/**
+	 * Constructor de la QueryGenerico
+	 *
+	 * Al instanciar un nuevo objeto QueryGenerico el constructor crea
+	 * una nueva Base de Datos (Database).
+	 */
 	public function __construct() {
 
 		$this->_db = new Database();
 
 	}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/**
+	 * Envía información de consultas para las tablas de DataTables
+	 *
+	 * Obtiene información de la base de datos en base a las variables que
+	 * son enviadas por DataTables y recibidas en el servidor. Ya sea que
+	 * el usuario administrador o vendedor haya querido ordenar una columna
+	 * de forma ascendente o descendente, o que haya ingresado algún valor
+	 * de búsqueda en el buscador.
+	 * 
+	 * Datos que se ocupan en este método:
+	 *  - $_table  		:Obligatorio
+	 *  - $_where
+	 *  - $_order
+	 *  - $_length
+	 *  - $_startValue
+	 *  - $_lengthValue
+	 *  - $_paramsType
+	 *  - $_paramsValue
+	 * 
+	 * Es necesario haber asignado la tabla. Los demás datos son opcionales.
+	 *
+	 * 
+	 * @return array  arreglo con el número de filas filtradas (int), y otra
+	 * 				  con los datos obtenidos
+	 */	
 	public function fetchData(){
-		// Obtención del objecto de la conexión mysqli
+
+		//======================================================================
+		// BASE DE DATOS
+		//======================================================================
+
+		// Obtención del objeto de la conexión mysqli
 		$mysqli = $this->_db->getDB();
 
+		//======================================================================
+		// QUERY
+		//======================================================================
 
-		$query = "SELECT * FROM " . $this->_table;
 
-		/********************************************************************************************************************/
-		/********************************************************************************************************************/
-		/****************************************************** 1/3 *********************************************************/
+		//-----------------------------------------------------
+		// SELECT [select] FROM [tabla]
+		//-----------------------------------------------------
+		
+		// Declaración del Query.
+		$query = "SELECT " . $this->_select . " FROM " . $this->_table;
+
+
+		//-----------------------------------------------------
+		// WHERE [where]
+		//-----------------------------------------------------
 
 		if($this->_where != null){ 
 			$query .= ' WHERE ' . $this->_where; 
 		}
 
-		/********************************************************************************************************************/
-		/********************************************************************************************************************/
-		/****************************************************** 2/3 *********************************************************/
 
-		
+		//-----------------------------------------------------
+		// ORDER BY [order]
+		//-----------------------------------------------------
+
 		if($this->_order != null){
 			$query .= ' ORDER BY ' . $this->_order;
 		} else {
 			$query .= ' ORDER BY id ASC ';
 		}
 
-		/********************************************************************************************************************/
-		/********************************************************************************************************************/
-		/****************************************************** 3/3 *********************************************************/
 
-		$query1 = '';
+		//-----------------------------------------------------
+		// LIMIT [length]
+		//-----------------------------------------------------
+		
+		$lengthQuery = '';
 
 		if($this->_length != null){
-		 	$query1 = ' LIMIT ' . $this->_length;
+		 	$lengthQuery = ' LIMIT ' . $this->_length;
 		}
 
-		/********************************************************************************************************************/
-		/********************************************************************************************************************/
-		/********************************************************************************************************************/
 
 
+		//======================================================================
+		// PREPARED STATEMENT
+		//======================================================================
 
-		// Preparación del statement.
+		//-----------------------------------------------------
+		// Preparación Del Statement
+		//-----------------------------------------------------
+		/**
+		 * Variable donde se almacena el Prepared Statement.
+		 * @var statement object
+		 */
 		$stmt = $mysqli->prepare($query);
 
+
+		//-----------------------------------------------------
+		// Mensaje De Error
+		//-----------------------------------------------------
+		// Verificación de errores de sintaxis MySQL.
 		if($stmt === false) {
-		  trigger_error('Wrong SQL: ' . $query . ' Error: ' . $mysqli->errno . ' ' . $mysqli->error, E_USER_ERROR);
+			// Mensaje de sintaxis incorrecta.
+		  	trigger_error('Wrong SQL: ' . $query . ' Error: ' . $mysqli->errno . ' ' . $mysqli->error, E_USER_ERROR);
 		}
 
 
+		//-----------------------------------------------------
+		// Construcción De Los Parámetros
+		//-----------------------------------------------------
 		$this->paramsBuilder();
 
-		/* use call_user_func_array, as $stmt->bind_param('s', $param); does not accept params array */
+		//-----------------------------------------------------
+		// Vinculación De Parámetros Con El Query
+		//-----------------------------------------------------
+		// Se verifica que el arreglo de parámetros al menos tenga uno.
 		if(count($this->_params) > 0){
+			// Se vincula el Statement con los parámetros ($this->_params)
 			call_user_func_array(array($stmt, 'bind_param'), $this->_params);
 		}
 		 
-		/* Execute statement */
+		 
+		//-----------------------------------------------------
+		// Ejecucíón Del Prepared Statement
+		//-----------------------------------------------------
+		/*
+		 * Se ejecuta el query con los parámetros vinculados. (O sin parámetros,
+		 * en caso de que no haya habido ninguno.)
+		 */
 		$stmt->execute();
 		
-
+		/**
+		 * Variable para el almacenamiento del numero de filas filtradas.
+		 * Este valor se almacena en el arreglo que se retorna en esta función.
+		 * 
+		 * @var int
+		 */
 		$number_filter_row = null;
 
+		
+		/*
+		 * Se verifica si el query del LIMIT o length está vacío o no.
+		 * Vacío -> No hay ningún límite de filas.
+		 * String -> startValue y lengthValue existen. Hay un límite.
+		 */
+    	if($lengthQuery != ''){
 
-    	if($query1 != ''){
-
+    		// Se almacena el resultado.
     		$stmt->store_result();
 
-			/* Número de filas filtradas */
+			// Se extrae el número de filas.
 	    	$number_filter_row =  $stmt->num_rows;
 		
+			/*
+			 * Se almacena el tipo de parámetro de startValue (int) al arreglo
+			 * paramsType
+			 */
 			array_push($this->_paramsType, 'i');
+			/* 
+			 * Se almacena el valor del parámetro startValue al arreglo
+			 *  paramsValues. 
+			 */
 			array_push($this->_paramsValues, $this->_startValue);
 			
+			
+			/*
+			 * Se almacena el tipo de parámetro del lengthValue (int) al arreglo
+			 * paramsType.
+			 */
 			array_push($this->_paramsType, 'i');
+			/* 
+			 * Se almacena el valor del parámetro lengthValue al arreglo
+			 *  paramsValues. 
+			 */
 			array_push($this->_paramsValues, $this->_lengthValue);
 
 
-			// Preparación del statement.
-			$stmt = $mysqli->prepare($query.$query1);
+			//======================================================================
+			// PREPARED STATEMENT
+			//======================================================================
 
+			//-----------------------------------------------------
+			// Preparación Del Statement
+			//-----------------------------------------------------
+			$stmt = $mysqli->prepare($query.$lengthQuery);
+
+			//-----------------------------------------------------
+			// Mensaje De Error
+			//-----------------------------------------------------
+			// Verificación de errores de sintaxis MySQL.
 			if($stmt === false) {
-			  trigger_error('Wrong SQL: ' . $query . ' Error: ' . $mysqli->errno . ' ' . $mysqli->error, E_USER_ERROR);
+				// Mensaje de sintaxis incorrecta.
+			  	trigger_error('Wrong SQL: ' . $query . ' Error: ' . $mysqli->errno . ' ' . $mysqli->error, E_USER_ERROR);
 			}
-/*
-			echo "Query: " . $query.$query1;
-			echo "<br><br>";
 
-			var_dump($this->_paramsType);
-			echo "<br><br>";
-			var_dump($this->_paramsValues);
-			echo "<br><br>";
-*/	 
-
+			//-----------------------------------------------------
+			// Construcción De Los Parámetros
+			//-----------------------------------------------------
 			$this->paramsBuilder();
 
-			/* use call_user_func_array, as $stmt->bind_param('s', $param); does not accept params array */
+			//-----------------------------------------------------
+			// Vinculación De Parámetros Con El Query
+			//-----------------------------------------------------
+			// Se verifica que el arreglo de parámetros al menos tenga uno.
 			if(count($this->_params) > 0){
+				// Se vincula el Statement con los parámetros ($this->_params)
 				call_user_func_array(array($stmt, 'bind_param'), $this->_params);
 			}
 			 
-			/* Execute statement */
+			//-----------------------------------------------------
+			// Ejecucíón Del Prepared Statement
+			//-----------------------------------------------------
 			$stmt->execute();
 
 		}
 
 
-
-
-
-
-		// Obtención de los resultados.
+		//-----------------------------------------------------
+		// Obtención De Resultados Del Prepared Statement
+		//-----------------------------------------------------
 		$resArr = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
 
+		//-----------------------------------------------------
+		// Cierre De Los Objetos Stmt && Mysqli
+		//-----------------------------------------------------
 		$stmt->close();
 		$mysqli->close();
 
+		// 
+		/*
+		 * Retornamos un arreglo con:
+		 *  - El número de filas filtradas, si es que hubo algún límite.
+		 *    Si no hubo, el valor es null.
+		 *
+		 *  - Y los registros obtenidos de la consulta
+		 */
 		return array('recordsFiltered' => $number_filter_row, 'records' => $resArr);
 
 	}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/**
+	 * Función para obtener el número total de filas en una tabla.
+	 * Datos que se ocupan en este método:
+	 *  - $_table  		:Obligatorio
+	 *  
+	 * @return int  número total de filas en una tabla.
+	 */
 	public function getAllData(){
-		// Obtención del objecto de la conexión mysqli
+		//======================================================================
+		// BASE DE DATOS
+		//======================================================================
+
+		// Obtención del objeto de la conexión mysqli
 		$mysqli = $this->_db->getDB();
 
+
+		//======================================================================
+		// QUERY
+		//======================================================================
+
+
+		//-----------------------------------------------------
+		// SELECT * FROM [tabla]
+		//-----------------------------------------------------
 		$query = "SELECT * FROM " . $this->_table;
 
 
-		// Preparación del statement.
+		//======================================================================
+		// PREPARED STATEMENT
+		//======================================================================
+
+		//-----------------------------------------------------
+		// Preparación Del Statement
+		//-----------------------------------------------------
 		$stmt = $mysqli->prepare($query);
 
+		//-----------------------------------------------------
+		// Mensaje De Error
+		//-----------------------------------------------------
+		// Verificación de errores de sintaxis MySQL.
 		if($stmt === false) {
-		  trigger_error('Wrong SQL: ' . $query . ' Error: ' . $mysqli->errno . ' ' . $mysqli->error, E_USER_ERROR);
+			// Mensaje de sintaxis incorrecta.
+		  	trigger_error('Wrong SQL: ' . $query . ' Error: ' . $mysqli->errno . ' ' . $mysqli->error, E_USER_ERROR);
 		}
  
-		/* Execute statement */
+		//-----------------------------------------------------
+		// Ejecucíón Del Prepared Statement
+		//-----------------------------------------------------
 		$stmt->execute();
 
+		// Se almacena el resultado.
 		$stmt->store_result();
 
+		// Se obtiene el número de filas obtenidas.
 		$num_rows = $stmt->num_rows;
 
+		//-----------------------------------------------------
+		// Cierre De Los Objetos Stmt && Mysqli
+		//-----------------------------------------------------
 		$stmt->close();
 		$mysqli->close();
 		
-		// Obtención de los resultados.
+		/*
+		 * Se retorna el número de filas obtenidas.
+		 */
 		return $num_rows;
 	}
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/**
+	 * Método para hacer consultas en la BD. 
+	 * Los sig. valores se ocupan en el método:
+	 *  - Select     	:Obligatorio
+	 *  - Tabla 		:Obligatorio
+	 *  - Where
+	 *  - ParamsType 	:Obligatorio, sólo si se asignaron espacios '?'
+	 *  - ParamsValues  :Obligatorio, sólo si se asignaron espacios '?'
+	 *  
+	 * @return array  arreglo con las filas resultantes de la consulta.
+	 */
 	public function read(){
 
-		// Obtención del objecto de la conexión mysqli
+		//======================================================================
+		// BASE DE DATOS
+		//======================================================================
+
+		// Obtención del objeto de la conexión mysqli
 		$mysqli = $this->_db->getDB();
 
-		// Query
+		//======================================================================
+		// QUERY
+		//======================================================================
+
+
+		//-----------------------------------------------------
+		// SELECT [select] FROM [tabla]
+		//-----------------------------------------------------
 		$query = "SELECT " . $this->_select . " FROM " . $this->_table;
 
+
+		//-----------------------------------------------------
+		//  WHERE [where]
+		//-----------------------------------------------------
 		if($this->_where != null){
 			$query .= " WHERE " . $this->_where;
 		}
-/*
-		echo "<br><br>";
-		echo "Query: " . $query;
 
-		echo "<br><br>";
-*/
-		// Preparación del statement.
+
+		//======================================================================
+		// PREPARED STATEMENT
+		//======================================================================
+
+		//-----------------------------------------------------
+		// Preparación Del Statement
+		//-----------------------------------------------------
 		$stmt = $mysqli->prepare($query);
 
+		//-----------------------------------------------------
+		// Mensaje De Error
+		//-----------------------------------------------------
+		// Verificación de errores de sintaxis MySQL.
 		if($stmt === false) {
+			// Mensaje de sintaxis incorrecta.
 		  trigger_error('Wrong SQL: ' . $query . ' Error: ' . $mysqli->errno . ' ' . $mysqli->error, E_USER_ERROR);
 		}
- 
 
+		//-----------------------------------------------------
+		// Construcción De Los Parámetros
+		//-----------------------------------------------------
 		$this->paramsBuilder();
 
-		/* use call_user_func_array, as $stmt->bind_param('s', $param); does not accept params array */
+		//-----------------------------------------------------
+		// Vinculación De Parámetros Con El Query
+		//-----------------------------------------------------
+		// Se verifica que el arreglo de parámetros al menos tenga uno.
 		if(count($this->_params) > 0){
+			// Se vincula el Statement con los parámetros ($this->_params)
 			call_user_func_array(array($stmt, 'bind_param'), $this->_params);
 		}
 		 
-		/* Execute statement */
+		//-----------------------------------------------------
+		// Ejecucíón Del Prepared Statement
+		//-----------------------------------------------------
 		$stmt->execute();
 
-		// Obtención de los resultados.
+		//-----------------------------------------------------
+		// Obtención de los resultados
+		//-----------------------------------------------------
+		/*
+		 * Se extraen los resultados del objeto Statement en forma de un
+		 * arreglo asociativo con todas las filas resultantes.
+		 */
 		$resArr = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
-/*
-		if(!$resArr){
-			$resArr['match'] = "false";
-		} else {
-			$resArr['match'] = "true";
-			$resArr['rows'] = sizeof($resArr)-1;
-		}
-*/
-
+		//-----------------------------------------------------
+		// Cierre De Los Objetos Stmt && Mysqli
+		//-----------------------------------------------------
 		$stmt->close();
 		$mysqli->close();
+
+		// Se retorna el arreglo de resultados.
 		return $resArr;
 	}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/**
+	 * Método para hacer inserciones en la BD. 
+	 * Los sig. valores se ocupan en el método:
+	 *  - Tabla 		:Obligatorio
+	 *  - Fields
+	 *  - Values 		:Obligatorio
+	 *  - ParamsType 	:Obligatorio, ya que Values es obligatorio
+	 *  - ParamsValues  :Obligatorio, ya que Values es obligatorio
+	 *  
+	 * @return array  arreglo con las filas resultantes de la consulta.
+	 */
 	public function create(){
 
-		// Obtención del objecto de la conexión mysqli
+		//======================================================================
+		// BASE DE DATOS
+		//======================================================================
+
+		// Obtención del objeto de la conexión mysqli
 		$mysqli = $this->_db->getDB();
 
-		// Query
+		//======================================================================
+		// QUERY
+		//======================================================================
+
+
+		//-----------------------------------------------------
+		// INSERT INTO [Table]
+		//-----------------------------------------------------
+		
+		// Declaración del Query.
 		$query = "INSERT INTO " . $this->_table;
 
 		if($this->_fields != null){
@@ -267,238 +823,388 @@ class QueryGenerico{
 		$query .= " VALUES(".$this->_values.")";
 
 
-		// Preparación del statement.
+		//======================================================================
+		// PREPARED STATEMENT
+		//======================================================================
+
+		//-----------------------------------------------------
+		// Preparación Del Statement
+		//-----------------------------------------------------
 		$stmt = $mysqli->prepare($query);
 
+		//-----------------------------------------------------
+		// Mensaje De Error
+		//-----------------------------------------------------
+		// Verificación de errores de sintaxis MySQL.
 		if($stmt === false) {
-		  trigger_error('Wrong SQL: ' . $query . ' Error: ' . $mysqli->errno . ' ' . $mysqli->error, E_USER_ERROR);
+			// Mensaje de sintaxis incorrecta.
+		  	trigger_error('Wrong SQL: ' . $query . ' Error: ' . $mysqli->errno . ' ' . $mysqli->error, E_USER_ERROR);
 		}
  
+ 		//-----------------------------------------------------
+		// Construcción De Los Parámetros
+		//-----------------------------------------------------
 		$this->paramsBuilder();
 
-		/* use call_user_func_array, as $stmt->bind_param('s', $param); does not accept params array */
+		//-----------------------------------------------------
+		// Vinculación De Parámetros Con El Query
+		//-----------------------------------------------------
+		// Se vincula el Statement con los parámetros ($this->_params)
 		call_user_func_array(array($stmt, 'bind_param'), $this->_params);
 		 
 
-		/* Execute statement */
+		//-----------------------------------------------------
+		// Ejecucíón Del Prepared Statement
+		//-----------------------------------------------------
+		/*
+		 * Se ejecuta el Prepared Statement y se almacena el resultado de la
+		 * inserción. Puede ser verdadero o falso.
+		 */
 		$resArr['result'] = $stmt->execute();
 
-
+		//-----------------------------------------------------
+		// Cierre De Los Objetos Stmt && Mysqli
+		//-----------------------------------------------------
 		$stmt->close();
 		$mysqli->close();
+
+		// Se retorna el arreglo de resultados.
 		return $resArr;
 	}
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/**
+	 * Método para hacer eliminaciones en la BD. 
+	 * Los sig. valores se ocupan en el método:
+	 *  - Tabla 		:Obligatorio
+	 *  - Where 		:Obligatorio
+	 *  - ParamsType 	:Obligatorio, ya que Where es obligatorio
+	 *  - ParamsValues  :Obligatorio, ya que Where es obligatorio
+	 *  
+	 * @return array  arreglo con las filas resultantes de la consulta.
+	 */
 	public function delete(){
 
+		/*
+		 * Verifica si la condición where está asignada o no con el fin de
+		 * evitar errores de eliminar todos los registros de la tabla.
+		 */
 		if($this->_where != null){
 
-			// Obtención del objecto de la conexión mysqli
+			//======================================================================
+			// BASE DE DATOS
+			//======================================================================
+
+			// Obtención del objeto de la conexión mysqli
 			$mysqli = $this->_db->getDB();
 
-			// Query
+			//======================================================================
+			// QUERY
+			//======================================================================
+
+			//-----------------------------------------------------
+			// DELETE FROM [Table] WHERE [where]
+			//-----------------------------------------------------
 			$query = "DELETE FROM " . $this->_table . " WHERE " . $this->_where;
 
 
-			// Preparación del statement.
+			//======================================================================
+			// PREPARED STATEMENT
+			//======================================================================
+
+			//-----------------------------------------------------
+			// Preparación Del Statement
+			//-----------------------------------------------------
 			$stmt = $mysqli->prepare($query);
 
+			//-----------------------------------------------------
+			// Mensaje De Error
+			//-----------------------------------------------------
+			// Verificación de errores de sintaxis MySQL.
 			if($stmt === false) {
-			  trigger_error('Wrong SQL: ' . $query . ' Error: ' . $mysqli->errno . ' ' . $mysqli->error, E_USER_ERROR);
+				// Mensaje de sintaxis incorrecta.
+			  	trigger_error('Wrong SQL: ' . $query . ' Error: ' . $mysqli->errno . ' ' . $mysqli->error, E_USER_ERROR);
 			}
-	 
+
+
+	 		//-----------------------------------------------------
+			// Construcción De Los Parámetros
+			//-----------------------------------------------------
 			$this->paramsBuilder();
 
-			/* use call_user_func_array, as $stmt->bind_param('s', $param); does not accept params array */
+			//-----------------------------------------------------
+			// Vinculación De Parámetros Con El Query
+			//-----------------------------------------------------
+			
+			//-----------------------------------------------------
+			// Vinculación De Parámetros Con El Query
+			//-----------------------------------------------------
+			// Se vincula el Statement con los parámetros ($this->_params)
 			call_user_func_array(array($stmt, 'bind_param'), $this->_params);
 			 
 
-			/* Execute statement */
+			//-----------------------------------------------------
+			// Ejecucíón Del Prepared Statement
+			//-----------------------------------------------------
+			/*
+			 * Se ejecuta el Prepared Statement y se almacena el resultado de la
+			 * inserción. Puede ser verdadero o falso.
+		 	*/
 			$resArr['result'] = $stmt->execute();
 
-
+			//-----------------------------------------------------
+			// Cierre De Los Objetos Stmt && Mysqli
+			//-----------------------------------------------------			
 			$stmt->close();
 			$mysqli->close();
+
+			// Se retorna el arreglo de resultados.			
 			return $resArr;
 		} else {
+
+			//Si no está asignado la condición Where, se retorna un falso.
 			return false;
 		}
 	}
 
-
+	/**
+	 * Setter para la tabla con la que se va a trabajar.
+	 * (Ver la declaración del atributo para encontrar un ejemplo.)
+	 * 
+	 * @param String $table String con el nombre de la tabla o vista.
+	 */
 	public function setTable($table){
 		$this->_table = $table;
 	}
 
+	/**
+	 * Setter para la seleccion de columnas.
+	 * (Ver la declaración del atributo para encontrar un ejemplo.)
+	 * 
+	 * @param String $select String con las columnas que se desean seleccionar.
+	 */
 	public function setSelect($select){
 		$this->_select = $select;
 	}
 
+	/**
+	 * Setter para la condición del query.
+	 * (Ver la declaración del atributo para encontrar un ejemplo.)
+	 * 
+	 * @param String $where String con la condición where.
+	 */
 	public function setWhere($where){
 		$this->_where = $where;
 	}
 
+	/**
+	 * Setter para el orden en que se desea que aparezcan los resultados
+	 * (Ver la declaración del atributo para encontrar un ejemplo.)
+	 * 
+	 * @param String $order String con el nombre y tipo de ordenamiento.
+	 */
 	public function setOrder($order){
 		$this->_order = $order;
 	}
 
+	/**
+	 * Setter para los espacios de los parámetros del límite.
+	 * (Ver la declaración del atributo para encontrar un ejemplo.)
+	 * 
+	 * @param String $length String con los espacios de los parámetros.
+	 */
 	public function setLength($length){
 		$this->_length = $length;
 	}
 
+	/**
+	 * Setter del comienzo del límite de los resultados
+	 * (Ver la declaración del atributo para encontrar un ejemplo.)
+	 * 
+	 * @param int $length número del comienzo del límite.
+	 */
 	public function setStartValue($startValue){
 		$this->_startValue = $startValue;
 	}
 
+	/**
+	 * Setter del final del límite de los resultados
+	 * (Ver la declaración del atributo para encontrar un ejemplo.)
+	 * 
+	 * @param int $length número del final del límite.
+	 */
 	public function setLengthValue($lengthValue){
 		$this->_lengthValue = $lengthValue;
 	}
 
+	/**
+	 * Setter los campos que se desean insertar.
+	 * (Ver la declaración del atributo para encontrar un ejemplo.)
+	 * 
+	 * @param String $length campos separados por coma.
+	 */
 	public function setFields($fields){
 		$this->_fields = $fields;
 	}
 
+	/**
+	 * Setter para los espacios de los parámetros de los valores que
+	 * se desean insertar.
+	 * (Ver la declaración del atributo para encontrar un ejemplo.)
+	 * 
+	 * @param String $length espacios de los parámetros separados por comas.
+	 */
 	public function setValues($values){
 		$this->_values = $values;
 	}
 
+	/**
+	 * Setter para los tipos de parámetros que se ocuparán en un query.
+	 * (Ver la declaración del atributo para encontrar un ejemplo.)
+	 * 
+	 * @param array $length arreglo con caracteres, representando cada uno
+	 *                      de los tipos de parámetros que se están pasando
+	 *                      al query.
+	 */
 	public function setParamsType($paramsType){
 		$this->_paramsType = $paramsType;
 	}
 
+	/**
+	 * Setter para los valores de los parámetros que se ocuparán en un query.
+	 * (Ver la declaración del atributo para encontrar un ejemplo.)
+	 * 
+	 * @param array $length arreglo con los valores de los parámetros.
+	 */
 	public function setParamsValues($paramsValues){
 		$this->_paramsValues = $paramsValues;
 	}
 
+	/**
+	 * Getter para los tipos de parámetros que se ocuparán en un query.
+	 * (Ver la declaración del atributo para encontrar un ejemplo.)
+	 * 
+	 * @param array $length arreglo con caracteres, representando cada uno
+	 *                      de los tipos de parámetros que se están pasando
+	 *                      al query.
+	 */
 	public function getParamsType(){
 		return $this->_paramsType;
 	}
 
+	/**
+	 * Getter para los valores de los parámetros que se ocuparán en un query.
+	 * (Ver la declaración del atributo para encontrar un ejemplo.)
+	 * 
+	 * @param array $length arreglo con los valores de los parámetros.
+	 */
 	public function getParamsValues(){
 		return $this->_paramsValues;
 	}
 
+	/**
+	 * Getter para la condición del query.
+	 * (Ver la declaración del atributo para encontrar un ejemplo.)
+	 * 
+	 * @param String $where String con la condición where.
+	 */
 	public function getWhere(){
 		return $this->_where;
 	}
 
 
-
+	/**
+	 * Método para construir nuestro arreglo 'params' que es el que contiene
+	 * los tipos de parámetros con los valores de los mismos.
+	 *
+	 * Este arreglo es el que se vincula con el Statement. Los arreglos de
+	 * paramsType y paramsValues sólo son auxiliares para poder construir
+	 * este arreglo.
+	 * 
+	 * @return void  no regresa nada, simplemente almacena la información en el
+	 *               atributo params para usarlo en los Query's.
+	 */
 	public function paramsBuilder(){
-		/* Bind parameters. Types: s = string, i = integer, d = double,  b = blob */
+		//======================================================================
+		// VINCULACIÓN DE PARÁMETROS
+		//======================================================================
+
+		/* 
+		 * Los tipos de parámetros pueden ser los siguientes:
+		 *   - s = string
+		 *   - i = integer
+		 *   - d = double
+		 *   - b = blob 
+		 */
+
+		// Se inicializa un arreglo vacío dentro del atributo _params.
 		$this->_params = array();
 		 
+		// Se declara e inicializa una variable string vacía.
 		$param_type_string = '';
 
+		// Contamos el número de tipos de parámetros que fueron asignados.
 		$n = count($this->_paramsType);
+
+		/*
+		 * Pasamos los tipos de parámetros que están en un arreglo de caracteres
+		 * a un sólo string:
+		 * 
+		 * 		   $_paramsType 	     |    $param_type_string
+		 *  ---------------------------------------------------------
+		 *   array('i', 's', 's', 'i')  -|>      'issi'
+		 *   
+		 */
+		// Recorremos el arreglo de tipos de parámetros.
 		for($i = 0; $i < $n; $i++) {
+			// Concatenamos el caracter en la posición $i a la variable string.
 			$param_type_string .= $this->_paramsType[$i];
 		}
 		 
-		/* with call_user_func_array, array params must be passed by reference */
-		if($n>0){/* AÑADIR A DONDE SE DEBA */
+
+		/*
+		 * Si hay mínimo 1 parámetro, se almacena el string de los tipos de 
+		 * parámetros.
+		 *
+		 * Nótese que hay un signo ampersand (&) antes de la variabel del string
+		 * con los tipo de parámetros. Esto se debe a que no se está almacenando
+		 * directamente, sino que estamos pasando al string por referencia.
+		 *
+		 * Es necesario hacer esto para poder vincular un array de parámetros al
+		 * query que se ejecutará ya que el método 'call_user_func_array'
+		 * requiere que los datos hayan sido pasados por referencia dentro del
+		 * arreglo.
+		 * 
+		 */
+		if($n>0){
 			$this->_params[] = & $param_type_string;
-		}/* AÑADIR A DONDE SE DEBA */
+		}
 		 
+		 /*
+		  * Sucede los mismo con el arreglo de valores de los parámetros.
+		  * Se pasan por referencia al arreglo _params.
+		  */
 		for($i = 0; $i < $n; $i++) {
-			/* with call_user_func_array, array params must be passed by reference */
 	  		$this->_params[] = & $this->_paramsValues[$i];
 		}
 
 	}
-
-
-/*
-	public function paramAndColumnsBuilder(){
-		//for ($i=0; $i <8 ; $i++) { 
-		var param = '';
-		var columns = '';
-		var columnsN = 0;
-		var where = '';
-
-		if($id != null){
-			param += 'i';
-			columns += 'id';
-			columnsN++;
-			where += 'id = ?';
-		}
-		if($nombres != null){
-			param += 's';
-			if(columnsN > 0){
-				columns += ', ';
-				where += ' AND ';
-			}
-			columns += 'nombres';
-			columnsN++;
-			where += 'nombres = ?';
-		}
-		if($apellidoP != null){
-			param += 's';
-			if(columnsN > 0){
-				columns += ', ';
-				where += ' AND ';
-			}
-			columns += 'apellidoP';
-			columnsN++;
-			where += 'apellidoP = ?';
-		}
-		if($apellidoM != null){
-			param += 's';
-			if(columnsN > 0){
-				columns += ', ';
-				where += ' AND ';
-			}
-			columns += 'apellidoM';
-			columnsN++;
-			where += 'apellidoM = ?';
-		}
-		if($telefono != null){
-			param += 's';
-			if(columnsN > 0){
-				columns += ', ';
-				where += ' AND ';
-			}
-			columns += 'telefono';
-			columnsN++;
-			where += 'telefono = ?';
-		}
-		if($correo != null){
-			param += 's';
-			if(columnsN > 0){
-				columns += ', ';
-				where += ' AND ';
-			}
-			columns += 'correo';
-			columnsN++;
-			where += 'correo = ?';
-		}
-		if($contrasena != null){
-			param += 's';
-			if(columnsN > 0){
-				columns += ', ';
-				where += ' AND ';
-			}
-			columns += 'contrasena';
-			columnsN++;
-			where += 'contrasena = ?';
-		}
-		if($empresaID != null){
-			param += 'i';
-			if(columnsN > 0){
-				columns += ', ';
-				where += ' AND ';
-			}
-			columns += 'empresaID';
-			columnsN++;
-			where += 'empresaID = ?';
-		}
-		
-
-		return array('params' => $params, 'columns' => $columns);
-
-	}
-	*/
 
 }
 

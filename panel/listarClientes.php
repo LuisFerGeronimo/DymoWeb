@@ -95,6 +95,9 @@ $queryGenerico = new QueryGenerico();
 // Especificación de la tabla con la que se trabajará.
 $queryGenerico->setTable("ListarClientesView");
 
+// Especificación del select
+$queryGenerico->setSelect('*');
+
 
 
 //=============================================================================
