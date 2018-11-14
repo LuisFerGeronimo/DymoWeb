@@ -82,6 +82,15 @@ define('MAX_NUMEROS_EXT_INT', 5);
 define('MIN_CONTRASENA', 10);
 define('MAX_CONTRASENA', 26);
 
+    
+//-----------------------------------------------------
+// Cuenta Del Vendedor/Administrador
+//-----------------------------------------------------
+
+
+// Teléfono del cliente
+define('MAX_USUARIO', 15);
+
 // }}}
 
 ?>
@@ -111,6 +120,10 @@ define('MAX_CONTRASENA', 26);
   
     <!-- Estilos propios del panel de control -->
     <link rel="stylesheet" type="text/css" href="../assets/css/panel-style.css"/>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  
+  
         
     <!-- Titulo -->
     <title>Dymo - Panel de Control</title>
@@ -183,6 +196,7 @@ define('MAX_CONTRASENA', 26);
 
 <!-- DataTables JS -->
 <script type="text/javascript" src="../assets/DataTables/datatables.js"></script>
+
 
 
 
@@ -333,6 +347,7 @@ $(".modal-footer").on('click', '#modal-btn-editar', function(){
 //-----------------------------------------------------
 $(".modal-footer").on('click', '#modal-btn-guardar', function(){
 
+    // Se guardan los cambios hechos en los formularios.
     guardarCambios();
 
     // Se muestra el botón de "Editar".
@@ -347,6 +362,33 @@ $(".modal-footer").on('click', '#modal-btn-guardar', function(){
 });
 
 //-----------------------------------------------------
+// Boton "Eliminar"
+//-----------------------------------------------------
+$(".modal-footer").on('click', '#modal-btn-eliminar', function(){
+
+    // Confirmación
+    if (confirm('¿Estás seguro de eliminar?')) {
+
+        eliminarRegistro();
+
+        //======================================================================
+        // ESCONDER MODAL
+        //======================================================================
+        
+        // Se muestra el modal con los formularios
+        $('#modal-form').modal('hide');
+    }
+
+    
+});
+
+//-----------------------------------------------------
+// Boton "Añadir registro"
+//-----------------------------------------------------
+$(".modal-footer").on('click', '#modal-btn-anadir', function(){/*insertarRegistro();*/});
+
+
+//-----------------------------------------------------
 // Boton "Detalles" De La Tabla
 //-----------------------------------------------------
 
@@ -357,6 +399,11 @@ $(".modal-footer").on('click', '#modal-btn-guardar', function(){
  */
 $('#content').on( 'click', '.detalles', function () {
 
+
+    //======================================================================
+    // LLENAR MODAL
+    //======================================================================
+
     /*
      * Se obtienen los datos de la fila que se insertaron al momento de la
      * instancia del DataTables y se envían al método llenarModal.
@@ -366,6 +413,24 @@ $('#content').on( 'click', '.detalles', function () {
      * DataTables.
      */
     llenarModal(table.row($( this ).closest( "tr" )).data() );
+
+    //======================================================================
+    // INHABILITACIÓN DE EDICIÓN DE INPUTS
+    //======================================================================
+    
+    // Se muestra el botón de "Editar".
+    $('#modal-btn-editar').removeClass('d-none');
+
+    // Se le pone a los input el atributo de sólo lecutra.
+    $('.modal-body').find('input').attr('readonly', true); 
+    
+    // Se oculta el botón "Guardar Cambios".
+    $('#modal-btn-guardar').addClass('d-none');
+
+
+    //======================================================================
+    // MOSTRAR MODAL
+    //======================================================================
     
     // Se muestra el modal con los formularios
     $('#modal-form').modal('show');
@@ -760,7 +825,12 @@ function llenarModal(datosDeFila){
 }
 
 
-
+/**
+ * Guarda los cambios de los formularios en la base de datos.
+ * Guarda los datos de las pestañas (o tabs) que estén en el Modal.
+ * 
+ * @return {void}
+ */
 function guardarCambios(){
    var tabla;
 
@@ -769,21 +839,14 @@ function guardarCambios(){
         id = tablasADetallarFinal[i]['id'];
 
 
-        console.log('GUARDAR CAMBIOS!!!!!!!!!!!!!!!!!');
-
-        console.log("Tabla: " + tabla);
-
         var form = $('#modal-form form[id=form-' + tabla + ']');
         var formSerialized = form.serialize() + "&id="+ id;
 
-        console.log(formSerialized);
-
+        // Se pone la primer letra del nombre de la tabla en mayúsculas.
         tabla = tabla.toLowerCase().replace(/\b[a-z]/g, function(letter) {
             return letter.toUpperCase();
         });
 
-        console.log("Tabla: " + tabla);
-        console.log("URL: " + 'modificar' + tabla + '.php');
 
         $.ajax({
             type: "POST",
@@ -814,55 +877,149 @@ function guardarCambios(){
 }
 
 function eliminarRegistro(){
-   var tabla;
 
-   for (var i = 0; i < result['tablasADetallar'].length; i++) {
-        tabla = tablasADetallarFinal[i]['tabla'];
-        id = tablasADetallarFinal[i]['id'];
+    var tabla = tablasADetallarFinal[0]['tabla'];
+    id = tablasADetallarFinal[0]['id'];
 
+    // Primer letra de la tabla en mayúsculas
+    // Ejemplo:
+    //  - cliente -> Cliente
+    tabla = tabla.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+        return letter.toUpperCase();
+    });
 
-        console.log('GUARDAR CAMBIOS!!!!!!!!!!!!!!!!!');
+    $.ajax({
+        type: "POST",
+        url: 'eliminar' + tabla + '.php',
+        data: {id: id},
+        dataType:"json",
+        success: function(data) {
+            var result = data['result'];
 
-        console.log("Tabla: " + tabla);
+            console.log('Result:');
+            console.log(data['result']);
 
-        var form = $('#modal-form form[id=form-' + tabla + ']');
-        var formSerialized = form.serialize() + "&id="+ id;
-
-        console.log(formSerialized);
-
-        tabla = tabla.toLowerCase().replace(/\b[a-z]/g, function(letter) {
-            return letter.toUpperCase();
-        });
-
-        console.log("Tabla: " + tabla);
-        console.log("URL: " + 'modificar' + tabla + '.php');
-
-        $.ajax({
-            type: "POST",
-            url: 'modificar' + tabla + '.php',
-            //async: false,
-            data: formSerialized,
-            dataType:"json",
-            success: function(data) {
-                var result = data['result'];
-                var affectedRows = data['affectedRows'];
-
-                console.log('Result:');
-                console.log(data['result']);
-
-                if(result){
-                    // Alert cambios guardados
-                    console.log('Affected Rows:');
-                    console.log(data['affectedRows']);
-                } else {
-                    // Error inesperado.
-                    console.log(data['reason']);
-                }
+            if(result){
+                // Registro eliminado
+            } else {
+                // Error inesperado.
+                //console.log(data['reason']);
             }
-        });
-   }
+        }
+    });
+   
 
    $('#reloadButton').trigger('click');
+}
+
+
+
+
+function showInsertModal(){
+
+    
+    $('#modalCenterTitle #mainTitle').html('Añadir ' + tituloContenido);
+
+    $('.modal-body').html(result['modalBody']);
+
+    $('#modal-btn-eliminar').addClass('d-none');
+    $('#modal-btn-editar').addClass('d-none');
+    $('#modal-btn-guardar').addClass('d-none');
+    $('#modal-btn-anadir').removeClass('d-none');
+
+
+    // Se le quita a los input el atributo de sólo lecutra.
+    $('.modal-body').find('input').attr('readonly', false); 
+
+    //======================================================================
+    // MOSTRAR MODAL
+    //======================================================================
+    
+    // Se muestra el modal con los formularios
+    $('#modal-form').modal('show');
+
+}
+
+
+
+function insertarRegistro(){
+    /**
+     * Variable que almacena el form serializado para enviarlo
+     * al servidor por medio de AJAX.
+     * 
+     * @type {String}
+     */
+    var datastring = form.serialize();
+
+    $.ajax({
+        type: "POST",
+        url: "../tienda/registroRequest.php",
+        cache: false,
+        data: datastring,
+        success: function(data) {
+
+            /**
+             * Bandera que dice si se pudo hacer el registro o no.
+             * 
+             * @type {boolean}
+             */
+            var resultado = data["result"];
+
+
+            if(!resultado){
+                /**
+                 * Número que dice la razón por la que no se pudo
+                 * hacer el registro exitosamente.
+                 * 
+                 * @type {int}
+                 */
+                var reason = data["reason"];
+
+                switch(reason){
+
+                    // No se llenaron todos los campos.
+                    case 0:
+                        $("#resultContrasena").html("Favor de llenar todos los campos.");
+                        break;
+
+                    // El nombre de la empresa que se introdujo ya está registrado.
+                    case 1:
+                        $("#resultEmpresa").html("El nombre de empresa que introdujo ya existe.");
+                        $('#paso-2').show();
+                        $('#paso-4').hide();
+                        $('#progress-bar').css("width", "50%");
+                        $('#progress-bar-text').html("PASO 2");
+                        $('#card-title').html("Empresa");
+                        break;
+
+                    // El correo de la cuenta que se introdujo ya está registrado.
+                    case 2:
+                        $("#resultCuenta").html("Ya existe una cuenta con el correo.");
+                        $('#paso-1').show();
+                        $('#paso-4').hide();
+                        $('#progress-bar').css("width", "25%");
+                        $('#progress-bar-text').html("PASO 1");
+                        $('#card-title').html("Cuenta Personal");
+                        break;
+                }
+            } else {
+                // Registro exitoso.
+            }
+
+        }
+        /*,
+        error: function (xhr, status, error) { 
+            console.log("Xhr: " + xhr);
+            console.log("Xhr.responseText: " + xhr.responseText);
+            console.log("Status: " + status);
+            console.log("Error: " + error);
+            var err = JSON.parse(xhr.responseText);
+            console.log(err);
+            console.log(err.error);
+            alert(err.error); 
+        }
+        */
+    });
 }
 
 </script>
@@ -986,12 +1143,9 @@ function eliminarRegistro(){
                     tituloContenido = $('#titulo-contenido').text().toLowerCase();
                     $('#modalCenterTitle #mainTitle').html('Detalles de ' + tituloContenido);
 
-                    //switch(tituloContenido){
-                      //  case 'clientes':
-                            $('.modal-body').html(result['modalBody']);
-                            $('.modal-footer').html(result['modalFooter']);
-                        //    break;
-                    //}
+                    $('.modal-body').html(result['modalBody']);
+                    $('.modal-footer').html(result['modalFooter']);
+                    
                 },
 
                 complete: function(data) {createDataTable();}
@@ -1104,6 +1258,15 @@ function eliminarRegistro(){
                             attr:  {
                                 id: 'reloadButton'
                             }
+                        },
+                        {
+                            text: '<i class="fas fa-plus-square fa-lg text-primary"></i>',
+                            action: function ( e, dt, node, config ) {
+                                showInsertModal();
+                            },
+                            attr:  {
+                                id: 'insertButton'
+                            }
                         }
                     ]
                 });
@@ -1136,92 +1299,6 @@ function eliminarRegistro(){
 </script>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script>
-    
-
-
-        $('#content').on('click', '.btn-editar', function () {
-            console.log("Clicked on btn-editar");
-        });
-
-        $('#content').on('click', '.btn-eliminar', function () {
-            console.log("Clicked on btn-eliminar");
-        });
-
-        function agegarBotones(table){
-            //alert("Agregar botones");
-/*
-            table
-                .buttons( 'export, commands', null )
-                .containers()
-                .appendTo( '#panel' );
-
-            table.buttons('exportar',null).container()
-                .appendTo( $('div.dataTables_length:eq(0)', table.table().container()));
-
-
-            table.buttons('exportar', null).container().addClass('ml-3');
-            table.buttons('exportar', null).container().find('button').removeClass('btn-secondary').addClass('btn-light');
-*/
-            //$('.dt-buttons.btn-group').addClass('ml-3');
-            //$('.dt-buttons.btn-group').find('button').removeClass('btn-secondary').addClass('btn-light');
-            
-
-            // Agregar header de la columna "Acciones"
-            /*$('#tabla thead tr').append("<th scope='col' tabindex='0' aria-controls='tabla' rowspan='1' colspan='1' style='width: 150px;'>Acciones</th>");*/
-
-            // Agregar celdas de las acciones con sus íconos
-            //$('#tabla tbody tr').append('<td class="td-acciones"></td>');
-
-
-            // Agregar celdas de las acciones con sus íconos
-            //$('#tabla tbody tr td:last-child').append(table.buttons('modificar', null).container());
-
-            // Añadir clases de estilo a los botones de Acciones.
-            //$('#tabla tbody tr td:last-child').addClass('text-center');
-            //$('#tabla tbody tr td:last-child').find('button').removeClass('btn-secondary').addClass('btn-outline-light');
-
-            // Agregar footer de la columna "Acciones"
-            //$('#tabla tfoot tr').append("<th rowspan='1' colspan='1' class='actions'>Acciones</th>");
-
-
-        }
-
-
-
-</script>
 
 
 </body>

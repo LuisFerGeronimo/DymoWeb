@@ -323,8 +323,10 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 
                 $modalFooter = '
+                    <button type="button" class="btn btn-danger mr-auto" id="modal-btn-eliminar">Eliminar</button>
 	                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 	                <button type="button" class="btn btn-info" id="modal-btn-editar">Editar</button>
+                    <button type="button" class="btn btn-success d-none" id="modal-btn-anadir" >Añadir registro</button>
 	                <button type="button" class="btn btn-success d-none" id="modal-btn-guardar" >Guardar cambios</button>';
 
 
@@ -338,32 +340,270 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 					'tablasADetallar' => $tablasADetallar
 				);
 				break;
-			case 'empresas-lista':
-				return array(
-					'tablaString' => '../includes/tablas/empresas-tabla.php', 
-					'tituloContenido' => '<h2 class="text-center">Empresas</h2>'
-				);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
           	case 'vendedores-lista':
-					echo ('<div id="dashboard" style="background-color: blue;">
-				<p>Lorem ipsum dolor sit     amet, consectetur adipiscing elit. Phasellus venenatis dolor ligula. Cras consequat hendrerit purus facilisis molestie. Donec felis augue, placerat sed metus at, facilisis tristique diam. Praesent metus mi, pharetra a sodales ut, congue et tortor. Vestibulum nec lacus ornare, rhoncus mauris a, elementum tellus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Cras scelerisque a elit nec tempor. Proin bibendum eros nec aliquet interdum. Mauris varius nec arcu in facilisis.
+				// Obtener el contenido de otro archivo en un string. En este caso el contenido es la tabla.
+                $tabla = implode('', file('../includes/tablas/vendedores-tabla.php'));
 
-				Integer lacus dolor, dignissim a nibh sed, suscipit ullamcorper lacus. Praesent ullamcorper urna a eros vestibulum cursus. Quisque dignissim mattis vestibulum. Vivamus volutpat hendrerit diam, a ultricies odio viverra molestie. Nullam rutrum risus quis mi ornare pharetra. Proin non ante purus. Donec laoreet convallis orci a tincidunt.
+                $tablasADetallar = array(
+                    array(
+                        'tabla' => 'vendedor',
+                        'id' => null,      
+                        'llaveForanea' => null, 
+                        'select' => 'nombre, apellidoP, apellidoM, usuario'
+                    )
+                );
 
-				Pellentesque id tempor nunc. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque varius malesuada ultricies. Nulla maximus metus ut risus sagittis, in rutrum tellus ullamcorper. Nam auctor nunc quis enim faucibus blandit. Nam cursus leo risus, a tempor orci ultricies non. Integer enim mauris, imperdiet eget pretium quis, sodales id tortor. Quisque convallis erat tincidunt feugiat finibus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Morbi vulputate lacinia felis. In odio ex, commodo id rutrum eget, facilisis a leo.</p>
+                $columnas = array(
+                    array("data" => "0"),
+                    array("data" => "1"),
+                    array("data" => "2"),
+                    array("data" => "3", "orderable" => false)
+                );
 
-				</div>');
+                $modalBody = '
+                    <ul class="nav nav-tabs " id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link tab-link px-2 active" id="vendedor-tab" data-toggle="tab" href="#vendedor" role="tab" aria-controls="vendedor" aria-selected="true">Vendedor</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+
+
+                        <div class="tab-pane show active" id="vendedor" role="tabpanel" aria-labelledby="vendedor-tab">
+                            <p class="text-danger" id="mensaje-vendedor"></p>
+                            <form class="needs-validation px-0 px-sm-3 pb-0 pb-sm-1 pt-2" id="form-vendedor" autocomplete="off"  novalidate>
+                                <!-- PASO 1 - CUENTA -->
+                                <div id="paso-1" class="">
+                                    <p class="text-danger" id="resultCuenta"></p>
+
+                                    <div class="form-group">
+                                        <label for="nombres">Nombre <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="fas fa-user"></i></div>
+                                            </div>
+                                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Juan Carlos" maxlength="<?php echo $maxNombre; ?>" readonly required>
+                                            <div class="invalid-feedback">
+                                                Ingrese su nombre.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+
+                                        <div class="form-group col-md-6">
+                                            <label for="apellidoP">Apellido Paterno <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text"><i class="fas fa-user"></i></div>
+                                                </div>
+                                                <input type="text" class="form-control" id="apellidoP" name="apellidoP" placeholder="Perez" maxlength="<?php echo $maxApellido; ?>" readonly required>
+                                                <div class="invalid-feedback">
+                                                    Ingrese su apellido paterno.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-6">
+                                            <label for="apellidoM">Apellido Materno</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text"><i class="fas fa-user"></i></div>
+                                                </div>
+                                                <input type="text" class="form-control" id="apellidoM" name="apellidoM" placeholder="Rodríguez" maxlength="<?php echo $maxApellido; ?>" readonly>
+                                                <div class="invalid-feedback">
+                                                    Ingrese su apellido materno.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="correo-cuenta">Usuario<span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="fas fa-user"></i></div>
+                                            </div>
+                                            <input type="text" class="form-control" id="usuario" name="usuario" placeholder="usuario" maxlength="<?php echo MAX_USUARIO; ?>" readonly required>
+                                            <div class="invalid-feedback">
+                                                Ingrese un correo válido
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                             </form>
+                        </div>
+                    </div>';
+
+
+                $modalFooter = '
+                    <button type="button" class="btn btn-danger mr-auto" id="modal-btn-eliminar">Eliminar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-info" id="modal-btn-editar">Editar</button>
+                    <button type="button" class="btn btn-success d-none" id="modal-btn-anadir" >Añadir registro</button>
+                    <button type="button" class="btn btn-success d-none" id="modal-btn-guardar" >Guardar cambios</button>';
+
+
+                $resultado = array(
+                    'tablaString' => $tabla, 
+                    'tituloContenido' => '<h2 class="text-center" id="titulo-contenido">Vendedores</h2>',
+                    'dataFetchFile' => 'listarVendedores.php',
+                    'columnas' => $columnas,
+                    'modalBody' => $modalBody,
+                    'modalFooter' => $modalFooter,
+                    'tablasADetallar' => $tablasADetallar
+                );
+
                 break;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           	case 'administradores-lista':
 
-				echo ('<div id="dashboard" style="background-color: green;">
-				<p>Lorem ipsum dolor sit     amet, consectetur adipiscing elit. Phasellus venenatis dolor ligula. Cras consequat hendrerit purus facilisis molestie. Donec felis augue, placerat sed metus at, facilisis tristique diam. Praesent metus mi, pharetra a sodales ut, congue et tortor. Vestibulum nec lacus ornare, rhoncus mauris a, elementum tellus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Cras scelerisque a elit nec tempor. Proin bibendum eros nec aliquet interdum. Mauris varius nec arcu in facilisis.
+				// Obtener el contenido de otro archivo en un string. En este caso el contenido es la tabla.
+                $tabla = implode('', file('../includes/tablas/administradores-tabla.php'));
 
-				Integer lacus dolor, dignissim a nibh sed, suscipit ullamcorper lacus. Praesent ullamcorper urna a eros vestibulum cursus. Quisque dignissim mattis vestibulum. Vivamus volutpat hendrerit diam, a ultricies odio viverra molestie. Nullam rutrum risus quis mi ornare pharetra. Proin non ante purus. Donec laoreet convallis orci a tincidunt.
+                $tablasADetallar = array(
+                    array(
+                        'tabla' => 'admninistrador',
+                        'id' => null,      
+                        'llaveForanea' => null, 
+                        'select' => 'nombre, apellidoP, apellidoM, usuario'
+                    )
+                );
 
-				Pellentesque id tempor nunc. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque varius malesuada ultricies. Nulla maximus metus ut risus sagittis, in rutrum tellus ullamcorper. Nam auctor nunc quis enim faucibus blandit. Nam cursus leo risus, a tempor orci ultricies non. Integer enim mauris, imperdiet eget pretium quis, sodales id tortor. Quisque convallis erat tincidunt feugiat finibus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Morbi vulputate lacinia felis. In odio ex, commodo id rutrum eget, facilisis a leo.</p>
+                $columnas = array(
+                    array("data" => "0"),
+                    array("data" => "1"),
+                    array("data" => "2"),
+                    array("data" => "3", "orderable" => false)
+                );
 
-				</div>');
+                $modalBody = '
+                    <ul class="nav nav-tabs " id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link tab-link px-2 active" id="admninistrador-tab" data-toggle="tab" href="#admninistrador" role="tab" aria-controls="admninistrador" aria-selected="true">Admninistrador</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+
+
+                        <div class="tab-pane show active" id="admninistrador" role="tabpanel" aria-labelledby="admninistrador-tab">
+                            <p class="text-danger" id="mensaje-admninistrador"></p>
+                            <form class="needs-validation px-0 px-sm-3 pb-0 pb-sm-1 pt-2" id="form-admninistrador" autocomplete="off"  novalidate>
+                                <!-- PASO 1 - CUENTA -->
+                                <div id="paso-1" class="">
+                                    <p class="text-danger" id="resultCuenta"></p>
+
+                                    <div class="form-group">
+                                        <label for="nombre">Nombre <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="fas fa-user"></i></div>
+                                            </div>
+                                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Juan Carlos" maxlength="<?php echo $maxNombre; ?>" readonly required>
+                                            <div class="invalid-feedback">
+                                                Ingrese su nombre.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+
+                                        <div class="form-group col-md-6">
+                                            <label for="apellidoP">Apellido Paterno <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text"><i class="fas fa-user"></i></div>
+                                                </div>
+                                                <input type="text" class="form-control" id="apellidoP" name="apellidoP" placeholder="Perez" maxlength="<?php echo $maxApellido; ?>" readonly required>
+                                                <div class="invalid-feedback">
+                                                    Ingrese su apellido paterno.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-6">
+                                            <label for="apellidoM">Apellido Materno</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text"><i class="fas fa-user"></i></div>
+                                                </div>
+                                                <input type="text" class="form-control" id="apellidoM" name="apellidoM" placeholder="Rodríguez" maxlength="<?php echo $maxApellido; ?>" readonly>
+                                                <div class="invalid-feedback">
+                                                    Ingrese su apellido materno.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="usuario">Usuario<span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="fas fa-user"></i></div>
+                                            </div>
+                                            <input type="text" class="form-control" id="usuario" name="usuario" placeholder="usuario" maxlength="<?php echo MAX_USUARIO; ?>" readonly required>
+                                            <div class="invalid-feedback">
+                                                Ingrese un correo válido
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                             </form>
+                        </div>
+                    </div>';
+
+
+                $modalFooter = '
+                    <button type="button" class="btn btn-danger mr-auto" id="modal-btn-eliminar">Eliminar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-info" id="modal-btn-editar">Editar</button>
+                    <button type="button" class="btn btn-success d-none" id="modal-btn-anadir" >Añadir registro</button>
+                    <button type="button" class="btn btn-success d-none" id="modal-btn-guardar" >Guardar cambios</button>';
+
+
+                $resultado = array(
+                    'tablaString' => $tabla, 
+                    'tituloContenido' => '<h2 class="text-center" id="titulo-contenido">Admninistradores</h2>',
+                    'dataFetchFile' => 'listarAdmninistradores.php',
+                    'columnas' => $columnas,
+                    'modalBody' => $modalBody,
+                    'modalFooter' => $modalFooter,
+                    'tablasADetallar' => $tablasADetallar
+                );
+
                 break;
         } 
   	}

@@ -171,7 +171,7 @@ CREATE TABLE `Cliente` (
   `id`          INT                                  ,
   `nombre`      VARCHAR(45) COLLATE latin1_spanish_ci NOT NULL,
   `apellidoP`   VARCHAR(30) COLLATE latin1_spanish_ci NOT NULL,
-  `apellidoM`   VARCHAR(30) COLLATE latin1_spanish_ci NOT NULL,
+  `apellidoM`   VARCHAR(30) COLLATE latin1_spanish_ci,
   `telefono`    VARCHAR(24) COLLATE latin1_spanish_ci NOT NULL,
   `correo`      VARCHAR(64) COLLATE latin1_spanish_ci NOT NULL,
   `contrasena`  VARCHAR(64) COLLATE latin1_spanish_ci NOT NULL,
@@ -257,7 +257,7 @@ CREATE TABLE `Contacto` (
 CREATE TABLE `Direccion` (
   `id`          INT                                    ,
   `numeroExt`   INT                                     NOT NULL,
-  `numeroInt`   INT                                     NOT NULL,
+  `numeroInt`   INT                                    ,
   `calle`       VARCHAR(32)   COLLATE latin1_spanish_ci NOT NULL,
   `colonia`     VARCHAR(32)   COLLATE latin1_spanish_ci NOT NULL,
   `cp`          INT                                     NOT NULL,
