@@ -10,7 +10,193 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     	switch($id) {
     		case 'pedidos-lista':
+                // Obtener el contenido de otro archivo en un string. En este caso el contenido es la tabla.
+                $tabla = implode('', file('../includes/tablas/pedidos-tabla.php'));
+
+                $tablasADetallar = array(
+                    array(
+                        'tabla' => 'pedidosView',
+                        'id' => null,
+                        'llaveForanea' => null,
+                        'select' => '`fecha-de-pedido`, `fecha-de-entrega`, estado, cantidad, costo, producto, detalles'
+                    )
+                );
+
+                $columnas = array(
+                    array("data" => "0"),
+                    array("data" => "1"),
+                    array("data" => "2"),
+                    array("data" => "3"),
+                    array("data" => "4"),
+                    array("data" => "5"),
+                    array("data" => "6"),
+                    array("data" => "7"),
+                    array("data" => "8"),
+                    array("data" => "9", "orderable" => false)
+                );
+
+                $modalBody = '
+                    <ul class="nav nav-tabs " id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link tab-link px-2 active" id="pedido-tab" data-toggle="tab" href="#pedido" role="tab" aria-controls="pedido" aria-selected="true">Pedido</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+
+
+                        <div class="tab-pane show active" id="pedidosView" role="tabpanel" aria-labelledby="pedido-tab">
+                            <p class="text-danger" id="mensaje-pedidosView"></p>
+                            <form class="needs-validation px-0 px-sm-3 pb-0 pb-sm-1 pt-2" id="form-pedidosView" autocomplete="off"  novalidate>
+                                <!-- PASO 1 - PEDIDO -->
+                                <div id="paso-1" class="">
+                                    <p class="text-danger" id="resultPedido"></p>
+
+                                    <div class="form-row">
+
+
+
+                                        <div class="form-group col-md-6">
+                                            <label for="fecha-de-pedido">Fecha de pedido <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                                </div>
+                                                <input type="text" class="form-control" id="fecha-de-pedido" name="fecha-de-pedido" placeholder="" maxlength="<?php echo $maxFechaPedido; ?>" readonly required>
+                                                <div class="invalid-feedback">
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="form-group col-md-6">
+                                            <label for="fecha-de-entrega">Fecha de entrega</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                                </div>
+                                                <input type="text" class="form-control" id="fecha-de-entrega" name="fecha-de-entrega" placeholder="Fecha de Entrega" maxlength="<?php echo $maxApellido; ?>" readonly>
+                                                <div class="invalid-feedback"
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="estado">Estado <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="fas fa-shoe-prints"></i></div>
+                                            </div>
+                                            <select class="form-control" id="estado" name="estado">
+                                                <option value="1">En carrito</option>
+                                                <option value="2">En proceso</option>
+                                                <option value="3">Pedido</option>
+                                                <option value="4">Pagado</option>
+                                                <option value="5">Solicitud</option>
+                                                <option value="6">Cancelado</option>
+                                                <option value="7">Entregado</option>
+                                            </select>
+                                            <div class="invalid-feedback">
+                                                Ingrese un correo válido
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="cantidad">Cantidad <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text"><i class="fas fa-boxes"></i></div>
+                                                </div>
+                                                <input type="text" class="form-control" id="cantidad" name="cantidad" placeholder="777 1234 567" maxlength="<?php echo $maxCantidad; ?>" autocomplete="off" readonly required>
+                                                <div class="invalid-feedback">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-6">
+                                            <label for="costo">Costo <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text"><i class="fas fa-dollar-sign"></i></div>
+                                                </div>
+                                                <input type="text" class="form-control" id="costo" name="costo" placeholder="" maxlength="<?php echo $maxCantidad; ?>" autocomplete="off" readonly required>
+                                                <div class="invalid-feedback">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group w-100">
+                                        <label for="producto">Producto <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="fas fa-box"></i></div>
+                                            </div>
+                                            <input type="text" class="form-control" id="producto" name="producto" placeholder="" maxlength="<?php echo $maxProducto; ?>" autocomplete="off" readonly required>
+                                            <div class="invalid-feedback">
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                  <div class="form-group w-100">
+                                    <label for="detalles">Detalles del cliente</label>
+                                    <textarea class="form-control" id="detalles" name="detalles" rows="3"></textarea>
+                                  </div>
+
+
+
+                                </div>
+                             </form>
+                        </div>
+                    </div>';
+
+
+                $modalFooter = '
+                    <button type="button" class="btn btn-danger mr-auto" id="modal-btn-eliminar">Eliminar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-info" id="modal-btn-editar">Editar</button>
+                    <button type="button" class="btn btn-success d-none" id="modal-btn-anadir" >Añadir registro</button>
+                    <button type="button" class="btn btn-success d-none" id="modal-btn-guardar" >Guardar cambios</button>';
+
+
+                $resultado = array(
+                    'tablaString' => $tabla, 
+                    'tituloContenido' => '<h2 class="text-center" id="titulo-contenido">Pedidos</h2>',
+                    'dataFetchFile' => 'listarPedidos.php',
+                    'columnas' => $columnas,
+                    'modalBody' => $modalBody,
+                    'modalFooter' => $modalFooter,
+                    'tablasADetallar' => $tablasADetallar
+                );
+                break;
+
     			break;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         	case 'empresas-lista':
 				include 'empresas-tabla.php';
@@ -495,7 +681,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                 $tablasADetallar = array(
                     array(
-                        'tabla' => 'admninistrador',
+                        'tabla' => 'administrador',
                         'id' => null,      
                         'llaveForanea' => null, 
                         'select' => 'nombre, apellidoP, apellidoM, usuario'
@@ -512,15 +698,15 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
                 $modalBody = '
                     <ul class="nav nav-tabs " id="myTab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link tab-link px-2 active" id="admninistrador-tab" data-toggle="tab" href="#admninistrador" role="tab" aria-controls="admninistrador" aria-selected="true">Admninistrador</a>
+                            <a class="nav-link tab-link px-2 active" id="administrador-tab" data-toggle="tab" href="#administrador" role="tab" aria-controls="administrador" aria-selected="true">Administrador</a>
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
 
 
-                        <div class="tab-pane show active" id="admninistrador" role="tabpanel" aria-labelledby="admninistrador-tab">
-                            <p class="text-danger" id="mensaje-admninistrador"></p>
-                            <form class="needs-validation px-0 px-sm-3 pb-0 pb-sm-1 pt-2" id="form-admninistrador" autocomplete="off"  novalidate>
+                        <div class="tab-pane show active" id="administrador" role="tabpanel" aria-labelledby="administrador-tab">
+                            <p class="text-danger" id="mensaje-administrador"></p>
+                            <form class="needs-validation px-0 px-sm-3 pb-0 pb-sm-1 pt-2" id="form-administrador" autocomplete="off"  novalidate>
                                 <!-- PASO 1 - CUENTA -->
                                 <div id="paso-1" class="">
                                     <p class="text-danger" id="resultCuenta"></p>
@@ -596,8 +782,8 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                 $resultado = array(
                     'tablaString' => $tabla, 
-                    'tituloContenido' => '<h2 class="text-center" id="titulo-contenido">Admninistradores</h2>',
-                    'dataFetchFile' => 'listarAdmninistradores.php',
+                    'tituloContenido' => '<h2 class="text-center" id="titulo-contenido">Administradores</h2>',
+                    'dataFetchFile' => 'listarAdministradores.php',
                     'columnas' => $columnas,
                     'modalBody' => $modalBody,
                     'modalFooter' => $modalFooter,

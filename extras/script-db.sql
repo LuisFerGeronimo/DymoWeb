@@ -66,11 +66,14 @@ CREATE TABLE `Administrador` (
 -- Volcado de datos para la tabla `Administrador`
 --
 */
-/*
-INSERT INTO `Administrador` (`id`, `nombre`, `apellidoP`, `apellidoM`, `usuario`, `contrasena`, `permisos`) VALUES
-(01, 'Jesús Emmanuel', 'Zetina', 'Chevez', 'ZCJO151861A', 'contraseña', 0),
-(02, 'Juan Carlos', 'Gerónimo', 'Padilla', 'GPJO151861A', 'admin', 0);
-*/
+
+INSERT INTO `Administrador` (`id`, `nombre`, `apellidoP`, `apellidoM`, `usuario`, `contrasena`) VALUES
+(01, 'Jesús Emmanuel',  'Zetina',     'Chevez',   'ZCJO151861A', 'contraseña' ),
+(02, 'Juan Carlos',     'Gerónimo',   'Padilla',  'GPJO151861A', 'admin'      ),
+(03, 'Luis Fernando',   'Gerónimo',   'Carranza', 'GCLO151861A', 'admin'      ),
+(04, 'Josué Eduardo',   'Rodríguez',  'Perez',    'RPJO15934A',  'admin'      ),
+(05, 'Jesús Adrián',    'Ocampo',     'Salinas',  'OSJO159493A', 'admin'      );
+
 
 
 
@@ -188,7 +191,10 @@ CREATE TABLE `Cliente` (
 
 INSERT INTO `Cliente` (`id`, `nombre`, `apellidoP`, `apellidoM`, `telefono`, `correo`, `contrasena`, `empresaID`) VALUES
 (01, 'Luis Fernando', 'Gerónimo', 'Carranza', '7777654321', 'gclo@u', 'contra', 01),
-(02, 'Jesús Emmanuel', 'Zetina', 'Chevez', '7771234567', 'zcjo151173@upemor.edu.mx', 'contraseña', 02);
+(02, 'Jesús Emmanuel', 'Zetina', 'Chevez', '7771234567', 'zcjo151173@upemor.edu.mx', 'contraseña', 02),
+(03, 'Josué Eduardo', 'Rodríguez', 'Perez', '7771234567', 'rpjo15934@upemor.edu.mx', 'contraseña', 03),
+(04, 'Jesús Adían', 'Ocampo', 'Salinas', '7771234567', 'osjo159493@upemor.edu.mx', 'contraseña', 04),
+(05, 'Axel', 'Martínez', '', '7771234567', 'axel15993@upemor.edu.mx', 'contraseña', 05);
 
 
 
@@ -307,7 +313,11 @@ CREATE TABLE `Empresa` (
 
 INSERT INTO `Empresa` (`id`, `nombre`, `telefono`, `correo`, `zonaID`) VALUES
 (1, 'DymoCliente_1', '7771234567', 'dymoCliente1@dymosa.com', 1),
-(2, 'DymoCliente_2', '7777654321', 'dymoCliente2@dymosa.com', 1);
+(2, 'DymoCliente_2', '7777654321', 'dymoCliente2@dymosa.com', 2),
+(3, 'DymoCliente_3', '7777654321', 'dymoCliente2@dymosa.com', 3),
+(4, 'DymoCliente_4', '7777654321', 'dymoCliente2@dymosa.com', 4),
+(5, 'DymoCliente_5', '7777654321', 'dymoCliente2@dymosa.com', 5);
+
 
 
 
@@ -438,6 +448,19 @@ CREATE TABLE `Medida`(
 
 
 /*
+--
+-- Volcado de datos para la tabla `Medida`
+--
+*/
+
+INSERT INTO `Medida` (`id`, `ancho`, `largo`, `unidadesID`) VALUES
+(1, 38, 300, 1),
+(2, 38, 360, 1);
+
+
+
+
+/*
 ----------------------------------------------------------
 ----------------------------------------------------------
 ----------------------------------------------------------
@@ -454,9 +477,32 @@ CREATE TABLE `Pedido` (
   `fechaPedido`   DATE  NOT NULL,
   `fechaEntrega`  DATE          ,
   `estado`        INT   NOT NULL,
-  `costo`         FLOAT NOT NULL,  /* Float */
+  /*`costo`         FLOAT NOT NULL,  *//* Float */
   `clienteID`     INT   NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+
+/*
+--
+-- Volcado de datos para la tabla `Pedido`
+--
+*/
+
+INSERT INTO `Pedido` (`id`, `fechaPedido`, `fechaEntrega`, `estado`, /*`costo`,*/ `clienteID`) VALUES
+(01, '2018-11-11', null,         1, 1),
+
+(02, '2018-11-06', '2018-11-16', 7,  2),
+(03, '2018-11-08', null,         3,     2),
+
+(04, '2018-11-09', null,         4,     3),
+(05, '2018-11-01', '2018-11-05', 7,  3),
+
+(06, '2018-11-01', '2018-11-02', 7,  4),
+
+(07, '2018-11-09', null,         5,  5),
+(08, '2018-11-09', null,         6,  5),
+(09, '2018-11-09', null,         2, 5);
 
 
 
@@ -480,6 +526,24 @@ CREATE TABLE `Pedido_Producto` (
   `costo`           FLOAT                                   NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
+
+
+/*
+--
+-- Volcado de datos para la tabla `Pedido_Producto`
+--
+*/
+
+INSERT INTO `Pedido_Producto` (`pedidoID`, `productoCodigo`, `cantidad`, `detalles`, `costo`) VALUES
+(01, 'RI38X300MCP', 200, "Buen día, necesito 200 ribbon's de este tipo, por favor. Gracias. ",  2053.53),
+(02, 'RI38X300RAP', 200, "Buen día, necesito 200 ribbon's de este tipo, por favor. Gracias. ",  5643.75),
+(03, 'RI38X300RCI', 900, "Buen día, necesito 900 ribbon's de este tipo, por favor. Gracias. ",  45645.87),
+(04, 'RI38X300RCP', 350, "Buen día, necesito 350 ribbon's de este tipo, por favor. Gracias. ",  8000.80),
+(05, 'RI38X300RBS', 350, "Buen día, necesito 350 ribbon's de este tipo, por favor. Gracias. ",  5792.80),
+(06, 'RI38X300FBE', 350, "Buen día, necesito 350 ribbon's de este tipo, por favor. Gracias. ",  6456.80),
+(07, 'RI38X300RGI', 350, "Buen día, necesito 350 ribbon's de este tipo, por favor. Gracias. ",  1234.80),
+(08, 'RI38X300RGP', 350, "Buen día, necesito 350 ribbon's de este tipo, por favor. Gracias. ",  4567.80),
+(09, 'RI38X360FAD', 350, "Buen día, necesito 350 ribbon's de este tipo, por favor. Gracias. ",  6788.97);
 
 
 /*
@@ -546,6 +610,23 @@ CREATE TABLE `Producto` (
 
 
 /*
+--
+-- Volcado de datos para la tabla `Producto`
+--
+*/
+
+INSERT INTO `Producto` (`codigo`, `nombre`, `marca`, `descripcion`, `costo`, `unidadDePedido`, `proveedorID`) VALUES
+('RI38X300MCP', 'Ribbon textil1', 'Marca01', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1),
+('RI38X300RAP', 'Ribbon textil2', 'Marca02', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1),
+('RI38X300RCI', 'Ribbon textil3', 'Marca03', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1),
+('RI38X300RCP', 'Ribbon textil4', 'Marca04', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1),
+('RI38X300RBS', 'Ribbon textil5', 'Marca05', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1),
+('RI38X300FBE', 'Ribbon textil6', 'Marca06', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1),
+('RI38X300RGI', 'Ribbon textil7', 'Marca07', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1),
+('RI38X300RGP', 'Ribbon textil8', 'Marca08', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1),
+('RI38X360FAD', 'Ribbon textil9', 'Marca09', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1);
+
+/*
 ----------------------------------------------------------
 ----------------------------------------------------------
 ----------------------------------------------------------
@@ -562,6 +643,16 @@ CREATE TABLE `Proveedor` (
   `nombre`  VARCHAR(100) COLLATE latin1_spanish_ci  NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
+
+
+/*
+--
+-- Volcado de datos para la tabla `Proveedor`
+--
+*/
+
+INSERT INTO `Proveedor` (`id`, `nombre`) VALUES
+('1', 'García');
 
 
 /*
@@ -585,6 +676,24 @@ CREATE TABLE `Ribbon`(
   `letras`      VARCHAR(32) COLLATE latin1_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
+
+
+/*
+--
+-- Volcado de datos para la tabla `Ribbon`
+--
+*/
+
+INSERT INTO `Ribbon` (`codigo`, `material`, `medida`, `in`, `maquina`, `letras`) VALUES
+('RI38X300MCP', 'textil', 1, 1, 'Maquina1', 'Letras1'),
+('RI38X300RAP', 'textil', 1, 1, 'Maquina1', 'Letras1'),
+('RI38X300RCI', 'textil', 1, 1, 'Maquina1', 'Letras1'),
+('RI38X300RCP', 'textil', 1, 1, 'Maquina1', 'Letras1'),
+('RI38X300RBS', 'textil', 1, 1, 'Maquina1', 'Letras1'),
+('RI38X300FBE', 'textil', 1, 1, 'Maquina1', 'Letras1'),
+('RI38X300RGI', 'textil', 1, 1, 'Maquina1', 'Letras1'),
+('RI38X300RGP', 'textil', 1, 1, 'Maquina1', 'Letras1'),
+('RI38X360FAD', 'textil', 2, 1, 'Maquina1', 'Letras1');
 
 
 /*
@@ -687,6 +796,17 @@ CREATE TABLE `Unidades`(
 
 
 /*
+--
+-- Volcado de datos para la tabla `Unidades`
+--
+*/
+
+INSERT INTO `Unidades` (`id`, `unidadAncho`, `unidadLargo`) VALUES
+(1, 'mm', 'm');
+
+
+
+/*
 ----------------------------------------------------------
 ----------------------------------------------------------
 ----------------------------------------------------------
@@ -729,14 +849,17 @@ CREATE TABLE `Vendedor` (
 
 /*
 --
--- Volcado de datos para la tabla `Alumno`
+-- Volcado de datos para la tabla `Administrador`
 --
 */
-/*
-INSERT INTO `Vendedor` (`id`, `nombre`, `apellidoP`, `apellidoM`, `usuario`, `contrasena`, `permisos`) VALUES
-(01, 'Jesús Emmanuel', 'Zetina', 'Chevez', 'ZCJO151861V', 'contraseña', 0),
-(02, 'Luis Fernando', 'Gerónimo', 'Carranza', 'GCLO151861V', 'contraseña', 0);
-*/
+
+INSERT INTO `Vendedor` (`id`, `nombre`, `apellidoP`, `apellidoM`, `usuario`, `contrasena`, `zonaID`) VALUES
+(01, 'Jesús Emmanuel',  'Zetina',    'Chevez',   'ZCJO151861V',  'contraseña', 1),
+(02, 'Juan Carlos',     'Gerónimo',  'Padilla',  'GPJO151861V',  'admin',      2),
+(03, 'Luis Fernando',   'Gerónimo',  'Carranza', 'GCLO151861V',  'admin',      3),
+(04, 'Josué Eduardo',   'Rodríguez', 'Perez',    'RPJO15934V',   'admin',      4),
+(05, 'Jesús Adrián',    'Ocampo',    'Salinas',  'OSJO159493V',  'admin',      5);
+
 
 
 
@@ -784,7 +907,12 @@ CREATE TABLE `Zona` (
 */
 
 INSERT INTO `Zona` (`id`, `zona`) VALUES
-(1, 'Centro');
+(1, 'Noroeste'),
+(2, 'Noreste'),
+(3, 'Suroeste'),
+(4, 'Sureste'),
+(5, 'Centro');
+
 
 
 
@@ -1616,13 +1744,65 @@ ALTER TABLE `Web_Pregunta`
 
 
 
+DROP VIEW IF EXISTS `ListarClientesView`;
 
 CREATE VIEW `ListarClientesView` AS (
-    SELECT  `zona`.`id` AS `id`, 
-            `empresa`.`id` AS `empresaID`, `empresa`.`nombre` AS `empresa`,
-            `cliente`.`id` AS `clienteID`, CONCAT(`cliente`.`nombre`, ' ', `cliente`.`apellidoP`) AS `nombres`,
-            `cliente`.`correo` 
+    SELECT  `zona`.`id`                                             AS `id`, 
+
+            `empresa`.`id`                                          AS `empresaID`, 
+            `empresa`.`nombre`                                      AS `empresa`,
+
+            `cliente`.`id`                                          AS `clienteID`,
+            CONCAT(`cliente`.`nombre`, ' ', `cliente`.`apellidoP`)  AS `nombres`,
+            `cliente`.`correo`                                      AS `correo`
+
     FROM `cliente` 
-    JOIN `empresa` ON `empresa`.`id` = `cliente`.`empresaID`
-    LEFT JOIN `zona` ON `zona`.`id` = `empresa`.`zonaID`
+    JOIN `empresa`   ON `empresa`.`id`  = `cliente`.`empresaID`
+    LEFT JOIN `zona` ON `zona`.`id`     = `empresa`.`zonaID`
+);
+
+
+DROP VIEW IF EXISTS `ListarPedidosView`;
+
+
+CREATE VIEW `ListarPedidosView` AS (
+    SELECT  `empresa`.`id`                                         AS `empresaID`, 
+            `empresa`.`nombre`                                     AS `empresa`, 
+            `empresa`.`telefono`                                   AS `telefono`,
+
+            `cliente`.`id`                                         AS `clienteID`, 
+            CONCAT(`cliente`.`nombre`, ' ', `cliente`.`apellidoP`) AS `nombres`,
+
+            `pedido`.`id`                                          AS `id`, 
+            `pedido`.`fechaPedido`                                 AS `fecha-de-pedido`, 
+            `pedido`.`fechaEntrega`                                AS `fecha-de-entrega`, 
+            `pedido`.`estado`                                      AS `estado`,
+
+            `Pedido_Producto`.`cantidad`                           AS `cantidad`, 
+            `Pedido_Producto`.`costo`                              AS `costo`,
+
+            `producto`.`codigo`                                    AS `producto`
+
+    FROM `empresa` 
+    JOIN `cliente`          ON `empresa`.`id`                     = `cliente`.`empresaID`
+    JOIN `pedido`           ON `cliente`.`id`                     = `pedido`.`clienteID`
+    JOIN `Pedido_Producto`  ON `pedido`.`id`                      = `Pedido_Producto`.`pedidoID`
+    JOIN `Producto`         ON `Pedido_Producto`.`productoCodigo` = `Producto`.`codigo`
+);
+
+
+DROP VIEW IF EXISTS `PedidosView`;
+
+CREATE VIEW `PedidosView` AS (
+    SELECT  `pedido`.`id`                            AS `id`, 
+            `pedido`.`fechaPedido`                   AS `fecha-de-pedido`, 
+            `pedido`.`fechaEntrega`                  AS `fecha-de-entrega`, 
+            `pedido`.`estado`                        AS `estado`,
+            `Pedido_Producto`.`cantidad`             AS `cantidad`, 
+            `Pedido_Producto`.`costo`                AS `costo`, 
+            `Pedido_Producto`.`productoCodigo`       AS `producto`,
+            `Pedido_Producto`.`detalles`             AS `detalles`
+
+    FROM `pedido`
+    INNER JOIN `Pedido_Producto` ON `pedido`.`id` = `Pedido_Producto`.`pedidoID`
 );

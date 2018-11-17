@@ -182,6 +182,8 @@
                  * @return {void}
                  */
                 success: function(result, status){
+                    console.log(result);
+                    console.log(status);
 
                     if(status) {
                         if(result['match'] === "true"){

@@ -19,6 +19,11 @@
  */
 
 /**
+ * Se inicia una session
+ */
+session_start();
+
+/**
  * Se requiere de la conexión a la base de datos
  */
 include_once '../includes/db.php';
@@ -39,7 +44,7 @@ include_once  '../includes/model/queryGenerico.php';
  * 	+ $GLOBALS['results']['rows'] = INT el número de filas encontradas
  *  + $GLOBALS['results'][0] = ARRAY los valores del usuario encontrado
  */
-$GLOBALS['results'];
+$GLOBALS['results'] = array();
 
 /*
  * Se revisa si el tipo de consulta es por medio de POST.
@@ -80,6 +85,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		 * Se almacenan las filas encontradas en la variable global 'results'.
 		 */
 		$GLOBALS['results'] = $queryGenerico->read();
+
+		// Se guarda el id en la sesión.
+		$_SESSION['id'] = $GLOBALS['results'][0]['id'];
+
+		// Se separan los nombres en caso de que tenga más de uno.
+		$nombre = explode(' ', $GLOBALS['results'][0]['nombre']);
+
+		/*
+		 * La función de explode devuelve un arreglo vacío cuando no encuentra
+		 * espacios en los nombres. Esto quiere decir que el usuario sólo tiene
+		 * 1 nombre.
+		 */
+		if(!empty($nombre)){
+
+			/*
+			 * Se guarda el nombre del usuario en la variable de sesión.
+			 * Se escoge el primer nombre y el primer apellido.
+			 */
+			$_SESSION['nombre'] = $nombre[0] . ' ' . $GLOBALS['results'][0]['apellidoP'];
+		} else {
+
+			/*
+			 * Se guarda el nombre del usuario en la variable de sesión.
+			 * Se escoge el nombre que se obtuvo de la BD y el primer apellido.
+			 */
+			$_SESSION['nombre'] = $GLOBALS['results'][0]['nombre'] . ' ' . $GLOBALS['results'][0]['apellidoP'];
+		}
 
 		/*
 		 * Si 'results' devuelve false, se pone la llave 'match' como false.

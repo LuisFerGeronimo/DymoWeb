@@ -47,7 +47,7 @@ include_once  '../includes/model/queryGenerico.php';
 function getColumnaNombre($columna){
 	switch ($columna) {
 		case 0: return 'nombre';
-		case 1: return 'apellido';
+		case 1: return 'apellidoP';
 		case 2: return 'usuario';
 	}
 }

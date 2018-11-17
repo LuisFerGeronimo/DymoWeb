@@ -120,8 +120,6 @@ define('MAX_USUARIO', 15);
   
     <!-- Estilos propios del panel de control -->
     <link rel="stylesheet" type="text/css" href="../assets/css/panel-style.css"/>
-
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   
   
         
@@ -337,6 +335,7 @@ $(".modal-footer").on('click', '#modal-btn-editar', function(){
     
     // Se le quita a los input el atributo de sólo lecutra.
     $('.modal-body').find('input').attr('readonly', false); 
+    $('.modal-body').find('select').attr('disabled', false); 
     
     // Se oculta el botón "Editar".
     $('#modal-btn-editar').addClass('d-none');
@@ -355,6 +354,7 @@ $(".modal-footer").on('click', '#modal-btn-guardar', function(){
 
     // Se le pone a los input el atributo de sólo lecutra.
     $('.modal-body').find('input').attr('readonly', true); 
+    $('.modal-body').find('select').attr('disabled', true); 
     
     // Se oculta el botón "Guardar Cambios".
     $('#modal-btn-guardar').addClass('d-none');
@@ -423,6 +423,8 @@ $('#content').on( 'click', '.detalles', function () {
 
     // Se le pone a los input el atributo de sólo lecutra.
     $('.modal-body').find('input').attr('readonly', true); 
+    $('.modal-body').find('select').attr('disabled', true); 
+    $('.modal-body').find('textarea').attr('disabled', true); 
     
     // Se oculta el botón "Guardar Cambios".
     $('#modal-btn-guardar').addClass('d-none');
@@ -562,7 +564,11 @@ function llenarModal(datosDeFila){
     var helperArray = [];
 
     // Asignación de la zona del cliente en el título del modal.
-    $('#modalCenterTitle .text-muted').html('- Zona [' + $(datosDeFila[0]).attr('data-id') + ']');
+    if(tituloContenido == "clientes"){
+        $('#modalCenterTitle .text-muted').html('- Zona [' + $(datosDeFila[0]).attr('data-id') + ']');
+    } else{
+        $('#modalCenterTitle .text-muted').html('');
+    }
 
     /* Variables Auxiliares Para Acortar Código */
     /**
@@ -593,7 +599,7 @@ function llenarModal(datosDeFila){
      * dependientes. A las tablas NO dependientes se les asigna su ID y se
      * transfieren al arreglo tablasADetallarFinal.
      *
-     * Las tablas dependiente, son pasadas al arreglo tablasDependientes.
+     * Las tablas dependientes, son pasadas al arreglo tablasDependientes.
      * 
      * @param  {int}   var i   variable incremental, empezando desde 0
      *                         hasta la longitud del arreglo tablasADetalar
@@ -739,14 +745,13 @@ function llenarModal(datosDeFila){
     //======================================================================
     // DECLARACIÓN DE VARIABLES AUXILIARES
     //======================================================================
-    // TODO: CONTINUACIÓN...
-    //       Lunes - 12/11/2018 - 05:42 a.m. - Commit 24
     
     var where;
     var inputs;
     var valoresInput = [];
     var jQuerySelector;
     var columnas;
+    var input;
 
     // Obtener los valores de cada tabla y asignar los valores a cada input de cada tab del Modal.
     for (var i = 0; i < tablasADetallarFinal.length; i++) {
@@ -764,7 +769,7 @@ function llenarModal(datosDeFila){
             where,                              // Where (e.g. id = ?)
             tablasADetallarFinal[i]['id']       // id (e.g. 2),
         );
-*//*
+*/
         console.log("TABLA: ");
         console.log(tablasADetallarFinal[i]['tabla']);
         console.log("SELECT: ");
@@ -774,7 +779,7 @@ function llenarModal(datosDeFila){
         console.log("ID: ");
         console.log(tablasADetallarFinal[i]['id']);
         
-*/
+
 
         obtenerDetalles(
             tablasADetallarFinal[i]['tabla'],
@@ -807,7 +812,29 @@ function llenarModal(datosDeFila){
 
                     $('div[id='+tablasADetallarFinal[i]['tabla']+'] #mensaje-'+tablasADetallarFinal[i]['tabla']).html('');
                     for (var j = 0; j < columnas.length; j++) {
-                        $('#modal-form form[id=form-' + tablasADetallarFinal[i]['tabla'] + ']').find("input[id=" + columnas[j] + "]").val(valoresInput[columnas[j]]);
+
+                        console.log("Columnas[j]:");
+                        console.log(columnas[j]);
+                        
+                        // Quitar comillas de tipo `comillas`.
+                        columnas[j] =  columnas[j].replace(new RegExp('`', 'g'),"");
+                        
+                        console.log("Columnas[j]:");
+                        console.log(columnas[j]);
+
+                        //$('#modal-form form[id=form-' + tablasADetallarFinal[i]['tabla'] + ']').find("input[id=" + columnas[j] + "]").val(valoresInput[columnas[j]]);
+                        input = $('#modal-form form[id=form-' + tablasADetallarFinal[i]['tabla'] + ']').find("input[id=" + columnas[j] + "]");
+
+                        if(!input.length){
+                            input = $('#modal-form form[id=form-' + tablasADetallarFinal[i]['tabla'] + ']').find("select[id=" + columnas[j] + "]");
+
+                            if(!input.length){
+                                input = $('#modal-form form[id=form-' + tablasADetallarFinal[i]['tabla'] + ']').find("textarea[id=" + columnas[j] + "]");
+                            }
+                        }
+                        
+                        // Se le inserta el valor al input o select.
+                        input.val(valoresInput[columnas[j]]);
                         
                     }
                 } else {
@@ -847,6 +874,9 @@ function guardarCambios(){
             return letter.toUpperCase();
         });
 
+        console.log("Form:");
+        console.log(formSerialized);
+
 
         $.ajax({
             type: "POST",
@@ -855,6 +885,8 @@ function guardarCambios(){
             data: formSerialized,
             dataType:"json",
             success: function(data) {
+                console.log("data: ");
+                console.log(data);
                 var result = data['result'];
                 var affectedRows = data['affectedRows'];
 
@@ -865,6 +897,8 @@ function guardarCambios(){
                     // Alert cambios guardados
                     console.log('Affected Rows:');
                     console.log(data['affectedRows']);
+                    $('#reloadButton').trigger('click');
+
                 } else {
                     // Error inesperado.
                     console.log(data['reason']);
@@ -872,8 +906,6 @@ function guardarCambios(){
             }
         });
    }
-
-   $('#reloadButton').trigger('click');
 }
 
 function eliminarRegistro(){
@@ -900,7 +932,7 @@ function eliminarRegistro(){
             console.log(data['result']);
 
             if(result){
-                // Registro eliminado
+                $('#reloadButton').trigger('click');
             } else {
                 // Error inesperado.
                 //console.log(data['reason']);
@@ -909,7 +941,6 @@ function eliminarRegistro(){
     });
    
 
-   $('#reloadButton').trigger('click');
 }
 
 
@@ -930,6 +961,7 @@ function showInsertModal(){
 
     // Se le quita a los input el atributo de sólo lecutra.
     $('.modal-body').find('input').attr('readonly', false); 
+    $('.modal-body').find('select').attr('disabled', false); 
 
     //======================================================================
     // MOSTRAR MODAL

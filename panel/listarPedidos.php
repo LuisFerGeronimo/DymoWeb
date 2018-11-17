@@ -3,10 +3,10 @@
 /* Sublime Text 3: TabSize=4  */
 
 /**
- * Lista de administradores para la tabla del Panel de Control.
+ * Lista de pedidos para la tabla del Panel de Control.
  * 
  * Archivo PHP para mostrar en la tabla del Panel de Control la lista de
- * administradores que hay en la BD. Este archivo está adaptado para el plugin de
+ * pedidos que hay en la BD. Este archivo está adaptado para el plugin de
  * DataTables del lado del Servidor (server-side).
  *
  * Para más información sobre las variables que se trabajan en este archivo
@@ -20,8 +20,8 @@
  */
 
 /**
- * Se requiere de la conexión a la base de datos para hacer el registro
- * de los datos del formulario y consultas para evitar duplicados.
+ * Se requiere de la conexión a la base de datos para hacer la consulta
+ * de los datos del formulario.
  */
 include_once '../includes/db.php';
 
@@ -31,6 +31,12 @@ include_once '../includes/db.php';
  * funciones utilizadas para acceder a la base de datos.
  */
 include_once  '../includes/model/queryGenerico.php';
+
+/**
+ * Se incluye una vez el archivo moneyFormat donde están las funciones
+ * utilizadas para imprimir el costo en un formato adecuado.
+ */
+include_once  '../includes/moneyFormat.php';
 
 
 /**
@@ -46,9 +52,28 @@ include_once  '../includes/model/queryGenerico.php';
  */
 function getColumnaNombre($columna){
 	switch ($columna) {
-		case 0: return 'nombre';
-		case 1: return 'apellidoP';
-		case 2: return 'usuario';
+		case 0: return 'empresa';
+		case 1: return 'telefono';
+		case 2: return 'nombres';
+		case 3: return '`fecha-de-pedido`';
+		case 4: return '`fecha-de-entrega`';
+		case 5: return 'estado';
+		case 6: return 'cantidad';
+		case 7: return 'costo';
+		case 8: return 'Producto';
+	}
+}
+
+function getEstado($estadoString){
+	switch (strtolower($estadoString)) {
+		case 'en carrito'; return 1; break;
+		case 'en proceso'; return 2; break;
+		case 'pedido'; 	   return 3; break;
+		case 'pagado';     return 4; break;
+		case 'solicitud';  return 5; break;
+		case 'cancelado';  return 6; break;
+		case 'entregado';  return 7; break;
+		default: 		   return $estadoString; break;
 	}
 }
 
@@ -92,7 +117,7 @@ $paramsValues = array();
 $queryGenerico = new QueryGenerico();
 
 // Especificación de la tabla con la que se trabajará.
-$queryGenerico->setTable("Administrador");
+$queryGenerico->setTable("ListarPedidosView");
 
 // Especificación del select
 $queryGenerico->setSelect('*');
@@ -122,7 +147,7 @@ if(isset($_POST['search']['value'])) {
 	/**
 	 * Variables recibida por parte del plugin 'DataTables'.
 	 * 
-	 * DataTables envía lo que el administrador o administrador ingresa en el
+	 * DataTables envía lo que el vendedor o administrador ingresa en el
 	 * input del buscador dentro de la tabla de DataTables y nos lo envía
 	 * a este archivo para poder buscar este valor dentro de nuestra BD.
 	 * 
@@ -143,18 +168,35 @@ if(isset($_POST['search']['value'])) {
 	 * @var String
 	 */
 	$searchValue = preg_replace('/(?<!\\\)([%_])/', '\\\$1',$searchValue);
+
+	/*
+	 * Se evalúa si lo que está buscando el usuario es el estado de algún pedido
+	 * llevando el valor del buscador a una función donde compara los valores
+	 * en string de los estados, y devuelve el número equivalente al estado.
+	 */
+	$searchValueEstado = getEstado($searchValue = $_POST['search']['value']);
 	
 	/*
 	 * Especifiación de condición 'Where' para buscar dentro de las columnas 
 	 * 'nombre', 'apellidoP' y 'usuario'.
 	 */
-	$queryGenerico->setWhere('nombre LIKE CONCAT("%",?,"%") OR apellidoP LIKE CONCAT("%",?,"%") OR usuario LIKE CONCAT("%",?,"%")');
+	$queryGenerico->setWhere('estado = ? OR empresa LIKE CONCAT("%",?,"%") OR telefono LIKE CONCAT("%",?,"%") OR nombres LIKE CONCAT("%",?,"%") OR `fecha-de-pedido` LIKE CONCAT("%",?,"%") OR `fecha-de-entrega` LIKE CONCAT("%",?,"%") OR cantidad LIKE CONCAT("%",?,"%") OR costo LIKE CONCAT("%",?,"%") OR producto LIKE CONCAT("%",?,"%")');
+
+		/*
+		 * Se 'empuja' el tipo de dato ('i') del parámetro al arreglo
+		 * 'paramsType'.
+		 */
+		array_push($paramsType, 'i');
+
+		// Se 'empuja' el valor (searchValueEstado) del parámetro al arreglo
+		// 'paramsValues'.
+		array_push($paramsValues, $searchValueEstado);
 	
 	// Cuenta el número de veces que se repite el signo '?'.
 	$n = substr_count($queryGenerico->getWhere(), '?');
 
-	// Reproduce n veces el tipo de parámetro 's' (String) y el valor del SearchValue
-	for ($i=0; $i < $n; $i++) { 
+	// Reproduce n-1 veces el tipo de parámetro 's' (String) y el valor del SearchValue
+	for ($i=0; $i < $n-1; $i++) { 
 
 		/*
 		 * Se 'empuja' el tipo de dato ('s') del parámetro al arreglo
@@ -318,6 +360,7 @@ $resArr = $resArr['records'];
  * @var array
  */
 $data = array();
+setlocale(LC_MONETARY, 'es_MX');
 
 // Se recorren las filas obtenidas de la consulta fetchData.
 for ($i=0; $i < count($resArr); $i++) { 
@@ -341,10 +384,32 @@ for ($i=0; $i < count($resArr); $i++) {
 		$resArr[$i]["id"] = 'Sin zona';
 	}
 
+	switch ($resArr[$i]["estado"]) {
+		case 1: $resArr[$i]["estado"] = 'En carrito'; break;
+		case 2: $resArr[$i]["estado"] = 'En proceso'; break;
+		case 3: $resArr[$i]["estado"] = 'Pedido'; break;
+		case 4: $resArr[$i]["estado"] = 'Pagado'; break;
+		case 5: $resArr[$i]["estado"] = 'Solicitud'; break;
+		case 6: $resArr[$i]["estado"] = 'Cancelado'; break;
+		case 7: $resArr[$i]["estado"] = 'Entregado'; break;
+	}
+
+	if($resArr[$i]["fecha-de-entrega"] == null || $resArr[$i]["fecha-de-entrega"] == '' || $resArr[$i]["fecha-de-entrega"] == '0000-00-00'){
+		$resArr[$i]["fecha-de-entrega"] = "Sin entregar";
+	}
+
+	$resArr[$i]["costo"] = money_format('%i', $resArr[$i]["costo"]);
+
 	// Se transforman los datos obtenidos de cada columna en un div que se enviará a DataTables.
- 	$sub_array[] = '<div  data-id="' . $resArr[$i]["id"] . '" data-column="administrador">' . $resArr[$i]["nombre"] . '</div>';
- 	$sub_array[] = '<div  data-id="' . $resArr[$i]["id"] . '" data-column="administrador">' . $resArr[$i]["apellidoP"] 	  .	'</div>';
- 	$sub_array[] = '<div  data-id="' . $resArr[$i]["id"] . '" data-column="administrador">' . $resArr[$i]["usuario"] . '</div>';
+ 	$sub_array[] = '<div  data-id="' . $resArr[$i]["empresaID"] . '" data-column="empresa">' 	 . $resArr[$i]["empresa"]           . '</div>';
+ 	$sub_array[] = '<div  data-id="' . $resArr[$i]["empresaID"] . '" data-column="empresa">' 	 . $resArr[$i]["telefono"] 	        . '</div>';
+ 	$sub_array[] = '<div  data-id="' . $resArr[$i]["clienteID"] . '" data-column="cliente">' 	 . $resArr[$i]["nombres"] 			. '</div>';
+ 	$sub_array[] = '<div  data-id="' . $resArr[$i]["id"] 		. '" data-column="pedidosview">' . $resArr[$i]["fecha-de-pedido"]   . '</div>';
+ 	$sub_array[] = '<div  data-id="' . $resArr[$i]["id"] 		. '" data-column="pedidosview">' . $resArr[$i]["fecha-de-entrega"]  . '</div>';
+ 	$sub_array[] = '<div  data-id="' . $resArr[$i]["id"] 		. '" data-column="pedidosview">' . $resArr[$i]["estado"]            . '</div>';
+ 	$sub_array[] = '<div  data-id="' . $resArr[$i]["id"] 		. '" data-column="pedidosview">' . $resArr[$i]["cantidad"]          . '</div>';
+ 	$sub_array[] = '<div  data-id="' . $resArr[$i]["id"] 		. '" data-column="pedidosview">' . $resArr[$i]["costo"]             . '</div>';
+ 	$sub_array[] = '<div  data-id="' . $resArr[$i]["id"] 		. '" data-column="pedidosview">' . $resArr[$i]["producto"]          . '</div>';
 
  	// Se agrega un botón en la última columna que servirá para editar los datos de la fila.
  	$sub_array[] = '<button type="button" name="detalles" class="btn btn-info btn-xs detalles p-1" id="'.$resArr[$i]["id"].'">Detalles</button>';

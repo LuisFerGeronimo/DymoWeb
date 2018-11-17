@@ -35,58 +35,8 @@
     <title>Tienda - Dymo</title>
 </head>
 <body>
-    
-<!-- HEADER del NAVBAR -->
-<div class="navbar-dark" style="background-color: #262F36">
-    <!-- Navbar página de inicio principal -->
-    <nav class="navbar navbar-dark bg-transparent navbar-expand-md m-auto py-2">
 
-        <!-- Logotipo de DYMO -->
-        <a class="navbar-brand ml-5 " href="index.php">
-           <img src="../assets/img/dymo-transparente.png" width="80" height="55" alt="DYMO">
-        </a>
-
-
-        <!-- Navbar TOGGLER -->
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav-productos" aria-controls="navbarNav-productos" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-
-        <!-- Navbar Productos MENU -->
-        <div class="collapse navbar-collapse" id="navbarNav-productos">
-            <ul class="navbar-nav ml-md-2 text-center">
-                <li class="nav-item active">
-                    <a class="nav-link " href="index.php">Inicio<span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#etiquetas">Etiquetas</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#Etiquetadoras">Etiquetadoras</a>
-                </li> 
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#Ribbon">Ribbon</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#Impresoras">Impresoras</a>
-                </li>
-            </ul>
-
-            <ul class="navbar-nav ml-auto mr-md-5 text-center">
-                <li class="nav-item dropdown ">
-                    <a class="nav-link dropdown-toggle disabled" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Acceder
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Cliente</a>
-                        <a class="dropdown-item" href="#">Distribuidor</a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </nav>
-</div>
+<?php include '../includes/tienda_header.php' ?>
 
 <div class="jumbotron jumbotron-fluid bg-white mb-0 pb-0">
     <div class="container">
@@ -102,9 +52,10 @@
     </div>
 </div>
 
-<div class="jumbotron jumbotron-fluid mb-0" id="etiquetas" style="background-color: #262F36">
+<div class="jumbotron jumbotron-fluid mb-0" id="etiquetas" style="background-color: #262F39">
     <div class="container text-white">
         <h1 class="display-4 text-center text-white worksans-medium">Etiquetas</h1>
+        <p class="text-center"><span class="text-muted" style="font-size: 1.20em">Pídalas por teléfono</span></p>
         <div class="row">
             <div class="col-5 offset-md-1 d-sm-none d-md-block">
                 <img src="../assets/img/products/etiqueta.png" alt="etiqueta-tumarca"  style="height: 350px;">
@@ -127,8 +78,9 @@
 <!-- --------------------------  -->
 <!--        ETIQUETADORAS        -->
 <!-- --------------------------  -->
-<div class="jumbotron jumbotron-fluid bg-transparent mb-0" id="etiquetadoras">
-    <div class="container">
+<!--
+<div class="jumbotron jumbotron-fluid bg-dark mb-0" id="etiquetadoras">
+    <div class="container ">
         <div class="row align-items-center">
             <div class="col-sm-6 col-lg-6">
                 <h1 class="display-5 text-white">Las mejores etiquetadoras del mercado</h1>
@@ -141,10 +93,11 @@
         </div>
     </div>
 </div>
+-->
 
 
 
-
+<!--
 <div class="container">
 
     <div class="row align-items-center" style="height: 100vh">
@@ -158,7 +111,7 @@
         <div class="col"></div>
     </div>
 </div>
-
+-->
 <!-- --------------------------  -->
 <!--   FOOTER | PIE DE PÁGINA    -->
 <!-- --------------------------  -->
