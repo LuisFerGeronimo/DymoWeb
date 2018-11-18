@@ -47,7 +47,7 @@
     if(isset($_SESSION['id'])){
         echo   '<li class="nav-item dropdown ">
                     <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-shopping-cart fa-lg"></i>
+                        Carrito <i class="fas fa-shopping-cart fa-lg"></i>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="../tienda/login.php">Ver carrito</a>

@@ -44,6 +44,11 @@
 
         .descripcion-producto{
         }
+
+    .card img:before {
+        content: ' ';
+        background-image: url(../assets/img/products/img-placeholder.png);
+    }
     </style>
 
     <title>Tienda - Ribbon</title>
@@ -70,350 +75,52 @@
                     <h4 class="nav-link pb-0">Filtros</h4>
                 </li>
                 
-                <!-- Filtro - Material -->
-                <div id="material">
+                <form id="form-filtros">
 
-                    <!-- Filtro - Título -->
-                    <li class="nav-item">
-                        <h6 class="nav-link pb-0">Material</h6>
-                    </li>
 
-                    <!-- Filtro - Cera -->
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="cera-checkbox">
-                        <label class="form-check-label" for="cera-checkbox">
-                            Cera
-                        </label>
-                    </div>
+                    <!-- Filtro - Material -->
+                    <div id="material" class="filtro">
 
-                    <!-- Filtro - Resina -->
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="resina-checkbox">
-                        <label class="form-check-label" for="resina-checkbox">
-                            Resina
-                        </label>
-                    </div>
+                        <!-- Filtro - Título -->
+                        <li class="nav-item">
+                            <h6 class="nav-link pb-0">Material</h6>
+                        </li>
 
-                    <!-- Filtro - Resina/Cera -->
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="resinacera-checkbox">
-                        <label class="form-check-label" for="resinacera-checkbox">
-                            Resina/Cera
-                        </label>
-                    </div>
+                    </div> <!-- FIN - Filtro - Máquina -->
+                    
 
-                    <!-- Filtro - Resina TP -->
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="resinatp-checkbox">
-                        <label class="form-check-label" for="resinatp-checkbox">
-                            Resina TP
-                        </label>
-                    </div>
 
-                    <!-- Filtro - Resina TR -->
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="resitatr-checkbox">
-                        <label class="form-check-label" for="resitatr-checkbox">
-                            Resina TR
-                        </label>
-                    </div>
+                    <!-- Filtro - Máquina -->
+                    <div id="maquina" class="filtro">
 
-                    <!-- Filtro - Resina Original -->
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="resitaoriginal-checkbox">
-                        <label class="form-check-label" for="resitaoriginal-checkbox">
-                            Resina Original
-                        </label>
-                    </div>
+                        <!-- Filtro - Título -->
+                        <li class="nav-item">
+                            <h6 class="nav-link pb-0">Máquina</h6>
+                        </li>
 
-                    <!-- Filtro - Resina Textil -->
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="resitatextil-checkbox">
-                        <label class="form-check-label" for="resitatextil-checkbox">
-                            Resina Textil
-                        </label>
-                    </div>
-                </div>
-                
-                <!-- Filtro - Máquina -->
-                <div id="maquina">
 
-                    <!-- Filtro - Título -->
-                    <li class="nav-item">
-                        <h6 class="nav-link pb-0">Máquina</h6>
-                    </li>
+                    </div> <!-- FIN - Filtro - Máquina -->
 
-                    <!-- Filtro - Datacard -->
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="datacard-checkbox">
-                        <label class="form-check-label" for="datacard-checkbox">
-                            Datacard
-                        </label>
-                    </div>
 
-                    <!-- Filtro - Eltron -->
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="eltron-checkbox">
-                        <label class="form-check-label" for="eltron-checkbox">
-                            Eltron
-                        </label>
-                    </div>
 
-                    <!-- Filtro - Datamax -->
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="datamax-checkbox">
-                        <label class="form-check-label" for="datamax-checkbox">
-                            Datamax
-                        </label>
-                    </div>
+                    <!-- Filtro - Medida -->
+                    <div id="medida" class="filtro">
 
-                    <!-- Filtro - Zebra -->
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="zebra-checkbox">
-                        <label class="form-check-label" for="zebra-checkbox">
-                            Zebra
-                        </label>
-                    </div>
+                        <!-- Filtro - Título -->
+                        <li class="nav-item">
+                            <h6 class="nav-link pb-0">Medida</h6>
+                        </li>
 
-                </div>
-                
-                <!-- Filtro - Medida -->
-                <div id="medida">
-
-                    <!-- Filtro - Título -->
-                    <li class="nav-item">
-                        <h6 class="nav-link pb-0">Medida</h6>
-                    </li>
-
-                    <!-- Filtro - Medida 1 -->
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="medida1-checkbox">
-                        <label class="form-check-label" for="medida1-checkbox">
-                            32x90 - 38x360 
-                        </label>
-                    </div>
-
-                    <!-- Filtro - Medida 2 -->
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="medida2-checkbox">
-                        <label class="form-check-label" for="medida2-checkbox">
-                            38x450 - 44x360 
-                        </label>
-                    </div>
-
-                    <!-- Filtro - Medida 3 -->
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="medida3-checkbox">
-                        <label class="form-check-label" for="medida3-checkbox">
-                            50x300 - 64x450
-                        </label>
-                    </div>
-
-                    <!-- Filtro - Medida 4 -->
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="medida4-checkbox">
-                        <label class="form-check-label" for="medida4-checkbox">
-                            76x300 - 90x360
-                        </label>
-                    </div>
-
-                    <!-- Filtro - Medida 5 -->
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="medida5-checkbox">
-                        <label class="form-check-label" for="medida5-checkbox">
-                            100x360 - 220x300
-                        </label>
-                    </div>
-                </div>
+                    </div> <!-- FIN - Filtro - Medida -->
+                </form>
                 
             </ul>
         </aside>
 
         
         <!-- Lista de productos -->
-        <div class="col">
+        <div class="col" id="lista-productos">
 
-            <!-- Producto 1 -->
-            <div class="row m-0 py-2">
-
-                <!-- Imagen Producto -->
-                <div class="col-3">
-                    <img src="../assets/img/products/img-placeholder.png" class="w-100" alt="">
-                </div>
-
-                <!-- Descripción Producto -->
-                <div class="col-9 descripcion-producto">
-
-                    <!-- Título Producto -->
-                    <div class="row">
-                        <div class="col text-primary titulo-producto">
-                            Título Ribbon
-                        </div>
-                    </div>
-
-                    <!-- Datos Producto -->
-                    <div class="row">
-                        <div class="col datos-producto">
-                            <ul class="list-group border-0">
-                                <li class="list-group-item border-0"><span id="producto-material">Cera </span><span class="badge badge-primary">Material</span></li>
-                                <li class="list-group-item border-0"><span id="producto-máquina">Datacard </span><span class="badge badge-primary">Máquina</span></li>
-                                <li class="list-group-item border-0"><span id="producto-medida">38x360 </span><span class="badge badge-primary">Medida</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Producto 2 -->
-            <div class="row m-0 py-2">
-
-                <!-- Imagen Producto -->
-                <div class="col-3">
-                    <img src="../assets/img/products/img-placeholder.png" class="w-100" alt="">
-                </div>
-
-                <!-- Descripción Producto -->
-                <div class="col-9 descripcion-producto">
-
-                    <!-- Título Producto -->
-                    <div class="row">
-                        <div class="col text-primary titulo-producto">
-                            Título Ribbon
-                        </div>
-                    </div>
-
-                    <!-- Datos Producto -->
-                    <div class="row">
-                        <div class="col datos-producto">
-                            <ul class="list-group border-0">
-                                <li class="list-group-item border-0"><span id="producto-material">Cera </span><span class="badge badge-primary">Material</span></li>
-                                <li class="list-group-item border-0"><span id="producto-máquina">Datacard </span><span class="badge badge-primary">Máquina</span></li>
-                                <li class="list-group-item border-0"><span id="producto-medida">38x360 </span><span class="badge badge-primary">Medida</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Producto 3 -->
-            <div class="row m-0 py-2">
-
-                <!-- Imagen Producto -->
-                <div class="col-3">
-                    <img src="../assets/img/products/img-placeholder.png" class="w-100" alt="">
-                </div>
-
-                <!-- Descripción Producto -->
-                <div class="col-9 descripcion-producto">
-
-                    <!-- Título Producto -->
-                    <div class="row">
-                        <div class="col text-primary titulo-producto">
-                            Título Ribbon
-                        </div>
-                    </div>
-
-                    <!-- Datos Producto -->
-                    <div class="row">
-                        <div class="col datos-producto">
-                            <ul class="list-group border-0">
-                                <li class="list-group-item border-0"><span id="producto-material">Cera </span><span class="badge badge-primary">Material</span></li>
-                                <li class="list-group-item border-0"><span id="producto-máquina">Datacard </span><span class="badge badge-primary">Máquina</span></li>
-                                <li class="list-group-item border-0"><span id="producto-medida">38x360 </span><span class="badge badge-primary">Medida</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Producto 4 -->
-            <div class="row m-0 py-2">
-
-                <!-- Imagen Producto -->
-                <div class="col-3">
-                    <img src="../assets/img/products/img-placeholder.png" class="w-100" alt="">
-                </div>
-
-                <!-- Descripción Producto -->
-                <div class="col-9 descripcion-producto">
-
-                    <!-- Título Producto -->
-                    <div class="row">
-                        <div class="col text-primary titulo-producto">
-                            Título Ribbon
-                        </div>
-                    </div>
-
-                    <!-- Datos Producto -->
-                    <div class="row">
-                        <div class="col datos-producto">
-                            <ul class="list-group border-0">
-                                <li class="list-group-item border-0"><span id="producto-material">Cera </span><span class="badge badge-primary">Material</span></li>
-                                <li class="list-group-item border-0"><span id="producto-máquina">Datacard </span><span class="badge badge-primary">Máquina</span></li>
-                                <li class="list-group-item border-0"><span id="producto-medida">38x360 </span><span class="badge badge-primary">Medida</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Producto 5 -->
-            <div class="row m-0 py-2">
-
-                <!-- Imagen Producto -->
-                <div class="col-3">
-                    <img src="../assets/img/products/img-placeholder.png" class="w-100" alt="">
-                </div>
-
-                <!-- Descripción Producto -->
-                <div class="col-9 descripcion-producto">
-
-                    <!-- Título Producto -->
-                    <div class="row">
-                        <div class="col text-primary titulo-producto">
-                            Título Ribbon
-                        </div>
-                    </div>
-
-                    <!-- Datos Producto -->
-                    <div class="row">
-                        <div class="col datos-producto">
-                            <ul class="list-group border-0">
-                                <li class="list-group-item border-0"><span id="producto-material">Cera </span><span class="badge badge-primary">Material</span></li>
-                                <li class="list-group-item border-0"><span id="producto-máquina">Datacard </span><span class="badge badge-primary">Máquina</span></li>
-                                <li class="list-group-item border-0"><span id="producto-medida">38x360 </span><span class="badge badge-primary">Medida</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pagination -->
-            <div class="row ml-auto"">
-                <div class="col">
-                    
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                    <span class="sr-only">Next</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-                
         </div>
 
     </div>
@@ -435,23 +142,96 @@
 <script src="../assets/js/popper.js"></script>
 <script src="../assets/js/bootstrap.js"></script>
 
-<!-- Script para los filtros de los productos -->
+
+<!-- Script para obtener los tipos de filtros del ribbon -->
+<script>
+    
+    $.ajax({
+        type: 'POST',
+        url: 'filtrado/filtrosRibbon.php',
+        dataType: "json",
+        success: function(data){
+
+            $('#material').append(data['material']);
+            $('#maquina').append(data['maquina']);
+            $('#medida').append(data['medida']);
+        }
+
+    });
+</script>
+
+
+<!-- Script para los filtros del ribbon -->
 <script>
     $(document).ready(function(){
-        $('input[type=checkbox]').on('click', function(){
 
-            var serializedForm = $('#form-filtros').serialize();
 
+
+        $('#form-filtros').change('input[type=checkbox]', function(){
+
+
+            /* Get input values from form */
+            var values = jQuery("#form-filtros").serializeArray();
+
+            /* Because serializeArray() ignores unset checkboxes and radio buttons: */
+            /*values = values.concat(
+                    jQuery('#form-filtros input[type=checkbox]:not(:checked)').map(
+                            function() {
+                                return {"name": this.name, "value": false}
+                            }).get()
+            );
+*/
+
+            for (var i = 0; i < values.length; i++) {
+                if(values[i]['value'] == 'on'){
+                    values[i]['value'] = true;
+                } else {
+                    values[i]['value'] = false;
+                }
+
+                values[i]['filtro'] = $("input[name='" + values[i]['name'] + "']").closest('div.filtro').attr('id');
+            }
+
+            if(values.length === 0){
+                values = null;
+            }
+
+            console.log(values);
 
             $.ajax({
                 type: 'POST',
-                url: 'filtrarProductos.php',
-                data: serializedForm,
+                url: 'filtrado/filtrarRibbon.php',
+                data: {values: values},
+                dataType: 'json',
                 success: function(data){
+
+                    console.log("data");
+                    console.log(data);
+
+                    var productos = data['productos'];
+                    var filas = productos['filas'];
+
+                    console.log("Filas: " + filas + "\n");
+
+                    var htmlString = '';
                     
+                    for (var i = 1; i <= filas; i++) {
+                        console.log("i: " + i + "\n");
+                        htmlString += productos[i];
+                        console.log("data["+i+"]: \n");
+                        console.log(productos[i]);
+                    }
+                    $('#lista-productos').html(htmlString);
+
+                    $('img').on("error", function() {
+                      $(this).attr('src', '../assets/img/products/img-placeholder.png');
+                    });
+
                 }
             });
         });
+
+        $('#form-filtros').trigger("change");
     });
     
 </script>

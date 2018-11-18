@@ -286,7 +286,7 @@ $resArr = $queryGenerico->fetchData();
 //-----------------------------------------------------
 // Extracción De Los Resultados
 //-----------------------------------------------------
-//
+
 /** @var int Almacena el número de filas filtradas o "limitadas". */
 $number_filter_row = $resArr['recordsFiltered'];
 

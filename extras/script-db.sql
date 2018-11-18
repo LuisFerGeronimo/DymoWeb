@@ -616,15 +616,15 @@ CREATE TABLE `Producto` (
 */
 
 INSERT INTO `Producto` (`codigo`, `nombre`, `marca`, `descripcion`, `costo`, `unidadDePedido`, `proveedorID`) VALUES
-('RI38X300MCP', 'Ribbon textil1', 'Marca01', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1),
-('RI38X300RAP', 'Ribbon textil2', 'Marca02', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1),
-('RI38X300RCI', 'Ribbon textil3', 'Marca03', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1),
-('RI38X300RCP', 'Ribbon textil4', 'Marca04', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1),
-('RI38X300RBS', 'Ribbon textil5', 'Marca05', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1),
-('RI38X300FBE', 'Ribbon textil6', 'Marca06', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1),
-('RI38X300RGI', 'Ribbon textil7', 'Marca07', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1),
-('RI38X300RGP', 'Ribbon textil8', 'Marca08', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1),
-('RI38X360FAD', 'Ribbon textil9', 'Marca09', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1);
+('RI38X300MCP', 'Ribbon 1', 'Marca01', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1),
+('RI38X300RAP', 'Ribbon 2', 'Marca02', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1),
+('RI38X300RCI', 'Ribbon 3', 'Marca03', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1),
+('RI38X300RCP', 'Ribbon 4', 'Marca04', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1),
+('RI38X300RBS', 'Ribbon 5', 'Marca05', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1),
+('RI38X300FBE', 'Ribbon 6', 'Marca06', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1),
+('RI38X300RGI', 'Ribbon 7', 'Marca07', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1),
+('RI38X300RGP', 'Ribbon 8', 'Marca08', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1),
+('RI38X360FAD', 'Ribbon 9', 'Marca09', 'Rbbbon textil de color [color] para...', 367.50, 'Unidad', 1);
 
 /*
 ----------------------------------------------------------
@@ -685,15 +685,15 @@ CREATE TABLE `Ribbon`(
 */
 
 INSERT INTO `Ribbon` (`codigo`, `material`, `medida`, `in`, `maquina`, `letras`) VALUES
-('RI38X300MCP', 'textil', 1, 1, 'Maquina1', 'Letras1'),
-('RI38X300RAP', 'textil', 1, 1, 'Maquina1', 'Letras1'),
-('RI38X300RCI', 'textil', 1, 1, 'Maquina1', 'Letras1'),
-('RI38X300RCP', 'textil', 1, 1, 'Maquina1', 'Letras1'),
-('RI38X300RBS', 'textil', 1, 1, 'Maquina1', 'Letras1'),
-('RI38X300FBE', 'textil', 1, 1, 'Maquina1', 'Letras1'),
-('RI38X300RGI', 'textil', 1, 1, 'Maquina1', 'Letras1'),
-('RI38X300RGP', 'textil', 1, 1, 'Maquina1', 'Letras1'),
-('RI38X360FAD', 'textil', 2, 1, 'Maquina1', 'Letras1');
+('RI38X300MCP', 'cera', 1, 1, 'Eltron', 'Letras1'),
+('RI38X300RAP', 'resina/cera', 1, 1, 'Datacard', 'Letras1'),
+('RI38X300RCI', 'resina', 1, 1, 'Datamax', 'Letras1'),
+('RI38X300RCP', 'cera GP', 1, 1, 'Zebra', 'Letras1'),
+('RI38X300RBS', 'resina TR', 1, 1, 'Zebra TLP', 'Letras1'),
+('RI38X300FBE', 'resina TP', 1, 1, 'Zebra Original', 'Letras1'),
+('RI38X300RGI', 'resina textil', 1, 1, 'Toshiba', 'Letras1'),
+('RI38X300RGP', 'cera', 1, 1, 'Eltron', 'Letras1'),
+('RI38X360FAD', 'resina', 2, 1, 'Datamax', 'Letras1');
 
 
 /*
@@ -1806,3 +1806,57 @@ CREATE VIEW `PedidosView` AS (
     FROM `pedido`
     INNER JOIN `Pedido_Producto` ON `pedido`.`id` = `Pedido_Producto`.`pedidoID`
 );
+
+
+DROP VIEW IF EXISTS `RibbonView`;
+
+CREATE VIEW `RibbonView` AS
+  SELECT 
+        `Producto`.`codigo`,
+        `Producto`.`nombre`,
+        `Producto`.`marca`,
+        `Producto`.`descripcion`,
+        `Producto`.`costo`,
+        `Producto`.`unidadDePedido`,
+        `Ribbon`.`material`,
+        `Ribbon`.`in`,
+        `Ribbon`.`maquina`,
+        `Ribbon`.`letras`,
+        CONCAT(`Medida`.`ancho`, `Unidades`.`unidadAncho`, 'x', `Medida`.`largo`, `Unidades`.`unidadLargo`) AS `medidas`,
+        `Medida`.`ancho`,
+        `Unidades`.`unidadAncho`,
+        `Medida`.`largo`,
+        `Unidades`.`unidadLargo`
+
+  FROM `Producto` 
+      LEFT JOIN `Ribbon` ON `Producto`.`codigo` = `Ribbon`.`codigo`
+      JOIN `Medida` ON `Medida`.`id` = `Ribbon`.`medida`
+      JOIN `Unidades` ON `Unidades`.`id` = `Medida`.`unidadesID`;
+
+
+/*
+
+  UNION ALL 
+
+  SELECT 
+        `Producto`.`codigo`,
+        `Producto`.`nombre`,
+        `Producto`.`marca`,
+        `Producto`.`descripcion`,
+        `Producto`.`costo`,
+        `Producto`.`unidadDePedido`,
+        `Ribbon`.`material`,
+        `Ribbon`.`in`,
+        `Ribbon`.`maquina`,
+        `Ribbon`.`letras`,
+        CONCAT(`Medida`.`ancho`, `Unidades`.`unidadAncho`, 'x', `Medida`.`largo`, `Unidades`.`unidadLargo`) AS `medidas`,
+        `Medida`.`ancho`,
+        `Unidades`.`unidadAncho`,
+        `Medida`.`largo`,
+        `Unidades`.`unidadLargo`
+
+  FROM `Producto` 
+      RIGHT JOIN `Ribbon` ON `Producto`.`codigo` = `Ribbon`.`codigo`
+      JOIN `Medida` ON `Medida`.`id` = `Ribbon`.`medida`
+      JOIN `Unidades` ON `Unidades`.`id` = `Medida`.`unidadesID`;
+*/
