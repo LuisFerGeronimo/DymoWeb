@@ -38,15 +38,15 @@
 
 <?php include '../includes/tienda_header.php' ?>
 
-<div class="jumbotron jumbotron-fluid bg-white mb-0 pb-0">
+<div class="jumbotron jumbotron-fluid bg-white mb-0 pb-0 pt-3">
     <div class="container">
         <div class="row">
-            <div class="col-8 mt-md-4 pt-md-5">
+            <div class="col-12 col-sm-10 col-lg-7 mt-md-4 py-sm-4 py-md-2 py-lg-5">
                 <h1 class="display-4">¡Nuevo catálogo en línea!</h1>
                 <p class="lead text-muted">Pronto podrás hacer tus pedidos desde la comodidad de tu casa...</p>
             </div>
-            <div class="col-4 d-sm-none d-md-block">
-                <img src="../assets/img/ui/happy-guy.png" alt="Happy-guy"  style="height: 350px;">
+            <div class="col col-lg-5 d-none d-lg-block">
+                <img class="" src="../assets/img/ui/happy-guy.png" alt="Happy-guy" style="height: 350px;">
             </div>
         </div>
     </div>
@@ -57,10 +57,10 @@
         <h1 class="display-4 text-center text-white worksans-medium">Etiquetas</h1>
         <p class="text-center"><span class="text-muted" style="font-size: 1.20em">Pídalas por teléfono</span></p>
         <div class="row">
-            <div class="col-5 offset-md-1 d-sm-none d-md-block">
-                <img src="../assets/img/products/etiqueta.png" alt="etiqueta-tumarca"  style="height: 350px;">
+            <div class="col-12 col-lg-5 offset-lg-1 text-center mb-3">
+                <img class="img-fluid" src="../assets/img/products/etiqueta.png" alt="etiqueta-tumarca" >
             </div>
-            <div class="col-5 offset-md-1 mt-md-4 pt-md-4 ">
+            <div class="col-12 col-lg-5 offset-lg-1 mt-md-4 pt-md-4 ">
                 <div class="border border-secondary w-100 p-4 worksans-regular" style="color: #8496A5;">
                     <p><span class="lead worksans-medium text-white" >Materiales:</span></p>
                     <p><i class="fas fa-angle-double-right fa-xs" style="color: white"></i><span class="ml-1 lead">Textiles</span></p>

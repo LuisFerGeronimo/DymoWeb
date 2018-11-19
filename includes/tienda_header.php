@@ -1,12 +1,22 @@
-<?php session_start(); ?>
+<?php 
+    session_start(); 
+
+    $path = $_SERVER['DOCUMENT_ROOT'];
+    $logo = "/DymoWeb/assets/img/dymo-transparente.png";
+    $linkInicio= "/Dymoweb/tienda/";
+    $linkRibbon = "/DymoWeb/tienda/ribbon.php";
+    $linkCerrarSesion = "/Dymoweb/includes/cerrarSesion.php";
+    $linkLogin = "/Dymoweb/tienda/login.php";
+
+?>
 <!-- HEADER del NAVBAR -->
 <div class="navbar-dark" style="background-color: #262F36">
     <!-- Navbar página de inicio principal -->
     <nav class="navbar navbar-dark bg-transparent navbar-expand-md m-auto py-2">
 
         <!-- Logotipo de DYMO -->
-        <a class="navbar-brand ml-5 " href="index.php">
-           <img src="../assets/img/dymo-transparente.png" width="80" height="55" alt="DYMO">
+        <a class="navbar-brand ml-5 " href="../index.html">
+           <img src="<?php echo $logo; ?>" width="80" height="55" alt="DYMO">
         </a>
 
 
@@ -20,7 +30,7 @@
         <div class="collapse navbar-collapse" id="navbarNav-productos">
             <ul class="navbar-nav ml-md-2 text-center">
                 <li class="nav-item active">
-                    <a class="nav-link " href="index.php">Inicio<span class="sr-only">(current)</span></a>
+                    <a class="nav-link " href="<?php echo $linkInicio; ?>">Inicio<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link disabled" href="#etiquetas">Etiquetas</a>
@@ -33,7 +43,7 @@
                 </li> 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../tienda/ribbon.php">Ribbon</a>
+                    <a class="nav-link" href="<?php echo $linkRibbon; ?>">Ribbon</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link disabled" href="#Impresoras">Impresoras</a>
@@ -47,21 +57,22 @@
     if(isset($_SESSION['id'])){
         echo   '<li class="nav-item dropdown ">
                     <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Carrito <i class="fas fa-shopping-cart fa-lg"></i>
+                        <span class="d-inline-block d-md-none d-lg-inline-block">Carrito </span> <i class="fas fa-shopping-cart fa-lg"></i>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="../tienda/login.php">Ver carrito</a>
-                        <a class="dropdown-item" href="../tienda/login.php">Ver pedidos</a>
+                        <a class="dropdown-item" href="#">Ver carrito</a>
+                        <a class="dropdown-item" href="#">Ver pedidos</a>
                     </div>
                 </li>
 
                 <li class="nav-item dropdown ">
                     <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        '.$_SESSION['nombre'] . ' ' . '<i class="fas fa-user-circle fa-lg"></i>
+                        <span class="d-inline-block d-md-none d-lg-inline-block" id="datos-usuario" data-column="'.$_SESSION['id'].'">'.$_SESSION['nombre'] . ' </span> ' . '<i class="fas fa-user-circle fa-lg"></i>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="#">Cuenta</a>
-                        <a class="dropdown-item" href="../includes/cerrarSesion.php">Cerrar sesión</a>
+                        <a class="dropdown-item" href="#">Favoritos</a>
+                        <a class="dropdown-item" href="'.$linkCerrarSesion.'">Cerrar sesión</a>
                     </div>
                 </li>';
 
@@ -72,8 +83,8 @@
                         Acceder
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="../tienda/login.php">Cliente</a>
-                        <a class="dropdown-item" href="../tienda/login.php">Distribuidor</a>
+                        <a class="dropdown-item" href="'.$linkLogin.'">Cliente</a>
+                        <a class="dropdown-item" href="'.$linkLogin.'">Distribuidor</a>
                     </div>
                 </li>';
     } 

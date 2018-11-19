@@ -1794,13 +1794,15 @@ CREATE VIEW `ListarPedidosView` AS (
 DROP VIEW IF EXISTS `PedidosView`;
 
 CREATE VIEW `PedidosView` AS (
-    SELECT  `pedido`.`id`                            AS `id`, 
-            `pedido`.`fechaPedido`                   AS `fecha-de-pedido`, 
-            `pedido`.`fechaEntrega`                  AS `fecha-de-entrega`, 
+    SELECT  `pedido`.`id`                            AS `id`,
+            `pedido`.`fechaPedido`                   AS `fecha-de-pedido`,
+            `pedido`.`fechaEntrega`                  AS `fecha-de-entrega`,
             `pedido`.`estado`                        AS `estado`,
-            `Pedido_Producto`.`cantidad`             AS `cantidad`, 
-            `Pedido_Producto`.`costo`                AS `costo`, 
+            `pedido`.`clienteID`                     AS `clienteID`,
+            `Pedido_Producto`.`pedidoID`             AS `pedidoID`,
             `Pedido_Producto`.`productoCodigo`       AS `producto`,
+            `Pedido_Producto`.`cantidad`             AS `cantidad`,
+            `Pedido_Producto`.`costo`                AS `costo`,
             `Pedido_Producto`.`detalles`             AS `detalles`
 
     FROM `pedido`

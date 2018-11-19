@@ -123,6 +123,10 @@ define('MAX_CONTRASENA', 26);
 </head>
 <body style="background-image: url(../assets/img/ui/registro.jpg); background-size: cover;">
 
+<div class="alert alert-success fixed-top" id="mensaje-error" role="alert">
+    Registro exitoso
+</div>
+
 
 <!-- CONTENEDOR -->
 <div class="container px-0 py-4">
@@ -142,7 +146,8 @@ define('MAX_CONTRASENA', 26);
                 <div class="card-body px-3">
 
                     
-                    <div class="card-header mb-3">
+                    <div class="card-header mb-3 text-center">
+
 
                         <!-- BARRA DE PROGRESO -->
                         <div class="progress" style="height: 22px;">
@@ -489,9 +494,26 @@ define('MAX_CONTRASENA', 26);
                     
 
                 </div>
+                <div class="card-footer text-muted text-center">
+                    <div class="row">
+                        <div class="col-4">
+                            <!-- Link para ir a la página principal -->
+                            <a href="../index.html" class="card-link font-weight-bold text-success float-left">Inicio</a>
+                        </div>
+                        <div class="col-4">
+                            <!-- Link para ir a la tienda -->
+                            <a href="../tienda/index.php" class="card-link font-weight-bold text-white ">Tienda</a>
+                        </div>
+                        <div class="col-4">
+                            <!-- Link para ir al inicio de sesión -->
+                            <a href="login.php" class="card-link font-weight-bold text-danger float-right">Iniciar sesión</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
+                        
         <!-- COLUMNA RELLENADORA - DERECHA -->
         <div class="col-0 col-sm-1 col-md-2 col-lg-3"></div>
     </div>
@@ -573,8 +595,14 @@ define('MAX_CONTRASENA', 26);
     // Paso 4: Seguridad
     //-----------------------------------------------------
 
+
     var inputContrasena         = $("#contrasena");
     var inputContrasenaRepetida = $("#contrasena-repetida");
+
+    //-----------------------------------------------------
+    // Mensajes de respuesta.
+    //-----------------------------------------------------
+    $('#mensaje-error').hide();
 
 </script>
 
@@ -1502,7 +1530,6 @@ define('MAX_CONTRASENA', 26);
                          */
                         var resultado = data["result"];
 
-
                         if(!resultado){
                             /**
                              * Número que dice la razón por la que no se pudo
@@ -1512,15 +1539,22 @@ define('MAX_CONTRASENA', 26);
                              */
                             var reason = data["reason"];
 
+                            $('#mensaje-error').removeClass('alert-success');
+                            $('#mensaje-error').addClass('alert-danger');
+
                             switch(reason){
 
                                 // No se llenaron todos los campos.
                                 case 0:
+                                    $('#mensaje-error').html('Favor de llenar todos los campos.');
+                                    $('#mensaje-error').show();
                                     $("#resultContrasena").html("Favor de llenar todos los campos.");
                                     break;
 
                                 // El nombre de la empresa que se introdujo ya está registrado.
                                 case 1:
+                                    $('#mensaje-error').html('El nombre de empresa que introdujo ya existe.');
+                                    $('#mensaje-error').show();
                                     $("#resultEmpresa").html("El nombre de empresa que introdujo ya existe.");
                                     $('#paso-2').show();
                                     $('#paso-4').hide();
@@ -1531,6 +1565,8 @@ define('MAX_CONTRASENA', 26);
 
                                 // El correo de la cuenta que se introdujo ya está registrado.
                                 case 2:
+                                    $('#mensaje-error').html('Ya existe una cuenta con el correo.');
+                                    $('#mensaje-error').show();
                                     $("#resultCuenta").html("Ya existe una cuenta con el correo.");
                                     $('#paso-1').show();
                                     $('#paso-4').hide();
@@ -1541,10 +1577,15 @@ define('MAX_CONTRASENA', 26);
                             }
                         } else {
                             // Registro exitoso.
+                            $('#mensaje-error').removeClass('alert-danger');
+                            $('#mensaje-error').addClass('alert-success');
+                            $('#mensaje-error').html('¡Registro exitoso!');
+                            $('#mensaje-error').show();
+                            
                         }
 
                     }
-                    /*,
+                    ,
                     error: function (xhr, status, error) { 
                         console.log("Xhr: " + xhr);
                         console.log("Xhr.responseText: " + xhr.responseText);
@@ -1555,7 +1596,7 @@ define('MAX_CONTRASENA', 26);
                         console.log(err.error);
                         alert(err.error); 
                     }
-                    */
+                    
                 });
             }
 

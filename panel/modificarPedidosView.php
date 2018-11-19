@@ -37,7 +37,6 @@ include_once  '../includes/model/queryGenerico.php';
  * 											 1: Error de odificación
  */
 $GLOBALS['results'] = array();
-$GLOBALS['affectedRowsSum'] = 0;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -74,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 	
 		//======================================================================
-		// MODIFICACIÓN DE LOS DATOS DEL PEDIDO
+		// MODIFICACIÓN DE LOS DATOS DEL PEDIDO - PARTE I
 		//======================================================================
 
 		/**
@@ -107,13 +106,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		// Especificación de los parámetros en forma de array.
 		$queryGenerico->setParamsValues(array($fechaPedido, $fechaEntrega, $estado, $id));
 
-		// Ejecución de la función 'update()'.
-		$GLOBALS['affectedRowsSum'] = $queryGenerico->update();
+		/* Ejecución de la función 'update() */
+		/*
+		 * QueryGenerico->update devuelve la información de la consulta.
+		 *  - Rows matched:  (int) número de filas coincididas
+		 *  - Changed: 		 (int) número de filas modificadas
+		 *  - Warnings: 	 (int) número de warnings
+		 */
+		$GLOBALS['info'] = $queryGenerico->update();
 
 
 		
 		//======================================================================
-		// MODIFICACIÓN DE LOS DATOS DEL PEDIDO
+		// MODIFICACIÓN DE LOS DATOS DEL PEDIDO - PARTE II
 		//======================================================================
 
 		/**
@@ -147,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$queryGenerico->setParamsValues(array($cantidad, $costo, $producto, $id));
 
 		// Ejecución de la función 'update()'.
-		$GLOBALS['results']['affectedRows'] = $queryGenerico->update();
+		$GLOBALS['results']['info'] = $queryGenerico->update();
 
 
 		$GLOBALS['results']['result'] = true;

@@ -57,6 +57,16 @@
 
 <?php include '../includes/tienda_header.php' ?>
 
+<div>
+     
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="index.php">Inicio</a></li>
+            <li class="breadcrumb-item active font-italic" aria-current="page">Ribbon</li>
+        </ol>
+    </nav>
+</div>
+
 <div id="mainContent">
 
     <div class="row align-items-center m-0" style="height: 40px; font-size: 0.90em; background-color: #f4f4f4;">
@@ -161,7 +171,7 @@
 </script>
 
 
-<!-- Script para los filtros del ribbon -->
+<!-- Script para filtrar los ribbon -->
 <script>
     $(document).ready(function(){
 
@@ -234,6 +244,23 @@
         $('#form-filtros').trigger("change");
     });
     
+</script>
+
+<!-- Script para ver detalles del producto -->
+<script>
+    $(document).ready(function(){
+        $('#lista-productos').on('click', '.detalles', function(){
+            
+            // Obtención del código/id del producto.
+            var codigo = $(this).attr('data-id');
+
+            // Url de la página de detalles.
+            var url = 'ribbon/detalles.php?codigo=' + codigo;
+            
+            // Ir a la url especificada.
+            window.location = url;
+        });
+    });
 </script>
 
 </body>

@@ -38,7 +38,7 @@ include_once  '../includes/model/queryGenerico.php';
  * 											 2: Correo de cuenta repetido
  * 											 3: No se pudo registar la dirección
  */
-$GLOBALS['results'];
+$GLOBALS['results'] = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 

@@ -148,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 				// Ejecución del query.
 				$GLOBALS['results']= $queryGenerico->create();
-				$GLOBALS['results']['rowCreated'] = true;
+				$GLOBALS['results']['result'] = true;
 				break;
 
 			case $GLOBALS['results']['info']['Changed'] >= 0:

@@ -889,6 +889,21 @@ class QueryGenerico{
 		 */
 		$resArr['result'] = $stmt->execute();
 
+		/*
+		 * Se extrae la última llave primaria creada de la consulta INSERT.
+		 */
+		$resArr['primaryKey'] = $mysqli->insert_id;
+
+
+		//-----------------------------------------------------
+		// Obención Información De La Ejecución Del Query
+		//-----------------------------------------------------
+		/*
+		 * Se obtiene el número de filas coincidentes, cambiasdas y warnings
+		 * se almacena dentro del array info.
+		 */
+		$resArr['info'] = $this->_getRowsMatched($mysqli->info);
+
 		//-----------------------------------------------------
 		// Cierre De Los Objetos Stmt && Mysqli
 		//-----------------------------------------------------
@@ -995,7 +1010,6 @@ class QueryGenerico{
 		 * Se obtiene el número de filas coincidentes, cambiasdas y warnings
 		 * se almacena dentro del array info.
 		 */
-
 		$info = $this->_getRowsMatched($mysqli->info);
 
 		//-----------------------------------------------------

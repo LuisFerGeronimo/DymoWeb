@@ -885,18 +885,11 @@ function guardarCambios(){
             data: formSerialized,
             dataType:"json",
             success: function(data) {
-                console.log("data: ");
-                console.log(data);
-                var result = data['result'];
-                var affectedRows = data['affectedRows'];
 
-                console.log('Result:');
-                console.log(data['result']);
+                var result = data['result'];
 
                 if(result){
                     // Alert cambios guardados
-                    console.log('Affected Rows:');
-                    console.log(data['affectedRows']);
                     $('#reloadButton').trigger('click');
 
                 } else {

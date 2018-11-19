@@ -100,15 +100,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		// Especificación de los parámetros en forma de array.
 		$queryGenerico->setParamsValues(array($nombre, $telefono, $correo, $id));
 
-		// Ejecución de la función 'update()'.
-		$GLOBALS['results']['affectedRows'] = $queryGenerico->update();
+		/* Ejecución de la función 'update() */
+		/*
+		 * QueryGenerico->update devuelve la información de la consulta.
+		 *  - Rows matched:  (int) número de filas coincididas
+		 *  - Changed: 		 (int) número de filas modificadas
+		 *  - Warnings: 	 (int) número de warnings
+		 */
+		$GLOBALS['results']['info'] = $queryGenerico->update();
 
 
 		/*
 		 * QueryGenerico->update almacena el número de filas actualizadas.
 		 * Si es diferente a 1, fue una actualización NO exitosa.
 		 */
-		if($GLOBALS['results']['affectedRows'] != 1){
+		if($GLOBALS['results']['info']['Changed'] != 1){
 
 			$GLOBALS['results']['result'] = false;
 			$GLOBALS['results']['reason'] = 1;

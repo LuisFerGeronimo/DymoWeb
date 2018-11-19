@@ -86,44 +86,49 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		 */
 		$GLOBALS['results'] = $queryGenerico->read();
 
-		// Se guarda el id en la sesión.
-		$_SESSION['id'] = $GLOBALS['results'][0]['id'];
+		//var_dump($GLOBALS['results']);
 
-		// Se separan los nombres en caso de que tenga más de uno.
-		$nombre = explode(' ', $GLOBALS['results'][0]['nombre']);
+		if($GLOBALS['results']){
 
-		/*
-		 * La función de explode devuelve un arreglo vacío cuando no encuentra
-		 * espacios en los nombres. Esto quiere decir que el usuario sólo tiene
-		 * 1 nombre.
-		 */
-		if(!empty($nombre)){
+			// Se separan los nombres en caso de que tenga más de uno.
+			$nombre = explode(' ', $GLOBALS['results'][0]['nombre']);
 
 			/*
-			 * Se guarda el nombre del usuario en la variable de sesión.
-			 * Se escoge el primer nombre y el primer apellido.
+			 * La función de explode devuelve un arreglo vacío cuando no encuentra
+			 * espacios en los nombres. Esto quiere decir que el usuario sólo tiene
+			 * 1 nombre.
 			 */
-			$_SESSION['nombre'] = $nombre[0] . ' ' . $GLOBALS['results'][0]['apellidoP'];
-		} else {
+			if(!empty($nombre)){
 
-			/*
-			 * Se guarda el nombre del usuario en la variable de sesión.
-			 * Se escoge el nombre que se obtuvo de la BD y el primer apellido.
-			 */
-			$_SESSION['nombre'] = $GLOBALS['results'][0]['nombre'] . ' ' . $GLOBALS['results'][0]['apellidoP'];
-		}
+				/*
+				 * Se guarda el nombre del usuario en la variable de sesión.
+				 * Se escoge el primer nombre y el primer apellido.
+				 */
+				$_SESSION['nombre'] = $nombre[0] . ' ' . $GLOBALS['results'][0]['apellidoP'];
+				// Se guarda el id en la sesión.
+				$_SESSION['id'] = $GLOBALS['results'][0]['id'];
+			} else {
 
-		/*
-		 * Si 'results' devuelve false, se pone la llave 'match' como false.
-		 * Si no devuelve falso, significa que contiene la(s) fila(s) encontrada(s)
-		 * por ende se pone la llave 'match' como true y 'rows' como la longitud
-		 * del array 'results'.
-		 */
-		if(!$GLOBALS['results']){
-			$GLOBALS['results']['match'] = "false";
-		} else {
+				/*
+				 * Se guarda el nombre del usuario en la variable de sesión.
+				 * Se escoge el nombre que se obtuvo de la BD y el primer apellido.
+				 */
+				$_SESSION['nombre'] = $GLOBALS['results'][0]['nombre'] . ' ' . $GLOBALS['results'][0]['apellidoP'];
+
+
+			}
+
 			$GLOBALS['results']['rows'] = sizeof($GLOBALS['results']);
 			$GLOBALS['results']['match'] = "true";
+		} else {
+
+			/*
+			 * Si 'results' devuelve false, se pone la llave 'match' como false.
+			 * Si no devuelve falso, significa que contiene la(s) fila(s) enctrada(s)
+			 * por ende se pone la llave 'match' como true y 'rows' como la longitud
+			 * del array 'results'.
+			 */
+			$GLOBALS['results']['match'] = "false";
 		}
 
 

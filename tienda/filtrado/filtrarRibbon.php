@@ -260,12 +260,11 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
             for ($j=0; $j < 3; $j++) {
 
 
-
                 ////echo "I (j) BG: " . $i . "      | \n";
                 //echo "J (j) BG: " . $j . "      | \n\n";
 
                 $GLOBALS['results']['productos'][$fila] .='
-                <div class="col-md-4 col-lg-3 py-3">
+                <div class="col-12 col-md-4 col-lg-3 py-3">
                     <div class="card" style="">
                         <img class="card-img-top" src="../assets/img/products/ribbon-'.$GLOBALS['results']['result'][$i]['codigo'].'.png">
                         <div class="card-header">
@@ -276,7 +275,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
                             <li class="list-group-item"><span id="producto-máquina">'.ucfirst($GLOBALS['results']['result'][$i]['maquina']).' </span><span class="badge badge-pill  badge-danger">Máquina</span></li>
                             <li class="list-group-item"><span id="producto-medida">'.$GLOBALS['results']['result'][$i]['medidas'].' </span><span class="badge badge-pill  badge-secondary">Medida</span></li>
                         </ul>
-                        <a href="#" class="btn btn-info w-100">Detalles</a>
+                        <a href="#" class="btn btn-info w-100 detalles" data-id="'.$GLOBALS['results']['result'][$i]['codigo'].'">Detalles</a>
 
                     </div>
 
@@ -328,7 +327,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
 
             // Separador de filas si no es la última fila
             if($fila < $filasTotal){
-                $GLOBALS['results']['productos'][$fila] .= ' <hr class="w-100">';
+                $GLOBALS['results']['productos'][$fila] .= ' <hr class="w-100 d-none d-md-block">';
             }
 
         }

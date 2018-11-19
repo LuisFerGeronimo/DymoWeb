@@ -44,6 +44,11 @@
 <body style="background-image: url(../assets/img/ui/registro.jpg); background-size: cover;">
 
 
+<div class="alert alert-danger fixed-top" role="alert">
+    Datos incorrectos
+</div>
+
+
 <div class="container px-0 py-4">
     <div class="row align-items-center bg-transparent mx-0" style="min-height: 100vh; background-color: white;">
         <!-- Columna rellenadora para centrar la columna del formulario -->
@@ -52,10 +57,14 @@
         <div class="col-12 col-sm-10 col-md-8 col-lg-6">
             <!-- Estructura del componente _card_ -->
             <div class="card text-white bg-dark">
-                <!-- Cuerpo del componente _card_ -->
-                <div class="card-body px-3">
+                <div class="card-header">
+                    <!-- Link para ir a la página principal -->
+                    <a href="../index.html" class="card-link font-weight-bold text-white border border-white rounded px-3 float-left position-absolute">Inicio</a>
                     <!-- Título del componente _card_ -->
                     <h3 class="card-title text-center text-nowrap">Acceder</h3>
+                </div>
+                <!-- Cuerpo del componente _card_ -->
+                <div class="card-body px-3">
                     <!-- Formulario del log in -->
                     <form class="needs-validation px-0 px-sm-3 pb-0 pb-sm-3 pt-4 px-lg-4" onsubmit="return false;" novalidate>
                         <!-- Grupo del label e input para el e-mail -->
@@ -112,7 +121,9 @@
                         <!-- Mensaje de error -->
                         <p id="mensaje-error" class="d-none">Mensaje</p>
                         <!-- Link para el usuario que olvidó su contraseña -->
-                        <a href="#" class="card-link">¿Olvidó su contraseña?</a>
+                        <a href="#" class="card-link text-danger">¿Olvidó su contraseña?</a>
+                        <!-- Link para el usuario que desea registrarse -->
+                        <a href="registro.php" class="card-link font-weight-bold text-info float-right">Registrarse</a>
                     </form>
                 </div>
             </div>
@@ -137,6 +148,8 @@
 
 <!-- Envío de datos al servidor con AJAX -->
 <script type="text/javascript">
+
+    $('.alert-danger').hide();
     
     $(document).ready(function(){
 
@@ -155,6 +168,8 @@
             var correo_input  = $("#email").val();
             var contrasena_input  = $("#password").val();
 
+            console.log(correo_input);
+            console.log(contrasena_input);
 
             /*
              * AJAX: Envío de solicitud POST al archivo 'login-request.php'.
@@ -162,7 +177,6 @@
             $.ajax({
                 type: "POST",
                 url: "login-request.php",
-                cache:false,
                 data: 
                     {
                         correo: correo_input,
@@ -181,39 +195,36 @@
                  * 
                  * @return {void}
                  */
-                success: function(result, status){
+                success: function(result){
                     console.log(result);
                     console.log(status);
 
-                    if(status) {
-                        if(result['match'] === "true"){
+                    
+                    if(result['match'] === "true"){
+                        $('.alert-danger').hide();
 
-                            console.log("Data: " + result +
-                                "\nStatus: " + status + 
-                                "\nid: " + result[0]['id'] + 
-                                "\nNombre " + result[0]['nombre']
-                            );
+                        console.log("Data: " + result +
+                            "\nStatus: " + status + 
+                            "\nid: " + result[0]['id'] + 
+                            "\nNombre " + result[0]['nombre']
+                        );
 
-                            /*
-                             * Se le muestra al usuario la página principal de la tienda.
-                             */
-                            window.location.href = "index.php";
+                        /*
+                         * Se le muestra al usuario la página principal de la tienda.
+                         */
+                        window.location.href = "index.php";
 
-                        } else {
-                            console.log("Datos incorrectos.");
-                            /*
-                             * En caso de que el usuario ingrese datos incorrecto
-                             * se le muestra un mensaje de error.
-                             */
-                            $("#mensaje-error").html("Datos incorrectos.");
-                        }
-
-                    }else{
-                        console.log("Algo salio mal...");
+                    } else {
+                        console.log("Datos incorrectos.");
+                        $('.alert-danger').show();
+                        /*
+                         * En caso de que el usuario ingrese datos incorrecto
+                         * se le muestra un mensaje de error.
+                         */
+                        $("#mensaje-error").html("Datos incorrectos.");
                     }
 
-                }
-                /*,
+                },
                 error: function (xhr, status, error) { 
                     console.log("Xhr: " + xhr);
                     console.log("Xhr.responseText: " + xhr.responseText);
@@ -223,7 +234,7 @@
                     console.log(err);
                     console.log(err.error);
                 }
-                */
+                
             });
  
         }); 
