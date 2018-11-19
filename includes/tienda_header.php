@@ -7,6 +7,7 @@
     $linkRibbon = "/DymoWeb/tienda/ribbon.php";
     $linkCerrarSesion = "/Dymoweb/includes/cerrarSesion.php";
     $linkLogin = "/Dymoweb/tienda/login.php";
+    $linkCarrito = "/Dymoweb/tienda/carrito.php";
 
 ?>
 <!-- HEADER del NAVBAR -->
@@ -60,7 +61,7 @@
                         <span class="d-inline-block d-md-none d-lg-inline-block">Carrito </span> <i class="fas fa-shopping-cart fa-lg"></i>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Ver carrito</a>
+                        <a class="dropdown-item" href="'.$linkCarrito.'">Ver carrito</a>
                         <a class="dropdown-item" href="#">Ver pedidos</a>
                     </div>
                 </li>

@@ -44,10 +44,6 @@
 
         .descripcion-producto{
         }
-
-    .card img:before {
-        content: ' ';
-        background-image: url(../assets/img/products/img-placeholder.png);
     }
     </style>
 

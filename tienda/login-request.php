@@ -105,6 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				 * Se escoge el primer nombre y el primer apellido.
 				 */
 				$_SESSION['nombre'] = $nombre[0] . ' ' . $GLOBALS['results'][0]['apellidoP'];
+
 				// Se guarda el id en la sesión.
 				$_SESSION['id'] = $GLOBALS['results'][0]['id'];
 			} else {
@@ -114,8 +115,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				 * Se escoge el nombre que se obtuvo de la BD y el primer apellido.
 				 */
 				$_SESSION['nombre'] = $GLOBALS['results'][0]['nombre'] . ' ' . $GLOBALS['results'][0]['apellidoP'];
-
-
 			}
 
 			$GLOBALS['results']['rows'] = sizeof($GLOBALS['results']);

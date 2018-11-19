@@ -21,6 +21,7 @@ require '../../includes/db.php';
  * filtrar los productos.
  */
 require '../../includes/model/queryGenerico.php';
+
 $GLOBALS['results']['productos'] = [];
 $GLOBALS['results']['request'] = false;
 
@@ -92,6 +93,8 @@ if(isset($_GET['codigo'])){
 </div>
 
 <?php include '../../includes/tienda_header.php'; ?>
+
+<!-- BREADCRUMB -->
 <div>
 	 
 	<nav aria-label="breadcrumb">
@@ -101,13 +104,15 @@ if(isset($_GET['codigo'])){
 	    	<li class="breadcrumb-item active font-italic" aria-current="page">Detalles</li>
 	  	</ol>
 	</nav>
-</div>
+</div> <!-- FIN - BREADCRUMB -->
+
+<!-- CONTAINER -->
 <div class="container mt-5">
 	<div class="row">
 
 		<!-- Imagen -->
 		<div class="col-12 col-sm-4">
-			<img class="img-fluid" id="img-producto" data-column="<?php echo $GLOBALS['results']['ribbon'][0]['codigo'];?>" src="/DymoWeb/assets/img/products/ribbon-<?php echo $GLOBALS['results']['ribbon'][0]['codigo']; ?>.png">
+			<img class="img-fluid" id="img-producto" data-column="<?php echo $GLOBALS['results']['ribbon'][0]['codigo'];?>" onerror="this.src='../../assets/img/products/img-placeholder.png'" src="/DymoWeb/assets/img/products/ribbon-<?php echo $GLOBALS['results']['ribbon'][0]['codigo']; ?>.png">
 		</div>
 
 		<!-- Detalles -->
@@ -178,20 +183,97 @@ if(isset($_GET['codigo'])){
 		</div>
 	</div>
 
-	<ul class="nav nav-pills nav-fill mt-5" id="pills-tab" role="tablist">
+	<hr class="w-100 my-5">
+
+	<ul class="nav nav-pills nav-fill mt-5 mb-3" id="pills-tab" role="tablist">
 	  	<li class="nav-item">
-	    	<a class="nav-link active" href="#" id="detalles-tab" data-toggle="pill" href="#pills-detalles" role="tab" aria-controls="pills-detalles" aria-selected="true">Detalles</a>
+	    	<a class="nav-link active" id="pills-detalles-tab" data-toggle="pill" href="#pills-detalles" role="tab" aria-controls="pills-detalles" aria-selected="true">Detalles</a>
 	  	</li>
 	  	<li class="nav-item">
-	    	<a class="nav-link" href="#" id="faq-tab" data-toggle="pill" href="#pills-faq" role="tab" aria-controls="pills-faq" aria-selected="false">FAQ</a>
+	    	<a class="nav-link" id="pills-faq-tab" data-toggle="pill" href="#pills-faq" role="tab" aria-controls="pills-faq" aria-selected="false">Preguntas frecuentes</a>
 	  	</li>
 	</ul>
 
-	<div class="tab-content" id="pills-tabContent">
-  		<div class="tab-pane fade show active" id="pills-detalles" role="tabpanel" aria-labelledby="detalles-tab">...</div>
-  		<div class="tab-pane fade" id="pills-faq" role="tabpanel" aria-labelledby="faq-tab">...</div>
-	</div>
-</div>
+	<!-- MAIN TAB CONTENT -->
+	<div class="tab-content mb-3" id="pills-tabContent">
+  		<!-- Tab Content - DETALLES -->
+  		<div class="tab-pane fade show active" id="pills-detalles" role="tabpanel" aria-labelledby="pills-detalles-tab">..</div>
+
+
+  		<!-- Tab Content - FAQ -->
+  		<div class="tab-pane fade" id="pills-faq" role="tabpanel" aria-labelledby="pills-faq-tab">
+
+			<!-- Accordion -->
+  			<div class="accordion" id="accordionExample">
+				
+  				
+  				<!-- Definición de ribbon -->
+		  		<div class="card">
+
+		  			<!-- PREGUNTA - ¿Qué es un ribbon? -->
+		    		<div class="card-header px-0" id="headingOne">
+		      			<h5 class="mb-0">
+		        			<button class="btn btn-link" style="white-space: normal;" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+		          				¿Qué es un ribbon?
+		        			</button>
+		      			</h5>
+				    </div> <!-- FIN - PREGUNTA -->
+
+				    <!-- RESPUESTA -->
+		    		<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+				    	
+				    	<!-- Card body -->
+		      			<div class="card-body">
+		        			<p>Las cintas o películas de impresión utilizadas en las impresoras de transferencia térmica son llamadas <strong>ribbons</strong> (su traducción literal sería <cite>listón</cite> o <cite>cinta</cite>), y son utilizadas principalmente para la impresión de etiquetas y códigos de barras.</p>
+
+							<p>Los <strong>ribbons</strong> contienen un sustrato de <strong>cera, resina</strong> o la mezcla de ambas; este material  se transfiere desde el ribbon hacia la etiqueta que se va a imprimir cuando se le aplica el calor generado por el  cabezal de la impresora.</p>
+
+							<p>De esta manera se plasma la imagen o texto en la etiqueta y es dependiendo del sustrato que contenga la película que será su durabilidad.</p>
+		      			</div> <!-- FIN - Card body -->
+			    	</div> <!-- FIN - RESPUESTA -->
+
+			  	</div> <!-- FIN - Definición de ribbon -->
+
+			  	<!-- Tipos de Materiales -->
+			  	<div class="card">
+
+			  		<!-- PREGUNTA - ¿Qué tipos de materiales usan los ribbon? -->
+				    <div class="card-header px-0" id="headingTwo">
+				      	<h5 class="mb-0">
+				        	<button class="btn btn-link collapsed" style="white-space: normal;" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+				          		¿Qué tipos de materiales usan los ribbon?
+			        		</button>
+				      	</h5>
+				    </div> <!-- FIN -  PREGUNTA -->
+
+				    <!-- RESPUESTA -->
+				    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+
+				    	<!-- Card body -->
+				      	<div class="card-body">
+				        	<p>Los ribbon suelen contener cera o recina, y comúnmente se utiliza ambas en un sólo ribbon.</p>
+				        	<p>También, hay diferentes formas de cera y recina. Entre ellos estan: </p>
+				        	<ul>
+				        		<li>Cera </li>
+				        		<li>Cera GP</li>
+				        		<li>Resina</li>
+				        		<li>Resina TR</li>
+				        		<li>Resina TP</li>
+				        		<li>Resina Textil</li>
+				        	</ul>
+				      	</div> <!-- FIN - Card body -->
+
+			    	</div> <!-- FIN - RESPUESTA -->
+
+			  	</div> <!-- FIN - Tipos de Materiales -->
+			  	
+			</div> <!-- FIN - Accordion -->
+
+  		</div> <!-- FIN - Tab Content - FAQ -->
+
+	</div> <!-- FIN - MAIN TAB CONTENT -->
+
+</div> <!-- FIN - CONTAINER -->
 
 
 
@@ -345,6 +427,8 @@ if(isset($_GET['codigo'])){
 
 	});
 </script>
+
+
 
 </body>
 </html>

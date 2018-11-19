@@ -34,6 +34,7 @@ $GLOBALS['results'] = [];
 $GLOBALS['results']['create'] = [];
 
 
+// Zona horaria de la Ciudad de México.
 date_default_timezone_set("America/Mexico_City");
 
 
@@ -237,7 +238,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					 *   - 's' -> string
 					 *   - 'b' -> boolean
 					 */
-					$queryGenerico->setParamsType(array('i', 'i', 'i'));
+					$queryGenerico->setParamsType(array('i', 'd', 'i'));
 
 					// Especificación de los parámetros en forma de array.
 					$queryGenerico->setParamsValues(array($cantidad, $costo, $pedidoID));
