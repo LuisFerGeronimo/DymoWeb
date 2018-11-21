@@ -3,11 +3,13 @@
 
     $path = $_SERVER['DOCUMENT_ROOT'];
     $logo = "/DymoWeb/assets/img/dymo-transparente.png";
-    $linkInicio= "/Dymoweb/tienda/";
+    $linkInicio = "/Dymoweb/tienda/";
+    $linkInicioEtiquetas = "/Dymoweb/tienda/index.php#etiquetas";
     $linkRibbon = "/DymoWeb/tienda/ribbon.php";
     $linkCerrarSesion = "/Dymoweb/includes/cerrarSesion.php";
     $linkLogin = "/Dymoweb/tienda/login.php";
     $linkCarrito = "/Dymoweb/tienda/carrito.php";
+    $linkPedidos = "/Dymoweb/tienda/pedidos.php";
 
 ?>
 <!-- HEADER del NAVBAR -->
@@ -34,7 +36,7 @@
                     <a class="nav-link " href="<?php echo $linkInicio; ?>">Inicio<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#etiquetas">Etiquetas</a>
+                    <a class="nav-link disabled" href="<?php echo $linkInicioEtiquetas; ?>">Etiquetas</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link disabled" href="#Etiquetadoras">Etiquetadoras</a>
@@ -62,7 +64,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="'.$linkCarrito.'">Ver carrito</a>
-                        <a class="dropdown-item" href="#">Ver pedidos</a>
+                        <a class="dropdown-item" href="'.$linkPedidos.'">Ver pedidos</a>
                     </div>
                 </li>
 

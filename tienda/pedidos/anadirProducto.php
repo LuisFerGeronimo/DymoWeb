@@ -124,11 +124,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
 
-
 				//======================================================================
-				// VERIFICAR SI EXISTE ALGÚN PEDIDO IGUAL
+				// VERIFICAR SI EXISTE ALGÚN PEDIDO CREADO EN EL CARRITO
 				//======================================================================
-
+				
 				/**
 				 * Variable 'QueryGenerico' para hacer las consultas en la BD.
 				 * 
@@ -137,13 +136,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				$queryGenerico = new QueryGenerico();
 
 				// Especificación de la tabla con la que se trabajará.
-				$queryGenerico->setTable('pedidosView');
+				$queryGenerico->setTable('pedido');
 
 				// Especificación del select
 				$queryGenerico->setSelect('*');
 
 				// Especificación del where
-				$queryGenerico->setWhere('clienteID = ? AND estado = ? AND producto = ?');
+				$queryGenerico->setWhere('clienteID = ? AND estado = 1');
 
 				/*
 				 * Especificación de los tipos de parámetros en forma de array.
@@ -154,24 +153,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				 *   - 's' -> string
 				 *   - 'b' -> boolean
 				 */
-				$queryGenerico->setParamsType(array('i', 'i', 's'));
+				$queryGenerico->setParamsType(array('i'));
 
 				// Especificación de los parámetros en forma de array.
-				$queryGenerico->setParamsValues(array($clienteID, $estado, $producto));
+				$queryGenerico->setParamsValues(array($clienteID));
 
 				// Obtener pedidos del cliente
-				$pedidos = $queryGenerico->read();
+				$pedidosCarrito = $queryGenerico->read();
 
-				if(sizeof($pedidos) > 0){
-					// Ya existe un pedido en el carrito con ese producto
 
-					$pedidoID = $pedidos[0]['pedidoID'];
-					$cantidad = $cantidad + $pedidos[0]['cantidad'];
-					$costo = obtenerCosto($producto, $cantidad);
+				if(sizeof($pedidosCarrito) > 0){
+
+
+
 
 					//======================================================================
-					// ACTUALIZAR LA FECHA DEL PEDIDO A 'HOY' - TABLA['PEDIDO']
+					// VERIFICAR SI EXISTE ALGÚN PEDIDO CON EL MISMO PRODUCTO 
 					//======================================================================
+
 
 					/**
 					 * Variable 'QueryGenerico' para hacer las consultas en la BD.
@@ -181,13 +180,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$queryGenerico = new QueryGenerico();
 
 					// Especificación de la tabla con la que se trabajará.
-					$queryGenerico->setTable('pedido');
+					$queryGenerico->setTable('pedidosView');
 
 					// Especificación del select
-					$queryGenerico->setSet('fechaPedido = ?');
+					$queryGenerico->setSelect('*');
 
 					// Especificación del where
-					$queryGenerico->setWhere('id = ?');
+					$queryGenerico->setWhere('clienteID = ? AND estado = ? AND producto = ?');
 
 					/*
 					 * Especificación de los tipos de parámetros en forma de array.
@@ -198,58 +197,194 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					 *   - 's' -> string
 					 *   - 'b' -> boolean
 					 */
-					$queryGenerico->setParamsType(array('s', 'i'));
+					$queryGenerico->setParamsType(array('i', 'i', 's'));
 
 					// Especificación de los parámetros en forma de array.
-					$queryGenerico->setParamsValues(array($fechaPedido, $pedidoID));
+					$queryGenerico->setParamsValues(array($clienteID, $estado, $producto));
 
-					// Modificar fecha de pedido
-					$queryGenerico->update();
-
-
+					// Obtener pedidos del cliente
+					$pedidos = $queryGenerico->read();
 
 
-					//======================================================================
-					// ACTUALIZAR LA CANTIDAD Y EL COSTO TOTAL DEL PEDIDO - TABLA['PEDIDO_PRODUCTO']
-					//======================================================================
 
-					/**
-					 * Variable 'QueryGenerico' para hacer las consultas en la BD.
-					 * 
-					 * @var QueryGenerico
-					 */
-					$queryGenerico = new QueryGenerico();
 
-					// Especificación de la tabla con la que se trabajará.
-					$queryGenerico->setTable('pedido_producto');
 
-					// Especificación del select
-					$queryGenerico->setSet('cantidad = ?, costo = ?');
+					if(sizeof($pedidos) > 0){
+						// Ya existe un pedido en el carrito con ese producto
 
-					// Especificación del where
-					$queryGenerico->setWhere('pedidoID = ?');
+						$pedidoID = $pedidos[0]['pedidoID'];
+						$cantidad = $cantidad + $pedidos[0]['cantidad'];
+						$costo = obtenerCosto($producto, $cantidad);
 
-					/*
-					 * Especificación de los tipos de parámetros en forma de array.
-					 *
-					 * Tipos de datos:
-					 *   - 'i' -> int
-					 *   - 'd' -> double
-					 *   - 's' -> string
-					 *   - 'b' -> boolean
-					 */
-					$queryGenerico->setParamsType(array('i', 'd', 'i'));
+						//======================================================================
+						// ACTUALIZAR LA FECHA DEL PEDIDO A 'HOY' - TABLA['PEDIDO']
+						//======================================================================
 
-					// Especificación de los parámetros en forma de array.
-					$queryGenerico->setParamsValues(array($cantidad, $costo, $pedidoID));
+						/**
+						 * Variable 'QueryGenerico' para hacer las consultas en la BD.
+						 * 
+						 * @var QueryGenerico
+						 */
+						$queryGenerico = new QueryGenerico();
 
-					// Modificar cantidad y costo
-					$queryGenerico->update();
+						// Especificación de la tabla con la que se trabajará.
+						$queryGenerico->setTable('pedido');
 
-					$GLOBALS['results']['result'] = true;
+						// Especificación del select
+						$queryGenerico->setSet('fechaPedido = ?');
+
+						// Especificación del where
+						$queryGenerico->setWhere('id = ?');
+
+						/*
+						 * Especificación de los tipos de parámetros en forma de array.
+						 *
+						 * Tipos de datos:
+						 *   - 'i' -> int
+						 *   - 'd' -> double
+						 *   - 's' -> string
+						 *   - 'b' -> boolean
+						 */
+						$queryGenerico->setParamsType(array('s', 'i'));
+
+						// Especificación de los parámetros en forma de array.
+						$queryGenerico->setParamsValues(array($fechaPedido, $pedidoID));
+
+						// Modificar fecha de pedido
+						$queryGenerico->update();
+
+
+
+
+						//======================================================================
+						// ACTUALIZAR LA CANTIDAD Y EL COSTO TOTAL DEL PEDIDO - TABLA['PEDIDO_PRODUCTO']
+						//======================================================================
+
+						/**
+						 * Variable 'QueryGenerico' para hacer las consultas en la BD.
+						 * 
+						 * @var QueryGenerico
+						 */
+						$queryGenerico = new QueryGenerico();
+
+						// Especificación de la tabla con la que se trabajará.
+						$queryGenerico->setTable('pedido_producto');
+
+						// Especificación del select
+						$queryGenerico->setSet('cantidad = ?, costo = ?');
+
+						// Especificación del where
+						$queryGenerico->setWhere('pedidoID = ? AND productoCodigo = ?');
+
+						/*
+						 * Especificación de los tipos de parámetros en forma de array.
+						 *
+						 * Tipos de datos:
+						 *   - 'i' -> int
+						 *   - 'd' -> double
+						 *   - 's' -> string
+						 *   - 'b' -> boolean
+						 */
+						$queryGenerico->setParamsType(array('i', 'd', 'i', 's'));
+
+						// Especificación de los parámetros en forma de array.
+						$queryGenerico->setParamsValues(array($cantidad, $costo, $pedidoID, $producto));
+
+						// Modificar cantidad y costo
+						$queryGenerico->update();
+
+						$GLOBALS['results']['result'] = true;
+
+
+
+
+
+
+
+
+
+
+
+
+
+					} else {
+
+						$pedidoID = $pedidosCarrito[0]['id'];
+
+						$costo = obtenerCosto($producto, $cantidad);
+
+						// Pedido del mismo producto NO EXISTENTE.
+
+						//======================================================================
+						// CREAR NUEVO PRODUCTO DENTRO DEL CARRITO
+						//======================================================================
+
+						/**
+						 * Variable 'QueryGenerico' para hacer las modificaciones en la BD.
+						 * 
+						 * @var QueryGenerico
+						 */
+						$queryGenerico = new QueryGenerico();
+
+						// Especificación de la tabla con la que se trabajará.
+						$queryGenerico->setTable('pedido_producto');
+
+						// Especificación de columnas a las que se les asignará un valor.
+						$queryGenerico->setFields('pedidoID, productoCodigo, cantidad, costo, detalles');
+
+						// Especificación de espacios de valores
+						$queryGenerico->setValues('?, ?, ?, ?, ?');
+
+
+						/*
+						 * Especificación de los tipos de parámetros en forma de array.
+						 *
+						 * Tipos de datos:
+						 *   - 'i' -> int
+						 *   - 'd' -> double
+						 *   - 's' -> string
+						 *   - 'b' -> boolean
+						 */
+						$queryGenerico->setParamsType(array('i', 's', 'i', 'd', 's'));
+
+						// Especificación de los parámetros en forma de array.
+						$queryGenerico->setParamsValues(array($pedidoID, $producto, $cantidad, $costo, $detalles));
+
+						// Ejecución de la función 'create()'.
+						$GLOBALS['results'] = $queryGenerico->create();
+
+
+						$GLOBALS['results']['result'] = true;
+					}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 				} else {
-					// No existe ningún pedido de este producto en el carrito del cliente.
+					// No existe ningún carrito de este cliente
 					
 
 					/*

@@ -187,21 +187,21 @@ if(isset($_GET['codigo'])){
 
 	<ul class="nav nav-pills nav-fill mt-5 mb-3" id="pills-tab" role="tablist">
 	  	<li class="nav-item">
-	    	<a class="nav-link active" id="pills-detalles-tab" data-toggle="pill" href="#pills-detalles" role="tab" aria-controls="pills-detalles" aria-selected="true">Detalles</a>
+	    	<a class="nav-link " id="pills-detalles-tab" data-toggle="pill" href="#pills-detalles" role="tab" aria-controls="pills-detalles" aria-selected="false">Detalles</a>
 	  	</li>
 	  	<li class="nav-item">
-	    	<a class="nav-link" id="pills-faq-tab" data-toggle="pill" href="#pills-faq" role="tab" aria-controls="pills-faq" aria-selected="false">Preguntas frecuentes</a>
+	    	<a class="nav-link active" id="pills-faq-tab" data-toggle="pill" href="#pills-faq" role="tab" aria-controls="pills-faq" aria-selected="true">Preguntas frecuentes</a>
 	  	</li>
 	</ul>
 
 	<!-- MAIN TAB CONTENT -->
 	<div class="tab-content mb-3" id="pills-tabContent">
   		<!-- Tab Content - DETALLES -->
-  		<div class="tab-pane fade show active" id="pills-detalles" role="tabpanel" aria-labelledby="pills-detalles-tab">..</div>
+  		<div class="tab-pane fade" id="pills-detalles" role="tabpanel" aria-labelledby="pills-detalles-tab">..</div>
 
 
   		<!-- Tab Content - FAQ -->
-  		<div class="tab-pane fade" id="pills-faq" role="tabpanel" aria-labelledby="pills-faq-tab">
+  		<div class="tab-pane fade show active" id="pills-faq" role="tabpanel" aria-labelledby="pills-faq-tab">
 
 			<!-- Accordion -->
   			<div class="accordion" id="accordionExample">
