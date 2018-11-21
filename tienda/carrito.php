@@ -40,6 +40,19 @@ $GLOBALS['results']['request'] = false;
     <link rel="stylesheet" href="../assets/css/solid.css">
     <link rel="stylesheet" href="../assets/css/fontawesome.css">
 
+    <!-- Smartsupp Live Chat script -->
+    <script type="text/javascript">
+        var _smartsupp = _smartsupp || {};
+        _smartsupp.key = '8fde5e5a0b5beef908e268b0f2dab6b97c538dd9';
+        window.smartsupp||(function(d) {
+            var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+            s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+            c.type='text/javascript';c.charset='utf-8';c.async=true;
+            c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+        })(document);
+    </script>
+
+
 	<title>Carrito de compras</title>
 </head>
 <body>
@@ -120,6 +133,8 @@ if(!isset($_SESSION['id'])){
 		for ($i=0; $i < sizeof($pedidos); $i++) {
 			$pedidoTotal = $pedidoTotal + $pedidos[$i]['costo'];
 
+			$pedidoTotalFormatted = number_format($pedidoTotal, 2, ',', '.');
+
 			$pedidosHTML .= '
 				<div class="row producto">
 
@@ -143,7 +158,7 @@ if(!isset($_SESSION['id'])){
 						<div class="row mt-2">
 							<div class="col-12 text-center text-sm-left">
 								<span class="font-weight-bold">Precio: </span>
-								$<span class="precio-unidad">'.$productos[$i]['costo'].'</span> M.X.N./<span class="unidad-pedido">'.$productos[$i]['unidadDePedido'].'</span>
+								$<span class="precio-unidad">'.number_format($productos[$i]['costo'], 2, ',', '.').'</span> M.X.N./<span class="unidad-pedido">'.$productos[$i]['unidadDePedido'].'</span>
 							</div>
 						</div>
 					</div>
@@ -182,7 +197,7 @@ if(!isset($_SESSION['id'])){
 						</div>
 						<div class="row">
 							<div class="col-12 text-center px-0">
-								<h4 class="text-success">$ <span class="precio-total">'.$pedidos[$i]['costo'].'</span> M.X.N.</h4>
+								<h4 class="text-success">$ <span class="precio-total">'.number_format($pedidos[$i]['costo'], 2, ',', '.').'</span> M.X.N.</h4>
 							</div>
 						</div>
 					</div>
@@ -229,7 +244,7 @@ if(!isset($_SESSION['id'])){
 						</div>
 						<div class="row">
 							<div class="col-12 text-center px-0">
-								<h4 class="text-primary">$ <span class="pedido-total">'.$pedidoTotal.'</span> M.X.N.</h4>
+								<h4 class="text-primary">$ <span class="pedido-total">'.$pedidoTotalFormatted.'</span> M.X.N.</h4>
 							</div>
 						</div>
 					</div>

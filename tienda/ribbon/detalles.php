@@ -132,7 +132,7 @@ if(isset($_GET['codigo'])){
 					<span class="font-weight-bold">Precio: </span>
 				</div>
 				<div class="col-6 col-sm-8 text-left text-sm-left pl-0">
-					$ <span id="precio"><?php echo $GLOBALS['results']['ribbon'][0]['costo'];?></span> M.X.N.
+					$ <span id="precio"><?php echo $GLOBALS['results']['ribbon'][0]['costo']; ?></span> M.X.N.
 				</div>
 			</div>
 
@@ -162,7 +162,7 @@ if(isset($_GET['codigo'])){
 					<span class="font-weight-bold">Total: </span>
 				</div>
 				<div class="col-6 col-sm-8 text-left text-sm-left pl-0">
-					$ <span id="precio-total"><?php echo $GLOBALS['results']['ribbon'][0]['costo'];?></span> M.X.N.
+					$ <span id="precio-total"><?php echo number_format($GLOBALS['results']['ribbon'][0]['costo'], 2, ',', '.');?></span> M.X.N.
 				</div>
 			</div>
 
@@ -337,6 +337,9 @@ if(isset($_GET['codigo'])){
 				$('#precio-total').html('0.00');
 			} else {
 				var precio = parseFloat($('#precio').html());
+				console.log($('#precio').html());
+				console.log(precio);
+				console.log(cantidad * precio);
 				$('#precio-total').html(cantidad * precio);
 			}
 		}
@@ -356,7 +359,7 @@ if(isset($_GET['codigo'])){
 		// Detectar cuando se escriba en el input de cantidad calcular el total.
 		$('#cantidad').on('change paste keyup', function(){
 
-			calcularTotal(parseInt($(this).val()));
+			calcularTotal(parseFloat($(this).val()));
 		});
 	});
 </script>

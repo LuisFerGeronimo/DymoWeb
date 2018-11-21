@@ -27,7 +27,10 @@ $GLOBALS['results']['request'] = false;
 function estadoIntAString($estadoInt){
 	switch ($estadoInt) {
 		case 3: return 'Pedido'; break;
+		case 4: return 'Pagado'; break;
 		case 5: return 'En proceso de cancelación'; break;
+		case 6: return 'Cancelado'; break;
+		case 7: return 'Entregado'; break;
 	}
 }
 ?>
@@ -47,6 +50,18 @@ function estadoIntAString($estadoInt){
     <link rel="stylesheet" href="../assets/css/solid.css">
     <link rel="stylesheet" href="../assets/css/fontawesome.css">
 
+    <!-- Smartsupp Live Chat script -->
+    <script type="text/javascript">
+        var _smartsupp = _smartsupp || {};
+        _smartsupp.key = '8fde5e5a0b5beef908e268b0f2dab6b97c538dd9';
+        window.smartsupp||(function(d) {
+            var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+            s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+            c.type='text/javascript';c.charset='utf-8';c.async=true;
+            c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+        })(document);
+    </script>
+
 	<title>Pedidos</title>
 </head>
 <body>
@@ -61,8 +76,8 @@ function estadoIntAString($estadoInt){
 <?php include '../includes/tienda_header.php'; ?>
 
 
-
-
+<!-- Accordion -->
+<div class="accordion my-5" id="accordionExample">
 <?php
 if(!isset($_SESSION['id'])){
 	header('Location: login.php');
@@ -76,7 +91,7 @@ if(!isset($_SESSION['id'])){
 
 	$queryGenerico->setTable('pedido');
 	$queryGenerico->setSelect('*');
-	$queryGenerico->setWhere('clienteID = ? AND (estado = 3 OR estado = 5) ORDER BY fechaPedido DESC');
+	$queryGenerico->setWhere('clienteID = ? AND (estado = 3 OR estado = 4 OR estado = 5 OR estado = 6 OR estado = 7) ORDER BY fechaPedido DESC');
 	$queryGenerico->setParamsType(array('i'));
 	$queryGenerico->setParamsValues(array($_SESSION['id']));
 	$pedidos = $queryGenerico->read();
@@ -93,23 +108,53 @@ if(!isset($_SESSION['id'])){
 		for ($i=0; $i < sizeof($pedidos); $i++) { 
 			$pedidoID = $pedidos[$i]['id'];
 
+			$deshabilitar = '';
+
+			if($pedidos[$i]['estado'] == 3){ // Pedido
+				$bgColor = "text-white bg-primary";
+			} else if($pedidos[$i]['estado'] == 4){ // Pagado
+				$bgColor = "text-white bg-info";
+			} else if($pedidos[$i]['estado'] == 5 || $pedidos[$i]['estado'] == 6  ){ // Solicitud O Cancelado
+				$deshabilitar = 'disabled';
+				$bgColor = "text-white bg-danger";
+			} else if($pedidos[$i]['estado'] == 7){ // Entregado
+				$deshabilitar = 'disabled';
+				$bgColor = "text-white bg-success";
+			}
+
 
 			//-----------------------------------------------------
 			// Header Del Pedido (Título)
 			//-----------------------------------------------------
 			$pedidosHTML .= '
-			<!-- CONTAINER -->
-			<div class="container my-5 border rounded py-3 pedido-container" data-id="'.$pedidoID.'" style="border: 1.8px solid #DEE2E6 !important;">
-				<div class="row justify-content-start">
-					<div class="col-6">
-						<h3>Estado: <span class="text-muted" id="estado" data-id="'.$pedidos[$i]['estado'].'">'.estadoIntAString($pedidos[$i]['estado']).'</span></h3>
-					</div>
-					<div class="col-6 d-flex justify-content-end align-self-center">
-						<h6 class="text-muted">'.$pedidos[$i]['fechaPedido'].'</h6>
-					</div>
+	<!-- CARD-PEDIDO -->
+	<div class="card container border-bottom px-0 mb-2">
+		<!-- PREGUNTA - ¿Qué es un ribbon? -->
+		<div class="card-header m-0 pedido-container py-0 '.$bgColor.'" id="heading'.$i.'" data-id="'.$pedidoID.'">
+			<div class="row justify-content-start m-0 p-0">
+				<div class="col-6 m-0 p-0">
+					<h3 class="p-0">
+						<button class="btn btn-link p-0 type="button" data-toggle="collapse" data-target="#collapse'.$i.'" aria-expanded="false" aria-controls="collapse'.$i.'" style="color:white !important;">
+							<strong>Estado:</strong> <span class="" id="estado" data-id="'.$pedidos[$i]['estado'].'">'.estadoIntAString($pedidos[$i]['estado']).'</span>
+						</button>
+					</h3>
 				</div>
+				<div class="col-6 d-flex justify-content-end  mt-2 p-0">
+					<h6 class="">
+							<button class="btn btn-link p-0 type="button" data-toggle="collapse" data-target="#collapse'.$i.'" aria-expanded="true" aria-controls="collapse'.$i.'"  style="color:white !important;">'.$pedidos[$i]['fechaPedido'].'
+							</button>
+						</h6>
+				</div>
+			</div>
+		</div> <!-- FIN - CARD-HEADER -->
 
-				<hr class="w-100">';
+		<!-- COLLAPSE -->
+		<div id="collapse'.$i.'" class="collapse" aria-labelledby="heading'.$i.'" data-parent="#accordionExample">
+	    	
+	    	<!-- Card body -->
+			<div class="card-body">';
+
+
 
 			//======================================================================
 			// PRODUCTOS DEL PEDIDO QUE SE ESTÁ RECORRIENDO
@@ -175,66 +220,68 @@ if(!isset($_SESSION['id'])){
 
 			for ($k=0; $k < sizeof($pedidosProducto); $k++) {
 				$pedidoTotal = $pedidoTotal + $pedidosProducto[$k]['costo'];
+				
+				$pedidoTotalFormatted = number_format($pedidoTotal, 2, '.', ',');
 
 				$pedidosHTML .= '
-					<div class="row producto">
+				<div class="row producto">
 
-						<!-- Imagen -->
-						<div class="col-12 col-sm-3 col-lg-2 py-4 py-sm-0">
-							<img class="img-fluid" onerror="this.src=`../assets/img/products/img-placeholder.png`" src="../assets/img/products/ribbon-'.$productos[$k]['codigo'].'.png" alt="">
-						</div>
-
-						<!-- Detalles -->
-						<div class="col-12 col-sm-5 col-lg-7">
-							
-							<!-- Titulo y descripcion -->
-							<div class="row">
-								<div class="col-12 text-center text-sm-left">
-									<h4>'.$productos[$k]['nombre'].' <small class="text-muted producto-codigo" data-id="'.$pedidosProducto[$k]['pedidoID'].'">'.$productos[$k]['codigo'].'</small></h4>
-									<h6 class="text-muted font-italic">'.$productos[$k]['descripcion'].'</h6>
-								</div>
-							</div>
-
-							<!-- Precio por Unidad-->
-							<div class="row mt-2">
-								<div class="col-12 text-center text-sm-left">
-									<span class="font-weight-bold">Precio: </span>
-									$<span class="precio-unidad">'.$productos[$k]['costo'].'</span> M.X.N./<span class="unidad-pedido">'.$productos[$k]['unidadDePedido'].'</span>
-								</div>
-							</div>
-
-							<!-- Cantidad -->
-							<div class="row mt-2">
-								<div class="col-12 text-center text-sm-left">
-									<span class="font-weight-bold">Cantidad: </span>
-									<span class="cantidad">'.$pedidosProducto[$k]['cantidad'].'</span> x [<span class="unidad-pedido">'.$productos[$k]['unidadDePedido'].'</span>]
-								</div>
-							</div>
-						</div>
-
-
-						<!-- Precio total -->
-						<div class="col-12 col-sm-4 col-lg-3 m-auto d-flex align-items-center">
-
-							<div class="w-100">
-								<div class="row">
-									<div class="col-12 text-center px-0">
-										<small class="text-muted">Precio total</small>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-12 text-center px-0">
-										<h4 class="text-success">$ <span class="precio-total">'.$pedidosProducto[$k]['costo'].'</span> M.X.N.</h4>
-									</div>
-								</div>
-							</div>
-						</div>
-
+					<!-- Imagen -->
+					<div class="col-12 col-sm-3 col-lg-2 py-4 py-sm-0">
+						<img class="img-fluid" onerror="this.src=`../assets/img/products/img-placeholder.png`" src="../assets/img/products/ribbon-'.$productos[$k]['codigo'].'.png" alt="">
 					</div>
+
+					<!-- Detalles -->
+					<div class="col-12 col-sm-5 col-lg-7">
+						
+						<!-- Titulo y descripcion -->
+						<div class="row">
+							<div class="col-12 text-center text-sm-left">
+								<h4>'.$productos[$k]['nombre'].' <small class="text-muted producto-codigo" data-id="'.$pedidosProducto[$k]['pedidoID'].'">'.$productos[$k]['codigo'].'</small></h4>
+								<h6 class="text-muted font-italic">'.$productos[$k]['descripcion'].'</h6>
+							</div>
+						</div>
+
+						<!-- Precio por Unidad-->
+						<div class="row mt-2">
+							<div class="col-12 text-center text-sm-left">
+								<span class="font-weight-bold">Precio: </span>
+								$<span class="precio-unidad">'.number_format($productos[$k]['costo'], 2, '.', ',').'</span> M.X.N./<span class="unidad-pedido">'.$productos[$k]['unidadDePedido'].'</span>
+							</div>
+						</div>
+
+						<!-- Cantidad -->
+						<div class="row mt-2">
+							<div class="col-12 text-center text-sm-left">
+								<span class="font-weight-bold">Cantidad: </span>
+								<span class="cantidad">'.$pedidosProducto[$k]['cantidad'].'</span> x [<span class="unidad-pedido">'.$productos[$k]['unidadDePedido'].'</span>]
+							</div>
+						</div>
+					</div>
+
+
+					<!-- Precio total -->
+					<div class="col-12 col-sm-4 col-lg-3 m-auto d-flex align-items-center">
+
+						<div class="w-100">
+							<div class="row">
+								<div class="col-12 text-center px-0">
+									<small class="text-muted">Precio total</small>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12 text-center px-0">
+									<h4 class="text-success">$ <span class="precio-total">'.number_format($pedidosProducto[$k]['costo'], 2, '.', ',').'</span> M.X.N.</h4>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
 				';
 
 				if($k < sizeof($pedidosProducto)){
-					$pedidosHTML .= '<hr class="w-100">';
+					$pedidosHTML .= '	<hr class="w-100">';
 				}
 
 				//======================================================================
@@ -243,44 +290,45 @@ if(!isset($_SESSION['id'])){
 				
 				if($k == sizeof($pedidosProducto) - 1){
 					$pedidosHTML .= '
-					<!-- SUMA TOTAL DEL PEDIDO -->
-					<div class="row precio-suma">
-					
-						<div class="col"></div>
+				<!-- SUMA TOTAL DEL PEDIDO -->
+				<div class="row precio-suma">
+				
+					<div class="col"></div>
 
-						<!-- "Suma Total" -->
-						<div class="col-12 col-sm-4 col-md-4 col-lg-2 my-3 mt-sm-4 mt-lg-4 px-0 pt-sm-3 ">
-							    <h3 class="text-center text-info">Suma Total:</h3>
-						</div>
+					<!-- "Suma Total" -->
+					<div class="col-12 col-sm-4 col-md-4 col-lg-2 my-3 mt-sm-4 mt-lg-4 px-0 pt-sm-3 ">
+						    <h3 class="text-center text-info">Suma Total:</h3>
+					</div>
 
-						<!-- Precio -->
-						<div class="col-12 col-sm-5 col-md-4 col-lg-3 m-auto">
-							<div class="row">
-								<div class="col-12 text-center px-0">
-									<small class="text-muted">Precio pedido</small>
-								</div>
+					<!-- Precio -->
+					<div class="col-12 col-sm-5 col-md-4 col-lg-3 m-auto">
+						<div class="row">
+							<div class="col-12 text-center px-0">
+								<small class="text-muted">Precio pedido</small>
 							</div>
-							<div class="row">
-								<div class="col-12 text-center px-0">
-									<h4 class="text-primary">$ <span class="pedido-total">'.$pedidoTotal.'</span> M.X.N.</h4>
-								</div>
+						</div>
+						<div class="row">
+							<div class="col-12 text-center px-0">
+								<h4 class="text-primary">$ <span class="pedido-total">'.$pedidoTotalFormatted.'</span> M.X.N.</h4>
 							</div>
 						</div>
 					</div>
+				</div>
 
-					<!-- BOTÓN CANCELACIÓN -->
-					<div class="row mt-3 mt-sm-0">
-					
-						<div class="col"></div>
+				<!-- BOTÓN CANCELACIÓN -->
+				<div class="row mt-3 mt-sm-0">
+				
+					<div class="col"></div>
 
-						<div class="col-12 col-sm-5 col-md-5 col-lg-3 text-center">
-					  		<button type="button" class="btn btn-danger w-100 px-0" id="btn-cancelacion" aria-label="Close">
-								<span class="">Solicitar Cancelación</span>
-					  		</button>
-						</div>
+					<div class="col-12 col-sm-5 col-md-5 col-lg-3 text-center">
+				  		<button type="button" class="btn btn-danger w-100 px-0" id="btn-cancelacion" '.$deshabilitar.'>
+							<span class="">Solicitar Cancelación</span>
+				  		</button>
 					</div>
-					
-				</div> <!-- FIN - CONTAINER -->';
+				</div>
+			</div> <!-- FIN - CARD-BODY -->
+		</div> <!-- FIN - COLLAPSE -->
+	</div> <!-- FIN - CARD -->';
 				}
 			}
 		}
@@ -322,6 +370,8 @@ if(!isset($_SESSION['id'])){
 	echo $pedidosHTML;
 }
 ?>
+
+</div> <!-- FIN - ACCORDION -->
 
 
 
@@ -499,15 +549,6 @@ if(!isset($_SESSION['id'])){
 	// DESHABILITACIÓN DEL BOTÓN CUANDO YA ESTÁ EN PROCESO DE CANCELACIÓN
 	//======================================================================
 
-	$(document).ready(function(){
-
-		var estado = $('#estado').attr('data-id');
-		if(estado == 5){
-			$('#btn-cancelacion').prop( "disabled", true);
-		}
-
-	})
-
     $('.alert-warning').hide();
 
     $('.close').on('click', function(){
@@ -525,7 +566,7 @@ if(!isset($_SESSION['id'])){
 		$('body').on('click', '#btn-cancelacion', function(){
 
  			if (confirm('¿Deseas enviar la solicitud de cancelación?')) {
-				var pedidoID = $(this).closest('.pedido-container').attr('data-id');
+				var pedidoID = $(this).closest('.card').find('.pedido-container').attr('data-id');
 				console.log("PedidoID: " + pedidoID);
 
 				$.ajax({

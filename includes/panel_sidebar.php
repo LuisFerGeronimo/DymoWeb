@@ -2,7 +2,7 @@
         <a  class="btn btn-primary text-white" ><i class="fas fa-arrow-right mt-2"></i></a>
     </div>
 -->
-    <div class="col-7 col-sm-4 col-md-3 col-lg-2 bg-dark pr-0"  id="over-sidebar">
+    <div class="pl-3 bg-dark pr-0"  id="over-sidebar" style="">
             <!-- Sidebar Control Panel -->
             <ul class="nav flex-column p-0" id="sidebar">
 
@@ -16,6 +16,16 @@
                         <div class="text-center" id="dismiss">
                             <i class="fas fa-arrow-left mt-2" id="dismiss-arrow"></i>
                         </div>
+                    </div>
+                </div>
+                <div class="row mr-0">
+                    <div class="col-3">
+                        <div id="logout-div">
+                            <a href="../includes/cerrarSesion.php"><i class="fas fa-power-off fa-lg" id="logout"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-9 px-0">
+                        <h6 class="text-muted mt-3 ml-3"><span id="datos-usuario" data-column="<?php echo $_SESSION['idAdmin']; ?>"><?php echo $_SESSION['nombre'] ?></span></h6>
                     </div>
                 </div>
                 

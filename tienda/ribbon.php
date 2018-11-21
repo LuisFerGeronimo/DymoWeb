@@ -12,6 +12,18 @@
     <link rel="stylesheet" href="../assets/css/solid.css">
     <link rel="stylesheet" href="../assets/css/fontawesome.css">
 
+    <!-- Smartsupp Live Chat script -->
+    <script type="text/javascript">
+        var _smartsupp = _smartsupp || {};
+        _smartsupp.key = '8fde5e5a0b5beef908e268b0f2dab6b97c538dd9';
+        window.smartsupp||(function(d) {
+            var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+            s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+            c.type='text/javascript';c.charset='utf-8';c.async=true;
+            c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+        })(document);
+    </script>
+
     <style>
         #filter-menu {
             border-right: 1px gray solid;

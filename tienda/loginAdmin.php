@@ -18,11 +18,10 @@ session_start();
  * Se verifica si el usuario ya inició sesión y lo envía a la página de inicio
  * de la tienda.
  */
-if(isset($_SESSION['id'])){
-    header('Location: index.php');
+if(isset($_SESSION['idAdmin'])){
+    header('Location: ../panel/index.php');
+} else {
 }
-
-
 
 ?>
 
@@ -81,9 +80,9 @@ if(isset($_SESSION['id'])){
                 <div class="card-body px-3">
                     <!-- Formulario del log in -->
                     <form class="needs-validation px-0 px-sm-3 pb-0 pb-sm-3 pt-4 px-lg-4" onsubmit="return false;" novalidate>
-                        <!-- Grupo del label e input para el e-mail -->
+                        <!-- Grupo del label e input para el usuario -->
                         <div class="form-group">
-                            <label for="email">E-mail</label>
+                            <label for="user">Usuario</label>
                             <!-- Grupo contenedor del input y su ícono -->
                             <div class="input-group">
                                 <!-- Contendedor del ícono -->
@@ -91,11 +90,11 @@ if(isset($_SESSION['id'])){
                                     <!-- Icono de FontAwesome -->
                                     <div class="input-group-text"><i class="fas fa-at"></i></div>
                                 </div>
-                                <!-- Input del e-mail -->
-                                <input type="text" class="form-control" id="email" placeholder="nombre@ejemplo.com" required>
+                                <!-- Input del usuario -->
+                                <input type="text" class="form-control" id="user" placeholder="nombre@ejemplo.com" required>
 
                                 <div class="invalid-feedback">
-                                    Ingresa tu correo o usuario.
+                                    Ingresa tu usuario.
                                 </div>
                             </div>
                         </div>
@@ -170,19 +169,19 @@ if(isset($_SESSION['id'])){
         /*
          * Cuando se ejecute el evento 'click' en el botón #btn-acceder'
          * AJAX enviará una solicitud al servidor enviando los datos que
-         * puso el usuario (correo y contraseña) para evaluar si están
+         * puso el usuario (usuario y contraseña) para evaluar si están
          * correctos.
          */        
         $("#btn-acceder").on('click', function(){ 
             
             /*
-             * Se extraén los valores de los input para el correo y la
+             * Se extraén los valores de los input para el usuario y la
              * contraseña.
              */
-            var correo_input  = $("#email").val();
+            var usuario_input  = $("#user").val();
             var contrasena_input  = $("#password").val();
 
-            console.log(correo_input);
+            console.log(usuario_input);
             console.log(contrasena_input);
 
             /*
@@ -190,10 +189,10 @@ if(isset($_SESSION['id'])){
              */            
             $.ajax({
                 type: "POST",
-                url: "login-request.php",
+                url: "loginAdminRequest.php",
                 data: 
                     {
-                        correo: correo_input,
+                        usuario: usuario_input,
                         contrasena: contrasena_input
                     },
 
@@ -226,7 +225,7 @@ if(isset($_SESSION['id'])){
                         /*
                          * Se le muestra al usuario la página principal de la tienda.
                          */
-                        window.location.href = "index.php";
+                        window.location.href = "../panel/index.php";
 
                     } else {
                         console.log("Datos incorrectos.");

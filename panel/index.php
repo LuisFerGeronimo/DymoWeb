@@ -93,6 +93,13 @@ define('MAX_USUARIO', 15);
 
 // }}}
 
+
+session_start();
+
+if(!isset($_SESSION['idAdmin'])){
+    header('Location: ../index.html');
+}
+
 ?>
 
 
@@ -138,7 +145,7 @@ define('MAX_USUARIO', 15);
 <div class="row mr-0" style="height: 100vh;">
     
     <!-- Sidebar Izquierdo -->
-    <?php include '../includes/panel_sidebar.html' ?>
+    <?php include '../includes/panel_sidebar.php' ?>
 
     <!-- Contenido -->
     <div class="col pl-2 pr-3 py-4 m-0 text-white" id="content">
